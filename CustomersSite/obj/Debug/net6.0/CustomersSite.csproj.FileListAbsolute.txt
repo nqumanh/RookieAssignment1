@@ -1,0 +1,52 @@
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\bin\Debug\net6.0\appsettings.Development.json
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\bin\Debug\net6.0\appsettings.json
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\bin\Debug\net6.0\CustomersSite.staticwebassets.runtime.json
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\bin\Debug\net6.0\CustomersSite.exe
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\bin\Debug\net6.0\CustomersSite.deps.json
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\bin\Debug\net6.0\CustomersSite.runtimeconfig.json
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\bin\Debug\net6.0\CustomersSite.dll
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\bin\Debug\net6.0\CustomersSite.pdb
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.csproj.AssemblyReference.cache
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.GeneratedMSBuildEditorConfig.editorconfig
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.AssemblyInfoInputs.cache
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.AssemblyInfo.cs
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.csproj.CoreCompileInputs.cache
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.MvcApplicationPartsAssemblyInfo.cache
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.RazorAssemblyInfo.cache
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.RazorAssemblyInfo.cs
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\staticwebassets.build.json
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\staticwebassets.development.json
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\scopedcss\bundle\CustomersSite.styles.css
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\scopedcss\projectbundle\CustomersSite.bundle.scp.css
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.dll
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\refint\CustomersSite.dll
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.pdb
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\CustomersSite.genruntimeconfig.cache
+E:\NashTech Training\Learn\asp.net core mvc\CustomersSite\obj\Debug\net6.0\ref\CustomersSite.dll
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\bin\Debug\net6.0\appsettings.Development.json
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\bin\Debug\net6.0\appsettings.json
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\bin\Debug\net6.0\CustomersSite.staticwebassets.runtime.json
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\bin\Debug\net6.0\CustomersSite.exe
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\bin\Debug\net6.0\CustomersSite.deps.json
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\bin\Debug\net6.0\CustomersSite.runtimeconfig.json
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\bin\Debug\net6.0\CustomersSite.dll
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\bin\Debug\net6.0\CustomersSite.pdb
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.csproj.AssemblyReference.cache
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.GeneratedMSBuildEditorConfig.editorconfig
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.AssemblyInfoInputs.cache
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.AssemblyInfo.cs
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.csproj.CoreCompileInputs.cache
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.MvcApplicationPartsAssemblyInfo.cache
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.RazorAssemblyInfo.cache
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.RazorAssemblyInfo.cs
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\staticwebassets.build.json
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\staticwebassets.development.json
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\scopedcss\bundle\CustomersSite.styles.css
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\scopedcss\projectbundle\CustomersSite.bundle.scp.css
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.dll
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\refint\CustomersSite.dll
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.pdb
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\CustomersSite.genruntimeconfig.cache
+E:\NashTech Training\Rookie-Assignment1\CustomersSite\obj\Debug\net6.0\ref\CustomersSite.dll
