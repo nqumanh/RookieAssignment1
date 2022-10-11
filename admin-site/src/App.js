@@ -1,9 +1,16 @@
+import React from 'react'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
+import Login from './pages/Login'
+
 function App () {
   return (
-    <div>
-      <h1>Admin Site</h1>
-      <button className='btn btn-primary'>Login</button>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<Login />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
