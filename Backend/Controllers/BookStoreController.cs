@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using BookStore.Data;
 
 namespace BookStore.Controllers;
 
@@ -6,27 +8,18 @@ namespace BookStore.Controllers;
 [Route("[controller]")]
 public class BookStoreController : ControllerBase
 {
-    private static readonly string[] Summaries = new[]
-    {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+    private readonly BookStoreContext _context;
 
-    private readonly ILogger<BookStoreController> _logger;
-
-    public BookStoreController(ILogger<BookStoreController> logger)
+    public BookStoreController(BookStoreContext context)
     {
-        _logger = logger;
+        _context = context;
     }
 
     [HttpGet]
-    public IEnumerable<WeatherForecast> Get()
+    public async Task<IActionResult> GetAllBooks()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        })
-        .ToArray();
+        var result = await _context.Products!.ToListAsync();
+        if (result == null) return BadRequest();
+        return Ok(result);
     }
 }
