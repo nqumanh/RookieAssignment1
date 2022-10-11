@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CustomerSite</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CustomerSite.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav>
+            <div style="min-height: 108px;" class="container d-flex">
+                <div class="d-flex me-5" style="justify-content: center; flex-direction: column;">
+                    <img src="https://cdn.shopify.com/s/files/1/0044/3328/1139/files/booken-logo_150x.png?v=1615364709"
+                        alt="">
+                </div>
+                <div class="menu d-flex" style='flex: 1; flex-direction: column; justify-content: center;'>
+                    <ul class='d-flex p-0 m-0' style='list-style: none'>
+                        <li class='me-5'>Home</li>
+                        <li class='me-5'>About Us</li>
+                        <li class='me-5'>Shop</li>
+                        <li class='me-5'>Blog</li>
+                        <li class='me-5'>Contact Us</li>
+                    </ul>
+                </div>
+                <div class="custom d-flex" style='flex-direction: column; justify-content:center'>
+                    <div class="d-flex">
+                        <i class="bi bi-search ms-3"></i>
+                        <i class="bi bi-cart4 ms-3"></i>
+                        <i class="bi bi-gear-fill ms-3"></i>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid p-0">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - Customer Site - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
