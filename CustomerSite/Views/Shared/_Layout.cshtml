@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,22 +8,50 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CustomerSite.styles.css" asp-append-version="true" />
+    @* owl-carousel *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+        integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+        integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
     <header>
         <nav>
             <div style="min-height: 108px;" class="container d-flex">
                 <div class="d-flex me-5" style="justify-content: center; flex-direction: column;">
-                    <img src="https://cdn.shopify.com/s/files/1/0044/3328/1139/files/booken-logo_150x.png?v=1615364709"
-                        alt="">
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                        <img src="https://cdn.shopify.com/s/files/1/0044/3328/1139/files/booken-logo_150x.png?v=1615364709"
+                            alt="">
+                    </a>
                 </div>
                 <div class="menu d-flex" style='flex: 1; flex-direction: column; justify-content: center;'>
-                    <ul class='d-flex p-0 m-0' style='list-style: none'>
-                        <li class='me-5'>Home</li>
-                        <li class='me-5'>About Us</li>
-                        <li class='me-5'>Shop</li>
-                        <li class='me-5'>Blog</li>
-                        <li class='me-5'>Contact Us</li>
+                    <ul class='d-flex p-0 m-0' style='list-style: none;'>
+                        <li class='me-5'>
+                            <a asp-controller="Home" asp-action="Index"
+                                style='text-decoration: none; color: #000'>Home</a>
+                        </li>
+                        <li class='me-5'>
+                            <a asp-controller="Home" asp-action="Privacy"
+                                style='text-decoration: none; color: #000'>About
+                                Us</a>
+                        </li>
+                        <li class='me-5'>
+                            <a asp-controller="Home" asp-action="Privacy"
+                                style='text-decoration: none; color: #000'>Shop</a>
+                        </li>
+                        <li class='me-5'>
+                            <a asp-controller="Home" asp-action="Privacy"
+                                style='text-decoration: none; color: #000'>Blog</a>
+                        </li>
+                        <li class='me-5'>
+                            <a asp-controller="Home" asp-action="Privacy"
+                                style='text-decoration: none; color: #000'>Contact
+                                Us</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="custom d-flex" style='flex-direction: column; justify-content:center'>
@@ -52,4 +81,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
