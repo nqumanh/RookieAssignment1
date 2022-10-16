@@ -4,7 +4,7 @@ namespace BookStore.Models
     {
         public long Id { get; set; }
 
-        public virtual Customer? Customer { get; set; }
+        public virtual User? User { get; set; }
 
         public virtual List<OrderLine>? OrderLines { get; set; }
     }

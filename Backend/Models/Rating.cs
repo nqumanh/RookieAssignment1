@@ -10,6 +10,6 @@ namespace BookStore.Models
 
         public virtual Product? Product { get; set; }
 
-        public virtual Customer? Customer { get; set; }
+        public virtual User? User { get; set; }
     }
 }
