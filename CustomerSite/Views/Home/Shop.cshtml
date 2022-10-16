@@ -1,11 +1,99 @@
-﻿@{
+﻿@model Tuple<List<CustomerSite.Models.Category>, List <CustomerSite.Models.Product>>
+
+@{
     ViewData["Title"] = "Shop";
 }
 
 <partial name="_BreadCrumb.cshtml" />
 
 <div class="container">
-    <main role="main" class="pb-3">
-        <h1>@ViewData["Title"]</h1>
+    <main role="main" class="pb-3" style="margin-top: 50px">
+        <div class="row">
+            <div class="col-3">
+                <div class="mb-5">
+                    <div>
+                        <a class="border-0 text-black d-flex justify-content-between" data-bs-toggle="collapse"
+                            href="#collapseCategories" role="button" aria-expanded="false"
+                            aria-controls="collapseCategories" style="text-decoration: none; font-size: 20px;">
+                            <span style="font-weight: 500">Category</span>
+                            <span style="font-weight: 500">+</span>
+                        </a>
+                    </div>
+                    <hr>
+                    <div class=" collapse" id="collapseCategories">
+                        @{
+                            foreach (var category in Model.Item1)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label" for="flexCheckDefault">
+                                        @category.Name
+                                    </label>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="mb-5">
+                    <div>
+                        <div>
+                            <a class="border-0 text-black d-flex justify-content-between" data-bs-toggle="collapse"
+                                href="#collapsePrice" role="button" aria-expanded="false" aria-controls="collapsePrice"
+                                style="text-decoration: none; font-size: 20px;">
+                                <span style="font-weight: 500">Price</span>
+                                <span style="font-weight: 500">+</span>
+                            </a>
+                        </div>
+                        <hr>
+                        <div class="collapse" id="collapsePrice">
+                            <div class="my-4 row">
+                                <div class="col-sm-6 d-flex">
+                                    <label for="PriceFrom" class="align-self-center me-2">From</label>
+                                    <input type="text" class="form-control" id="PriceFrom">
+                                    <span class="align-self-center ms-2">VND</span>
+                                </div>
+                                <div class="col-sm-6 d-flex">
+                                    <label for="PriceTo" class="align-self-center me-2">To</label>
+                                    <input type="text" class="form-control" id="PriceTo">
+                                    <span class="align-self-center ms-2">VND</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button
+                                    class="btn bg-secondary p-2 text-dark bg-opacity-75 text-white btn-hover">Filter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="row gy-5">
+                    @{
+
+                        foreach (var product in Model.Item2)
+                        {
+                            float d = @product.Price;
+                            string price = d.ToString("#,##0");
+                            <div class="col-4 d-flex align-items-stretch">
+                                <div class="card bg-light" style="width: 18rem;">
+                                    <img src="@product.Image" class="card-img-top">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@product.Name</h5>
+                                        <p class="card-text">@product.Description</p>
+                                        <h5 class='text-danger'>@price VND</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
     </main>
 </div>
+
+<style>
+    .btn-hover:hover {
+        background: red !important;
+    }
+</style>

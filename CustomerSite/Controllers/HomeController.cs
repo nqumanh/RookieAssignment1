@@ -39,9 +39,21 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Shop()
+    public async Task<IActionResult> Shop()
     {
-        return View();
+        var client = new HttpClient();
+		client.BaseAddress = new Uri("https://localhost:7012/");
+        var response = await client.GetAsync("Product/GetAllProducts");
+        var result =  response.Content.ReadAsStringAsync().Result;
+        var productList = JsonConvert.DeserializeObject<List<Product>>(result);
+
+        response = await client.GetAsync("Category/GetAllCategories");
+        result =  response.Content.ReadAsStringAsync().Result;
+        var categoryList = JsonConvert.DeserializeObject<List<Category>>(result);
+
+        var tupleModel = new Tuple<List<Category>?, List<Product>?>(categoryList, productList);
+
+        return View(tupleModel);
     }
 
     public IActionResult Privacy()
