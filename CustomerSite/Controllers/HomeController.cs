@@ -29,12 +29,26 @@ public class HomeController : Controller
         result =  response.Content.ReadAsStringAsync().Result;
         var categoryList = JsonConvert.DeserializeObject<List<Category>>(result);
 
-        var tupleModel = new Tuple<List<Category>, List<Product>>(categoryList, productList);
+        var tupleModel = new Tuple<List<Category>?, List<Product>?>(categoryList, productList);
 
         return View(tupleModel);
     }
 
+    public IActionResult AboutUs()
+    {
+        return View();
+    }
+
+    public IActionResult Shop()
+    {
+        return View();
+    }
+
     public IActionResult Privacy()
+    {
+        return View();
+    }
+    public IActionResult ContactUs()
     {
         return View();
     }

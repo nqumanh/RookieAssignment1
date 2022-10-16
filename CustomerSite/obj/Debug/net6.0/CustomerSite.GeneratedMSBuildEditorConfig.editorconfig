@@ -15,6 +15,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = E:\NashTech Training\Rookie-Assignment1\CustomerSite
 build_property._RazorSourceGeneratorDebug = 
 
+[E:/NashTech Training/Rookie-Assignment1/CustomerSite/Views/Home/AboutUs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBYm91dFVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/NashTech Training/Rookie-Assignment1/CustomerSite/Views/Home/ContactUs.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDb250YWN0VXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [E:/NashTech Training/Rookie-Assignment1/CustomerSite/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -23,8 +31,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[E:/NashTech Training/Rookie-Assignment1/CustomerSite/Views/Home/_FeaturedProducts.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfRmVhdHVyZWRQcm9kdWN0cy5jc2h0bWw=
+[E:/NashTech Training/Rookie-Assignment1/CustomerSite/Views/Home/Shop.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaG9wLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[E:/NashTech Training/Rookie-Assignment1/CustomerSite/Views/Home/_BreadCrumb.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxfQnJlYWRDcnVtYi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [E:/NashTech Training/Rookie-Assignment1/CustomerSite/Views/Shared/Error.cshtml]
