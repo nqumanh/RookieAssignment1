@@ -25,7 +25,13 @@ public class HomeController : Controller
         var result =  response.Content.ReadAsStringAsync().Result;
         var productList = JsonConvert.DeserializeObject<List<Product>>(result);
 
-        return View(productList);
+        response = await client.GetAsync("Category/GetAllCategories");
+        result =  response.Content.ReadAsStringAsync().Result;
+        var categoryList = JsonConvert.DeserializeObject<List<Category>>(result);
+
+        var tupleModel = new Tuple<List<Category>, List<Product>>(categoryList, productList);
+
+        return View(tupleModel);
     }
 
     public IActionResult Privacy()

@@ -1,5 +1,5 @@
-﻿@model IEnumerable<CustomerSite.Models.Product>
-    
+﻿@model Tuple<List<CustomerSite.Models.Category>, List <CustomerSite.Models.Product>>
+
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -43,56 +43,19 @@
     <div class="container-fluid my-5">
         <h1 class="text-center">Category Menu</h1>
         <div class="row m-5">
-            <div class="owl-carousel owl-theme d-flex">
+            <div class="owl-carousel owl-theme">
                 @{
-                    for (int i = 0; i < 5; i++)
+                    foreach (var category in Model.Item1)
                     {
-                        <div class="item bg-success p-3 m-3 bg-opacity-10 d-flex flex-column justify-content-center"
-                        style="height: 25vh;">
-                            <h5 class="w-100 text-center">
-                                Category @i
+                        <div class="item p-3 m-3 bg-opacity-10 d-flex flex-column justify-content-center"
+                        style="height: 25vh; background: #faf1ff;">
+                            <h5 class="text-center">
+                                @category.Name
                             </h5>
-
+                            <p class="text-center">@category.Description</p>
                         </div>
                     }
                 }
-
-                @* <div class="item">
-                    <div class="card">
-                    <img src="https://cdn.shopify.com/s/files/1/0044/3328/1139/files/home-1-slider-1.png?v=1614763716"
-                    alt="" class="card-img-top">
-                    <div class="card-body">
-                    <h4>Category 1</h4>
-                    </div>
-                    </div>
-                    </div>
-                    <div class="item">
-                    <div class="card">
-                    <img src="https://cdn.shopify.com/s/files/1/0044/3328/1139/files/home-1-slider-1.png?v=1614763716"
-                    alt="" class="card-img-top">
-                    <div class="card-body">
-                    <h4>Category 2</h4>
-                    </div>
-                    </div>
-                    </div>
-                    <div class="item">
-                    <div class="card">
-                    <img src="https://cdn.shopify.com/s/files/1/0044/3328/1139/files/home-1-slider-1.png?v=1614763716"
-                    alt="" class="card-img-top">
-                    <div class="card-body">
-                    <h4>Category 3</h4>
-                    </div>
-                    </div>
-                    </div>
-                    <div class="item">
-                    <div class="card">
-                    <img src="https://cdn.shopify.com/s/files/1/0044/3328/1139/files/home-1-slider-1.png?v=1614763716"
-                    alt="" class="card-img-top">
-                    <div class="card-body">
-                    <h4>Category 4</h4>
-                    </div>
-                    </div>
-                    </div> *@
             </div>
         </div>
     </div>
@@ -123,19 +86,7 @@
             tabindex="0">
             <div class="row gy-5">
                 @{
-                    foreach (var product in Model)
-                    {
-                        <div class="col-3 d-flex align-items-stretch">
-                            <div class="card bg-light" style="width: 18rem;">
-                                <img src="@product.Image" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">@product.Name</h5>
-                                    <p class="card-text">@product.Description</p>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    foreach (var product in Model)
+                    foreach (var product in Model.Item2)
                     {
                         <div class="col-3 d-flex align-items-stretch">
                             <div class="card bg-light" style="width: 18rem;">
@@ -153,7 +104,7 @@
         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
             <div class="row gy-5">
                 @{
-                    foreach (var product in Model)
+                    foreach (var product in Model.Item2)
                     {
                         <div class="col-3 d-flex align-items-stretch">
                             <div class="card bg-light" style="width: 18rem;">
@@ -165,7 +116,7 @@
                             </div>
                         </div>
                     }
-                    foreach (var product in Model)
+                    foreach (var product in Model.Item2)
                     {
                         <div class="col-3 d-flex align-items-stretch">
                             <div class="card bg-light" style="width: 18rem;">
@@ -183,19 +134,7 @@
         <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab" tabindex="0">
             <div class="row gy-5">
                 @{
-                    foreach (var product in Model)
-                    {
-                        <div class="col-3 d-flex align-items-stretch">
-                            <div class="card bg-light" style="width: 18rem;">
-                                <img src="@product.Image" class="card-img-top">
-                                <div class="card-body">
-                                    <h5 class="card-title">@product.Name</h5>
-                                    <p class="card-text">@product.Description</p>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                    foreach (var product in Model)
+                    foreach (var product in Model.Item2)
                     {
                         <div class="col-3 d-flex align-items-stretch">
                             <div class="card bg-light" style="width: 18rem;">
