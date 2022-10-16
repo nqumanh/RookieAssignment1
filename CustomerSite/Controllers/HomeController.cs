@@ -1,21 +1,31 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using CustomerSite.Models;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace CustomerSite.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly IHttpClientFactory _httpClientFactory;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
     {
         _logger = logger;
+        _httpClientFactory = httpClientFactory;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var client = new HttpClient();
+		client.BaseAddress = new Uri("https://localhost:7012/");
+        var response = await client.GetAsync("Product/GetAllProducts");
+        var result =  response.Content.ReadAsStringAsync().Result;
+        var productList = JsonConvert.DeserializeObject<List<Product>>(result);
+
+        return View(productList);
     }
 
     public IActionResult Privacy()

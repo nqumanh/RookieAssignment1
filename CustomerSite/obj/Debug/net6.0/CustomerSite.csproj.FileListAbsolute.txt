@@ -24,3 +24,5 @@ E:\NashTech Training\Rookie-Assignment1\CustomerSite\obj\Debug\net6.0\refint\Cus
 E:\NashTech Training\Rookie-Assignment1\CustomerSite\obj\Debug\net6.0\CustomerSite.pdb
 E:\NashTech Training\Rookie-Assignment1\CustomerSite\obj\Debug\net6.0\CustomerSite.genruntimeconfig.cache
 E:\NashTech Training\Rookie-Assignment1\CustomerSite\obj\Debug\net6.0\ref\CustomerSite.dll
+E:\NashTech Training\Rookie-Assignment1\CustomerSite\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\NashTech Training\Rookie-Assignment1\CustomerSite\obj\Debug\net6.0\CustomerSite.csproj.CopyComplete

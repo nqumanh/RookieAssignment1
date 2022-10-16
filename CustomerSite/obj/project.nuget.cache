@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Y9XvrucRjRnpjhuUU/g9G6Z0iFO/RPtApU1Q7n4s7cu+5oZH+oxv+6oZgwxnz0NIXRPEl+g1seHAy+mJdbZ91Q==",
+  "dgSpecHash": "kHJRzqPe/9U54leVsm2/jGBU8okzYP67e2dpYVcFCfUXRGy5OyhUcqtKRp0qRM6UF5bJIHYOpYC4J1VVu49coA==",
   "success": true,
   "projectFilePath": "E:\\NashTech Training\\Rookie-Assignment1\\CustomerSite\\CustomerSite.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\TGDD\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+  ],
   "logs": []
 }
