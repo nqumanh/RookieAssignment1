@@ -85,20 +85,18 @@
 
 <div class="container my-5">
     <h1 class="text-center">Featured Products</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus exercitationem pariatur reiciendis
-        deserunt beatae accusamus provident praesentium dolores debitis repellat quisquam consequuntur aliquam
-        dignissimos, iure voluptatem sunt quasi quam tenetur.</p>
+    <p class='container text-center'>Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
     <ul class="nav nav-pills mb-3 d-flex justify-content-center" id="pills-tab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+            <button class="nav-link tab-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
                 type="button" role="tab" aria-controls="pills-home" aria-selected="true">Best Seller</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+            <button class="nav-link tab-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
                 type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Featured</button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
+            <button class="nav-link tab-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
                 type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Latest</button>
         </li>
     </ul>
@@ -121,3 +119,17 @@
     integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 }
+
+<style>
+    .tab-link {
+        font-weight: 500;
+        border-radius: 20px !important;
+        color: #000000;
+        background: #f1f1f1 !important;
+        margin: 10px !important;
+        padding: 10px 20px !important;
+    }
+    .tab-link.active {
+        background: red !important;
+    }
+</style>

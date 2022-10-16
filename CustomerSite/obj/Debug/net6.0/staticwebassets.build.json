@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vTF/ok4flXEj05IAZ7ULxMZlhC2nWSqlYCFAq//CuAk=",
+  "Hash": "7eb8bknB8ecRir3N1A8QAU/UPJ0+Pc1a6h06fZlduBA=",
   "Source": "CustomerSite",
   "BasePath": "_content/CustomerSite",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "E:\\NashTech Training\\Rookie-Assignment1\\CustomerSite\\wwwroot\\js\\home.js",
+      "SourceId": "CustomerSite",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\NashTech Training\\Rookie-Assignment1\\CustomerSite\\wwwroot\\",
+      "BasePath": "_content/CustomerSite",
+      "RelativePath": "js/home.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\home.js"
     },
     {
       "Identity": "E:\\NashTech Training\\Rookie-Assignment1\\CustomerSite\\wwwroot\\js\\site.js",
