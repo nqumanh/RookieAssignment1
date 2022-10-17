@@ -33,11 +33,11 @@ export default function Login() {
             autoComplete="off"
           ></input>
         </div>
-        <div class="row mb-3">
-          <div class="col-sm-12">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck1" />
-              <label class="form-check-label" for="gridCheck1">
+        <div className="row mb-3">
+          <div className="col-sm-12">
+            <div className="form-check">
+              <input className="form-check-input" type="checkbox" id="gridCheck1" />
+              <label className="form-check-label" htmlFor="gridCheck1">
                 Remember me
               </label>
             </div>
