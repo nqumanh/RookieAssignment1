@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "ACCOUNT";
+}
+
+<partial name="_BreadCrumb.cshtml" />
+
+<div class="row " style="margin-top: 100px">
+    <div class="col-md-4 offset-md-4">
+        <div class="card mb-3 border-0" style="background: #f3f3f3">
+            <div class="text-center my-4">
+                <h2>Create Account</h2>
+                <p style="color: #6c757d">Please Register using account detail bellow.</p>
+            </div>
+            <form class="row mx-5 mb-5">
+                <div class="col-md-12 mb-4">
+                    <input type="text" class="form-control border-0" id="inputPassword" placeholder="Name">
+                </div>
+                <div class="col-md-12 mb-3">
+                    <input type="email" class="form-control border-0" id="inputEmail4" placeholder="Email">
+                </div>
+                <div class="col-md-12 mb-4">
+                    <input type="password" class="form-control border-0" id="inputPassword" placeholder="Password">
+                </div>
+                <div class="col-md-12 mb-4">
+                    <input type="password" class="form-control border-0" id="inputConfirmPassword"
+                        placeholder="Confirm Password">
+                </div>
+                <div class="col-12 mb-4">
+                    <button type="submit"
+                        class="btn btn-secondary opacity-75 px-4 py-2 btn-submit btn-submit--hover">Create</button>
+                </div>
+                <a asp-controller="Home" asp-action="Shop" style='text-decoration: none; color: #000;'>
+                    Return to Store</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-submit {
+        border: 0;
+        border-radius: 0;
+    }
+
+    .btn-submit--hover:hover {
+        background-color: red;
+    }
+</style>

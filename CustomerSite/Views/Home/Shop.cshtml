@@ -21,17 +21,23 @@
                     </div>
                     <hr>
                     <div class=" collapse" id="collapseCategories">
-                        @{
-                            foreach (var category in Model.Item1)
-                            {
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        @category.Name
-                                    </label>
-                                </div>
+                        <div class="mb-3">
+                            @{
+                                foreach (var category in Model.Item1)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="" id="@category.Name">
+                                        <label class="form-check-label" for="@category.Name">
+                                            @category.Name
+                                        </label>
+                                    </div>
+                                }
                             }
-                        }
+                        </div>
+                        <div class="row mx-3">
+                            <button class="btn bg-secondary p-2 text-dark bg-opacity-75 text-white btn-hover">
+                                Filter</button>
+                        </div>
                     </div>
                 </div>
                 <div class="mb-5">
@@ -58,9 +64,9 @@
                                     <span class="align-self-center ms-2">VND</span>
                                 </div>
                             </div>
-                            <div class="row">
-                                <button
-                                    class="btn bg-secondary p-2 text-dark bg-opacity-75 text-white btn-hover">Filter</button>
+                            <div class="row mx-3">
+                                <button class="btn bg-secondary p-2 text-dark bg-opacity-75 text-white btn-hover">
+                                    Filter</button>
                             </div>
                         </div>
                     </div>

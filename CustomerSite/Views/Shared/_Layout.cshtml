@@ -32,24 +32,24 @@
                 <div class="menu d-flex" style='flex: 1; flex-direction: column; justify-content: center;'>
                     <ul class='d-flex p-0 m-0' style='list-style: none;'>
                         <li class='me-5'>
-                            <a asp-controller="Home" asp-action="Index"
+                            <a asp-controller="Home" asp-action="Index" class="header-item--hover"
                                 style='text-decoration: none; color: #000'>Home</a>
                         </li>
                         <li class='me-5'>
-                            <a asp-controller="Home" asp-action="AboutUs"
+                            <a asp-controller="Home" asp-action="AboutUs" class="header-item--hover"
                                 style='text-decoration: none; color: #000'>About
                                 Us</a>
                         </li>
                         <li class='me-5'>
-                            <a asp-controller="Home" asp-action="Shop"
+                            <a asp-controller="Home" asp-action="Shop" class="header-item--hover"
                                 style='text-decoration: none; color: #000'>Shop</a>
                         </li>
                         <li class='me-5'>
-                            <a asp-controller="Home" asp-action="Privacy"
+                            <a asp-controller="Home" asp-action="Privacy" class="header-item--hover"
                                 style='text-decoration: none; color: #000'>Privacy</a>
                         </li>
                         <li class='me-5'>
-                            <a asp-controller="Home" asp-action="ContactUs"
+                            <a asp-controller="Home" asp-action="ContactUs" class="header-item--hover"
                                 style='text-decoration: none; color: #000'>Contact
                                 Us</a>
                         </li>
@@ -57,9 +57,36 @@
                 </div>
                 <div class="custom d-flex" style='flex-direction: column; justify-content:center'>
                     <div class="d-flex">
-                        <i class="bi bi-search ms-3"></i>
-                        <i class="bi bi-cart4 ms-3"></i>
-                        <i class="bi bi-gear-fill ms-3"></i>
+                        <div>
+                            <i class="bi bi-cart4 ms-3 header-item--hover" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"></i>
+                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                                aria-labelledby="offcanvasRightLabel">
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title" id="offcanvasRightLabel">Shopping Cart</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    ...
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <i class="bi bi-gear-fill ms-3 header-item--hover" data-bs-toggle="dropdown"
+                                aria-expanded="false"></i>
+                            <ul class="dropdown-menu dropdown-menu-end border-0">
+                                <li>
+                                    <a asp-controller="User" asp-action="Login" class="dropdown-item"
+                                        style='text-decoration: none; color: #000'>Login</a>
+                                </li>
+                                <li>
+                                    <a asp-controller="User" asp-action="Register" class="dropdown-item"
+                                        style='text-decoration: none; color: #000'>Register</a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -84,3 +111,9 @@
 </body>
 
 </html>
+
+<style>
+    .header-item--hover:hover {
+        color: red !important;
+    }
+</style>
