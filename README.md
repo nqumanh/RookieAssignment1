@@ -12,14 +12,13 @@ Record a demo video reporting what was done each week. Then upload it to drive a
 
 ## Link Drive
 
+**Week 1:** https://drive.google.com/drive/folders/1XwYX9mhhOPX0LeljKZA7tnfIQQ0mlluG?usp=sharing
+
+**Week 2:**
+
 **Week 3:**
 
 **Week 4:**
 
-**Week 5:**
+**Complete Assignment 1:**
 
-**Week 6:**
-
-**Week 7:**
-
-**Week 8:**
