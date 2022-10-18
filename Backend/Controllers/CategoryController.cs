@@ -41,4 +41,13 @@ public class CategoryController : ControllerBase
         if (products == null) return Ok(new List<Product>());
         return Ok(products);
     }
+
+    [HttpPost("GetProductsByCategoryName")]
+    public async Task<IActionResult> GetProductsByCategoryName([FromBody]string categoryName)
+    {
+        var result = await _context.Categories.Where(category => category.Name == categoryName).FirstOrDefaultAsync();
+        if (result == null) return NotFound();
+        var products = _context.Products.Where(product => product.Categories.Any(category => category.Id == result.Id));
+        return Ok(products);
+    }
 }

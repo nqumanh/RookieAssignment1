@@ -4,6 +4,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using CustomerSite.Models;
+using System.Text;
 
 namespace CustomerSite.Controllers;
 
@@ -50,14 +51,16 @@ public class HomeController : Controller
         result = response.Content.ReadAsStringAsync().Result;
         var categories = JsonConvert.DeserializeObject<List<Category>>(result);
 
+        if (!string.IsNullOrEmpty(bookCategory))
+        {
+            response = await client.PostAsJsonAsync("Category/GetProductsByCategoryName", bookCategory);
+            result = response.Content.ReadAsStringAsync().Result;
+            products = JsonConvert.DeserializeObject<List<Product>>(result);
+        }
+
         if (!string.IsNullOrEmpty(searchString))
         {
             products = products.Where(s => s.Name!.Contains(searchString)).ToList();
-        }
-
-        if (!string.IsNullOrEmpty(bookCategory))
-        {
-            products = products.Where(x => x.Categories.Any(category => category.Name == bookCategory)).ToList();
         }
 
         var bookCategoryVM = new BookCategoryViewModel
