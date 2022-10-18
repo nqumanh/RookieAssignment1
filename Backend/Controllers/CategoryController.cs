@@ -34,5 +34,11 @@ public class CategoryController : ControllerBase
         return Ok();
     }
 
-
+    [HttpGet("GetProductsByCategory/{id}")]
+    public async Task<IActionResult> GetCategoriesByProductId(long id)
+    {
+        var products = _context.Products.Where(product => product.Categories.Any(category => category.Id == id));
+        if (products == null) return Ok(new List<Product>());
+        return Ok(products);
+    }
 }

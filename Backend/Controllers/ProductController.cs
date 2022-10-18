@@ -24,4 +24,24 @@ public class ProductController : ControllerBase
         if (result == null) return BadRequest();
         return Ok(result);
     }
+    [HttpPut("EditCategoriesOfProduct/{id}")]
+    public async Task<IActionResult> EditCategoriesOfProduct(long id, long categoryId)
+    {
+        var product = await _context.Products.FindAsync(id);
+        var category = await _context.Categories.FindAsync(categoryId);
+        if (product == null || category == null) return NotFound();
+        product.Categories.Add(category);
+        await _context.SaveChangesAsync();
+        return Ok();
+    }
+
+    [HttpGet("GetCategoriesByProductId/{id}")]
+    public async Task<IActionResult> GetCategoriesByProductId(long id)
+    {
+        var result = await _context.Products.FindAsync(id);
+        if (result == null) return NotFound();
+        var categories = _context.Categories.Where(category => category.Products.Any(product => product.Id == id));
+        if (categories == null) return Ok(new List<Category>());
+        return Ok(categories);
+    }
 }
