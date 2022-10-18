@@ -1,20 +1,19 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using CustomerSite.Models;
 using System.Net.Http;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using CustomerSite.Models;
 
 namespace CustomerSite.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly IHttpClientFactory _httpClientFactory;
 
-    public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
+    public HomeController(ILogger<HomeController> logger)
     {
         _logger = logger;
-        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<IActionResult> Index()
@@ -23,13 +22,13 @@ public class HomeController : Controller
         client.BaseAddress = new Uri("https://localhost:7012/");
         var response = await client.GetAsync("Product/GetAllProducts");
         var result = response.Content.ReadAsStringAsync().Result;
-        var productList = JsonConvert.DeserializeObject<List<Product>>(result);
+        var products = JsonConvert.DeserializeObject<List<Product>>(result);
 
         response = await client.GetAsync("Category/GetAllCategories");
         result = response.Content.ReadAsStringAsync().Result;
-        var categoryList = JsonConvert.DeserializeObject<List<Category>>(result);
+        var categories = JsonConvert.DeserializeObject<List<Category>>(result);
 
-        var tupleModel = new Tuple<List<Category>?, List<Product>?>(categoryList, productList);
+        var tupleModel = new Tuple<List<Category>?, List<Product>?>(categories, products);
 
         return View(tupleModel);
     }
@@ -39,21 +38,35 @@ public class HomeController : Controller
         return View();
     }
 
-    public async Task<IActionResult> Shop()
+    public async Task<IActionResult> Shop(string bookCategory, string searchString)
     {
         var client = new HttpClient();
         client.BaseAddress = new Uri("https://localhost:7012/");
         var response = await client.GetAsync("Product/GetAllProducts");
         var result = response.Content.ReadAsStringAsync().Result;
-        var productList = JsonConvert.DeserializeObject<List<Product>>(result);
+        var products = JsonConvert.DeserializeObject<List<Product>>(result);
 
         response = await client.GetAsync("Category/GetAllCategories");
         result = response.Content.ReadAsStringAsync().Result;
-        var categoryList = JsonConvert.DeserializeObject<List<Category>>(result);
+        var categories = JsonConvert.DeserializeObject<List<Category>>(result);
 
-        var tupleModel = new Tuple<List<Category>?, List<Product>?>(categoryList, productList);
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            products = products.Where(s => s.Name!.Contains(searchString)).ToList();
+        }
 
-        return View(tupleModel);
+        if (!string.IsNullOrEmpty(bookCategory))
+        {
+            products = products.Where(x => x.Categories.Any(category => category.Name == bookCategory)).ToList();
+        }
+
+        var bookCategoryVM = new BookCategoryViewModel
+        {
+            Categories = new SelectList(categories.Select(Category => Category.Name).ToList()),
+            Products = products.ToList()
+        };
+
+        return View(bookCategoryVM);
     }
 
     public IActionResult Privacy()

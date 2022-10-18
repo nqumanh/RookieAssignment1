@@ -1,4 +1,4 @@
-﻿@model Tuple<List<CustomerSite.Models.Category>, List <CustomerSite.Models.Product>>
+﻿@model CustomerSite.Models.BookCategoryViewModel
 
 @{
     ViewData["Title"] = "Shop";
@@ -20,25 +20,23 @@
                         </a>
                     </div>
                     <hr>
-                    <div class=" collapse" id="collapseCategories">
+                    <form asp-controller="Home" asp-action="Shop" method="get" class="collapse show"
+                        id="collapseCategories">
                         <div class="mb-3">
-                            @{
-                                foreach (var category in Model.Item1)
-                                {
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="@category.Name" checked>
-                                        <label class="form-check-label" for="@category.Name">
-                                            @category.Name
-                                        </label>
-                                    </div>
-                                }
-                            }
+                            <p>
+                                <select asp-for="BookCategory" asp-items="Model.Categories" class="form-select my-3">
+                                    <option value="">All</option>
+                                </select>
+                                <input type="text" asp-for="SearchString" class="form-control" />
+                            </p>
                         </div>
-                        <div class="row mx-3">
-                            <button class="btn bg-secondary p-2 text-dark bg-opacity-75 text-white btn-hover">
-                                Filter</button>
+                        <div class="row mx-1">
+                            <button type="submit"
+                                class="btn bg-secondary p-2 text-dark bg-opacity-75 text-white btn-hover">
+                                Filter
+                            </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="mb-5">
                     <div>
@@ -76,7 +74,7 @@
                 <div class="row gy-5">
                     @{
 
-                        foreach (var product in Model.Item2)
+                        foreach (var product in Model.Products)
                         {
                             float d = @product.Price;
                             string price = d.ToString("#,##0");
@@ -86,6 +84,7 @@
                                     <div class="card-body">
                                         <h5 class="card-title">@product.Name</h5>
                                         <p class="card-text">@product.Description</p>
+                                        <p class="card-text">@product.Categories?.Count</p>
                                         <h5 class='text-danger'>@price VND</h5>
                                     </div>
                                 </div>
