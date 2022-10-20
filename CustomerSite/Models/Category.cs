@@ -1,13 +1,13 @@
-namespace CustomerSite.Models
+using System.ComponentModel.DataAnnotations;
+
+namespace CustomerSite.Models;
+
+public class Category
 {
-    public class Category
-    {
-        public long Id { get; set; }
+    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public ICollection<Product>? Products { get; set; }
 
-        public string? Name { get; set; }
-
-        public string? Description { get; set; }
-
-        public virtual List<Product>? Products { get; set; }
-    }
 }

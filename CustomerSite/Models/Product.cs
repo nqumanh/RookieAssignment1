@@ -1,27 +1,22 @@
-namespace CustomerSite.Models
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace CustomerSite.Models;
+
+public class Product
 {
-    public class Product
-    {
-        public long Id { get; set; }
-
-        public string? Name { get; set; }
-
-        public float Price { get; set; }
-
-        public string? Description { get; set; }
-
-        public int Quantity { get; set; }
-
-        public string? Image { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public DateTime UpdatedDate { get; set; }
-
-        public virtual List<OrderLine>? OrderLines { get; set; }
-
-        public virtual List<Category> Categories { get; set; } = new List<Category>();
-
-        public virtual List<Rating>? Ratings { get; set; }
-    }
+    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public string? Image { get; set; }
+    public string Author { get; set; } = string.Empty;
+    [Column(TypeName = "decimal(18, 2)")]
+    public decimal Price { get; set; }
+    public int Quantity { get; set; }
+    [DataType(DataType.Date)]
+    public DateTime CreatedDate { get; set; }
+    [DataType(DataType.Date)]
+    public DateTime UpdatedDate { get; set; }
+    public Category? Category { get; set; }
 }

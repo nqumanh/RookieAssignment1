@@ -1,0 +1,104 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div id="carouselExampleControls" class="carousel slide position-relative" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="https://localhost:5001/images/home-slider-1.jpg" class="d-block w-100" alt="..."
+                style="height: 600px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="https://localhost:5001/images/home-slider-2.jpg" class="d-block w-100" alt="..."
+                style="height: 600px; object-fit: cover;">
+        </div>
+        <div class="carousel-item">
+            <img src="https://localhost:5001/images/home-slider-3.jpg" class="d-block w-100" alt="..."
+                style="height: 600px; object-fit: cover;">
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+    <div class="d-block position-absolute" style="top: 0; width: 100vw; height: 600px;">
+        <div class="container p-0">
+            <div class="card" style="width: 18rem; height: 600px;">
+                <div class="card-body">
+                    <h5 class="card-title pb-3 mb-4" style="border-bottom: 1px dashed #e5e5e5">CATEGORIES</h5>
+                    <ul
+                        style="list-style-type: none; overflow: hidden; overflow-y: auto; max-height:500px; padding-left: 0;">
+                        <li><a href="/#" class="list-group-item list-group-item-action border-0 mb-3"
+                                style="border-bottom: 1px solid #e5e5e5 !important;">ALL</a></li>
+                        @if (Model.Categories != null)
+                        {
+                            foreach (var category in Model.Categories)
+                            {
+                                <li>
+                                    <a href="/#" class="list-group-item list-group-item-action border-0 mb-3"
+                                style="border-bottom: 1px solid #e5e5e5 !important; text-transform: uppercase;">
+                                        @category.Name
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container px-5">
+    <div class="d-flex justify-content-between" style="margin: 30px 40px 110px 40px">
+        <div
+            style="background: url(https://localhost:5001/images/book-banner1.jpg); height: 321px; width: 555px; background-size: cover;">
+        </div>
+        <div
+            style="background: url(https://localhost:5001/images/book-banner2.jpg); height: 321px; width: 555px; background-size: cover;">
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    <h3 class="mb-4"><strong>FEATURED PRODUCTS</strong></h3>
+    <p>Excepteur sint occaecat cupidatat non proident sunt
+        in culpa officia deserunt</p>
+</div>
+
+<div class="container">
+    <div class="row gy-5" style="margin: 40px 0px 110px 0px">
+        @{
+            if (Model.Products != null)
+            {
+                foreach (var product in Model.Products)
+                {
+
+                    <div class="col-2 d-flex align-items-stretch px-3">
+                        <div class="card border-0" style="width: 100%;">
+                            <img src="~/images/@product.Image" class="img card-img-top" alt="..." style="object-fit: cover;" />
+                            <div class="card-body">
+                                <p class="card-title"
+                            style="font-weight: 500 !important; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                    @product.Name</p>
+                                <p class="card-text mb-0" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                    <i>@product.Author</i>
+                                </p>
+                                <p class="card-text" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                    <i>Art</i>
+                                </p>
+                                <p class="text-danger" style="font-size: 20px; font-weight: 500;">$@product.Price</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </div>
+</div>
