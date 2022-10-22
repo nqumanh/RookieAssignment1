@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Book Store</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CustomerSite.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-light bg-white border-bottom box-shadow d-flex flex-column p-0">
+            <div class="border-bottom w-100">
+                <div class="container d-flex justify-content-between">
+                    <p class='m-0 d-flex'><strong class="d-flex align-items-center">WELCOME TO NASHBOOK</strong></p>
+                    <ul class="navbar-nav d-flex flex-row p-2">
+                        <li class="nav-item" style="margin: 0 18px">
+                            <a class="navHeader" asp-area="" asp-page="/Register/index">
+                                REGISTER
+                            </a>
+                        </li>
+                        <li class="nav-item" style="margin: 0 18px">
+                            <a class="navHeader" asp-area="" asp-page="/Login/index">
+                                LOGIN
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="d-flex container" style="height: 100px">
+                <div class="row w-100">
+                    <div class="col-md-3 d-flex">
+                        <span class="d-flex align-self-center">
+                            <h1 style="font-weight: 600">Nash<strong style="color: red;">Book</strong></h1>
+                        </span>
+                    </div>
+                    <div class="col-md-8" style="margin: auto 0">
+                        <ul class="d-flex justify-content-end" style="list-style-type: none; margin: auto 0">
+                            <li style="padding: 0 19px">
+                                <a asp-page="/Index" class="navHeader">
+                                    HOME
+                                </a>
+                            </li>
+                            <li style="padding: 0 19px">
+                                <a asp-page="/About/Index" class="navHeader">
+                                    ABOUT US
+                                </a>
+                            </li>
+                            <li style="padding: 0 19px">
+                                <a asp-page="/Products/Index" class="navHeader">
+                                    PRODUCTS
+                                </a>
+                            </li>
+                            <li style="padding: 0 19px">
+                                <a asp-page="/Service/Index" class="navHeader">
+                                    SERVICE
+                                </a>
+                            </li>
+                            <li style="padding: 0 19px">
+                                <a asp-page="/contact/index" class="navHeader">
+                                    CONTACT US
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-1 d-flex justify-content-end">
+                        <i class="bi bi-cart3" style="margin: auto 0; font-size:40px"></i>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - CustomerSite - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>
+
+<style>
+    .navHeader {
+        color: #000;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .navHeader:hover {
+        color: #c38748 !important;
+    }
+</style>

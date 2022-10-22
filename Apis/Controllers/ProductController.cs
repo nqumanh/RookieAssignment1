@@ -23,8 +23,21 @@ public class ProductController : ControllerBase
             return NotFound();
         }
 
-        var products = await _context.Products.ToListAsync();
-
+        var products = await (from p in _context.Products
+                              join c in _context.Categories
+                              on p.Category.Id equals c.Id
+                              select new
+                              {
+                                  Name = p.Name,
+                                  Description = p.Description,
+                                  Image = p.Image,
+                                  Author = p.Author,
+                                  Price = p.Price,
+                                  Quantity = p.Quantity,
+                                  CreatedDate = p.CreatedDate,
+                                  UpdatedDate = p.UpdatedDate,
+                                  Category = c.Name
+                              }).ToListAsync();
         return Ok(products);
     }
 
