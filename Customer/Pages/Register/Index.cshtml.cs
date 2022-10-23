@@ -15,5 +15,10 @@ public class RegisterModel : PageModel
     public void OnGet()
     {
     }
+
+    public IActionResult OnPost()
+    {
+        return RedirectToPage("../Login/Index");
+    }
 }
 

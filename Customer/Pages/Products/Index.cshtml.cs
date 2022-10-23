@@ -47,6 +47,6 @@ public class ProductModel : PageModel
             }).ToList();
         }
 
-        OptionCategories = new SelectList(Categories.Select(x => x.Name));
+        OptionCategories = new SelectList(Categories?.Select(x => x.Name));
     }
 }

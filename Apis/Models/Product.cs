@@ -19,4 +19,5 @@ public class Product
     [DataType(DataType.Date)]
     public DateTime UpdatedDate { get; set; }
     public Category? Category { get; set; }
+    public ICollection<OrderLine>? OrderLines { get; set; }
 }
