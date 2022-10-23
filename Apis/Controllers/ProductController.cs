@@ -2,6 +2,7 @@ using Apis.Data;
 using Apis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SharedViewModels;
 
 namespace Apis.Controllers;
 
@@ -16,29 +17,24 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("GetAllProducts")]
-    public async Task<ActionResult<IEnumerable<Product>>> GetAllProducts()
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
     {
-        if (_context.Products == null)
+        return await _context.Products!.Include(x => x.Category)
+            .Select(x => ProductDTO(x))
+            .ToListAsync();
+    }
+
+    [HttpGet("GetProductById/{id}")]
+    public async Task<ActionResult<ProductDTO>> GetProductById(int id)
+    {
+        var product = await _context.Products!.Include(x => x.Category).FirstOrDefaultAsync(product => product.Id == id);
+
+        if (product == null)
         {
             return NotFound();
         }
 
-        var products = await (from p in _context.Products
-                              join c in _context.Categories
-                              on p.Category.Id equals c.Id
-                              select new
-                              {
-                                  Name = p.Name,
-                                  Description = p.Description,
-                                  Image = p.Image,
-                                  Author = p.Author,
-                                  Price = p.Price,
-                                  Quantity = p.Quantity,
-                                  CreatedDate = p.CreatedDate,
-                                  UpdatedDate = p.UpdatedDate,
-                                  Category = c.Name
-                              }).ToListAsync();
-        return Ok(products);
+        return ProductDTO(product);
     }
 
     [HttpPost("AddProduct")]
@@ -49,4 +45,19 @@ public class ProductController : ControllerBase
 
         return Ok();
     }
+
+    private static ProductDTO ProductDTO(Product product) =>
+        new ProductDTO
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Image = product.Image,
+            Author = product.Author,
+            Price = product.Price,
+            Quantity = product.Quantity,
+            CreatedDate = product.CreatedDate,
+            UpdatedDate = product.UpdatedDate,
+            Category = product.Category!.Name
+        };
 }

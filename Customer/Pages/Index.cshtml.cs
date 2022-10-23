@@ -1,9 +1,9 @@
-﻿using CustomerSite.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
-namespace CustomerSite.Pages;
+using SharedViewModels;
 
+namespace CustomerSite.Pages;
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
@@ -12,8 +12,8 @@ public class IndexModel : PageModel
     {
         _logger = logger;
     }
-    public List<Product>? Products = new List<Product>();
-    public List<Category>? Categories = new List<Category>();
+    public List<ProductDTO>? Products = new List<ProductDTO>();
+    public List<CategoryDTO>? Categories = new List<CategoryDTO>();
 
     public async Task<IActionResult> OnGetAsync()
     {
@@ -21,11 +21,11 @@ public class IndexModel : PageModel
         client.BaseAddress = new Uri("https://localhost:7133/");
         var response = await client.GetAsync("Product/GetAllProducts");
         var result = response.Content.ReadAsStringAsync().Result;
-        Products = JsonConvert.DeserializeObject<List<Product>>(result);
+        Products = JsonConvert.DeserializeObject<List<ProductDTO>>(result);
 
         response = await client.GetAsync("Category/GetAllCategories");
         result = response.Content.ReadAsStringAsync().Result;
-        Categories = JsonConvert.DeserializeObject<List<Category>>(result);
+        Categories = JsonConvert.DeserializeObject<List<CategoryDTO>>(result);
 
         return Page();
     }

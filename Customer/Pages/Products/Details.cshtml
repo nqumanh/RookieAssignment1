@@ -1,0 +1,68 @@
+﻿@page "{id:int?}"
+@model CustomerSite.Pages.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div style="background: url('https://localhost:5001/images/Product/slider-bg.png') repeat; height: 300px;">
+    <div class="container">
+        <div>
+            <img src="~/images/Product/inner-banner.png" alt="">
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 100px; margin-bottom: 100px;">
+    <div class="card border-0 mb-5">
+        <div class="row g-0">
+            <div class="col-md-4 text-center">
+                <img src="~/images/@Model.Product.Image" class="img-fluid rounded-start" alt="..."
+                    style="width: 242px; height: 341px;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title" style="font-weight: 700;">@Model.Product.Name</h5>
+                    <p class="card-text">@Model.Product.Description</p>
+                    <p class="card-text"><strong>Author:</strong> @Model.Product.Author</p>
+                    <p class="card-text">Category: @Model.Product.Category</p>
+                    <p class="text-danger" style="font-size: 20px; font-weight: 500;">
+                        $@Model.Product.Price
+                    </p>
+                    <button class="btn btn-success">Add to Cart</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="card border-0" style="margin-top: 100px; margin-bottom: 100px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <h1 class="text-center"
+                    style="font-weight: 750; font-size: 90px; transform: translateY(50px) rotate(-90deg);">Info</h1>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <p class="card-text"><strong>Format:</strong> @Model.Product.UpdatedDate</p>
+                    <p class="card-text"><strong>Status:</strong>
+                        @if (Model.Product.Quantity > 0)
+                        {
+                            <span> Available</span>
+                        }
+                        else
+                        {
+                            <span> Out of Stock</span>
+                        }
+                    </p>
+                    <p class="card-text"><strong>Quantity:</strong> @Model.Product.Quantity</p>
+                    <p class="card-text"><strong>Description:</strong> @Model.Product.Description
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

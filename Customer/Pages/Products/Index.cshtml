@@ -37,12 +37,11 @@
                     {
                         foreach (var product in Model.Products)
                         {
-
                             <div class="col-3 d-flex align-items-stretch px-3">
                                 <div class="card border-0" style="width: 100%;">
-                                    <a href="">
+                                    <a asp-page="./Details" asp-route-id="@product.Id">
                                         <img src="~/images/@product.Image" class="img card-img-top" alt="..."
-                                    style="object-fit: cover;" />
+                                style="object-fit: cover;" />
                                     </a>
                                     <div class="card-body">
                                         <p class="card-title"
@@ -56,7 +55,9 @@
                                     style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
                                             <i>@product.Category</i>
                                         </p>
-                                        <p class="text-danger" style="font-size: 20px; font-weight: 500;">$@product.Price</p>
+                                        <p class="text-danger" style="font-size: 20px; font-weight: 500;">
+                                            $@product.Price
+                                        </p>
                                     </div>
                                 </div>
                             </div>

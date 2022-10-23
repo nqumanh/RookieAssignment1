@@ -1,21 +1,24 @@
-﻿using CustomerSite.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Configuration;
+using SharedViewModels;
 
 namespace CustomerSite.Pages;
 public class ProductModel : PageModel
 {
     private readonly ILogger<ProductModel> _logger;
+    private readonly IConfiguration Configuration;
 
-    public ProductModel(ILogger<ProductModel> logger)
+    public ProductModel(ILogger<ProductModel> logger, IConfiguration configuration)
     {
         _logger = logger;
+        Configuration = configuration;
     }
 
-    public List<Product>? Products = new List<Product>();
-    public List<Category>? Categories = new List<Category>();
+    public List<ProductDTO>? Products = new List<ProductDTO>();
+    public List<CategoryDTO>? Categories = new List<CategoryDTO>();
     [BindProperty(SupportsGet = true)]
     public string? SearchString { get; set; }
     public SelectList? OptionCategories { get; set; }
@@ -28,11 +31,11 @@ public class ProductModel : PageModel
         client.BaseAddress = new Uri("https://localhost:7133/");
         var response = await client.GetAsync("Product/GetAllProducts");
         var result = response.Content.ReadAsStringAsync().Result;
-        Products = JsonConvert.DeserializeObject<List<Product>>(result);
+        Products = JsonConvert.DeserializeObject<List<ProductDTO>>(result);
 
         response = await client.GetAsync("Category/GetAllCategories");
         result = response.Content.ReadAsStringAsync().Result;
-        Categories = JsonConvert.DeserializeObject<List<Category>>(result);
+        Categories = JsonConvert.DeserializeObject<List<CategoryDTO>>(result);
 
         if (!string.IsNullOrEmpty(SearchString))
         {
