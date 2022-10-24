@@ -2,6 +2,7 @@ using Apis.Data;
 using Apis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SharedViewModels;
 
 namespace Apis.Controllers;
 
@@ -16,16 +17,11 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("GetAllCategories")]
-    public async Task<ActionResult<IEnumerable<Category>>> GetAllCategories()
+    public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategories()
     {
-        if (_context.Categories == null)
-        {
-            return NotFound();
-        }
-
-        var categories = await _context.Categories.ToListAsync();
-
-        return Ok(categories);
+        return await _context.Categories!
+                        .Select(x => CategoryDTO(x))
+                        .ToListAsync();
     }
 
     // [HttpPost("AddCategory")]
@@ -36,4 +32,12 @@ public class CategoryController : ControllerBase
 
     //     return Ok();
     // }
+
+    private static CategoryDTO CategoryDTO(Category category) =>
+        new CategoryDTO
+        {
+            Id = category.Id,
+            Name = category.Name,
+            Description = category.Description
+        };
 }

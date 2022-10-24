@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
+using CustomerSite.Helper;
 using SharedViewModels;
 
 namespace CustomerSite.Pages;
 public class ProductModel : PageModel
 {
+    private APIHelper _api = new APIHelper();
     private readonly ILogger<ProductModel> _logger;
     private readonly IConfiguration Configuration;
 
@@ -27,8 +29,7 @@ public class ProductModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7133/");
+        HttpClient client = _api.initial();
         var response = await client.GetAsync("Product/GetAllProducts");
         var result = response.Content.ReadAsStringAsync().Result;
         Products = JsonConvert.DeserializeObject<List<ProductDTO>>(result);

@@ -4,11 +4,12 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 using SharedViewModels;
+using CustomerSite.Helper;
 
 namespace CustomerSite.Pages;
-
 public class DetailsModel : PageModel
 {
+    private APIHelper _api = new APIHelper();
     private readonly ILogger<DetailsModel> _logger;
 
     public DetailsModel(ILogger<DetailsModel> logger)
@@ -20,10 +21,9 @@ public class DetailsModel : PageModel
 
     public async Task OnGetAsync(int? id)
     {
-        var client = new HttpClient();
-        client.BaseAddress = new Uri("https://localhost:7133/");
+        HttpClient client = _api.initial();
         var response = await client.GetAsync($"Product/GetProductById/{id}");
         var result = response.Content.ReadAsStringAsync().Result;
-        Product = JsonConvert.DeserializeObject<ProductDTO>(result);
+        Product = JsonConvert.DeserializeObject<ProductDTO>(result) ?? new ProductDTO();
     }
 }

@@ -19,15 +19,18 @@ public class ProductController : ControllerBase
     [HttpGet("GetAllProducts")]
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
     {
-        return await _context.Products!.Include(x => x.Category)
-            .Select(x => ProductDTO(x))
-            .ToListAsync();
+        return await _context.Products!
+                        .Include(x => x.Category)
+                        .Select(x => ProductDTO(x))
+                        .ToListAsync();
     }
 
     [HttpGet("GetProductById/{id}")]
     public async Task<ActionResult<ProductDTO>> GetProductById(int id)
     {
-        var product = await _context.Products!.Include(x => x.Category).FirstOrDefaultAsync(product => product.Id == id);
+        var product = await _context.Products!
+                                .Include(x => x.Category)
+                                .FirstOrDefaultAsync(product => product.Id == id);
 
         if (product == null)
         {

@@ -14,22 +14,22 @@
                 <hr>
                 <form method="post">
                     <div class="mb-3">
-                        <input type="text" class="form-control" placeholder="Username">
+                        <input asp-for="@Model.RegisterForm.Username" type="text" class="form-control" placeholder="Username">
                     </div>
                     <div class="mb-3">
-                        <input type="password" class="form-control" placeholder="Password">
+                        <input asp-for="@Model.RegisterForm.Password" type="password" class="form-control" placeholder="Password">
                     </div>
                     <div class="mb-3">
                         <input type="password" class="form-control" placeholder="Confirm Password">
                     </div>
                     <div class="mb-3">
-                        <input type="email" class="form-control" placeholder="Email">
+                        <input asp-for="@Model.RegisterForm.Email" type="email" class="form-control" placeholder="Email">
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" placeholder="Name">
+                        <input asp-for="@Model.RegisterForm.Name" type="text" class="form-control" placeholder="Name">
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" placeholder="Address">
+                        <input asp-for="@Model.RegisterForm.Address" type="text" class="form-control" placeholder="Address">
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-dark">Register</button>

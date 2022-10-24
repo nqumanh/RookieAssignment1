@@ -14,7 +14,7 @@ Record a demo video reporting what was done each week. Then upload it to drive a
 
 **Week 1:** https://drive.google.com/drive/folders/1XwYX9mhhOPX0LeljKZA7tnfIQQ0mlluG?usp=sharing
 
-**Week 2:**
+**Week 2:** https://drive.google.com/drive/folders/1XU36yBZp_ut4VgLsriPEK9BPwJ1OFTw-?usp=sharing
 
 **Week 3:**
 

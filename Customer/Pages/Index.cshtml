@@ -27,21 +27,22 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
     </button>
-    <div class="d-block position-absolute" style="top: 0; width: 100vw; height: 600px;">
+    <div class="d-block position-absolute" style="top: 0; width: 100%; height: 600px;">
         <div class="container p-0">
             <div class="card" style="width: 18rem; height: 600px;">
                 <div class="card-body">
                     <h5 class="card-title pb-3 mb-4" style="border-bottom: 1px dashed #e5e5e5">CATEGORIES</h5>
                     <ul
                         style="list-style-type: none; overflow: hidden; overflow-y: auto; max-height:500px; padding-left: 0;">
-                        <li><a href="/#" class="list-group-item list-group-item-action border-0 mb-3"
+                        <li><a asp-page="/Products/Index" class="list-group-item list-group-item-action border-0 mb-3"
                                 style="border-bottom: 1px solid #e5e5e5 !important;">ALL</a></li>
                         @if (Model.Categories != null)
                         {
                             foreach (var category in Model.Categories)
                             {
                                 <li>
-                                    <a href="/#" class="list-group-item list-group-item-action border-0 mb-3"
+                                    <a asp-page="/Products/Index" asp-route-SelectedCategory="@category.Name"
+                                class="list-group-item list-group-item-action border-0 mb-3"
                                 style="border-bottom: 1px solid #e5e5e5 !important; text-transform: uppercase;">
                                         @category.Name
                                     </a>
@@ -82,7 +83,9 @@
 
                     <div class="col-2 d-flex align-items-stretch px-3">
                         <div class="card border-0" style="width: 100%;">
-                            <img src="~/images/@product.Image" class="img card-img-top" alt="..." style="object-fit: cover;" />
+                            <a asp-page="./Products/Details" asp-route-id="@product.Id">
+                                <img src="~/images/@product.Image" class="img card-img-top" alt="..." style="object-fit: cover;" />
+                            </a>
                             <div class="card-body">
                                 <p class="card-title"
                             style="font-weight: 500 !important; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
