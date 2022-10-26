@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<div class="container" style="margin-top: 100px; margin-bottom: 100px;">
+<div class="container" style="margin-top: 100px; margin-bottom: 150px;">
     <div class="card border-0 mb-5">
         <div class="row g-0">
             <div class="col-md-4 text-center">
@@ -29,6 +29,20 @@
                     <p class="text-danger" style="font-size: 20px; font-weight: 500;">
                         $@Model.Product.Price
                     </p>
+                    <div class="mb-3">
+                        @for (int i = 0; i < Math.Floor(@Model.Product.AverageRating); i++)
+                        {
+                            <i class="bi bi-star-fill" style="color: #ffc700;"></i>
+                        }
+                        @if (Math.Round(@Model.Product.AverageRating * 2) % 2 == 1)
+                        {
+                            <i class="bi bi-star-half" style="color: #ffc700;"></i>
+                        }
+                        @for (int i = 0; i < Math.Floor((10 - Math.Round(@Model.Product.AverageRating * 2)) / 2); i++)
+                        {
+                            <i class="bi bi-star"></i>
+                        }
+                    </div>
                     <button class="btn btn-success">Add to Cart</button>
 
                 </div>
@@ -65,4 +79,114 @@
         </div>
     </div>
 
+    <hr>
+
+    <h1 class="text-center text-danger" style="margin-top: 80px;">Write a Review</h1>
+    <form method="post" style="font-size: 20px; margin-bottom: 100px;">
+        <div class="d-flex justify-content-center">
+            <div class="rate">
+                @for (int i = 5; i > 0; i--)
+                {
+                    <input type="radio" id="@i" name="Stars" value="@i" />
+                    <label for="@i" title="text"></label>
+                }
+            </div>
+        </div>
+        <p class="text-center">Click a star to rate</p>
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+            <input asp-for="@Model.ReviewForm.Title" type="text" class="form-control" aria-label="Sizing example input"
+                aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="form-floating mb-3">
+            <textarea asp-for="@Model.ReviewForm.Comment" class="form-control" placeholder="Leave a comment here"
+                id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">Comments</label>
+        </div>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-success">Submit</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <h1 style="margin-top: 50px;">Rating List</h1>
+
+    @if (@Model.RatingList.Count == 0)
+    {
+        <div>
+            No Comment Yet.
+        </div>
+    }
+    @foreach (var rating in @Model.RatingList)
+    {
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class='d-flex justify-content-between'>
+                    <h5 class="card-title">@rating.Title</h5>
+                    <p class="text-secondary">Created Date</p>
+                </div>
+                <div class='d-flex justify-content-between'>
+                    <span>
+                        @for (int i = 0; i < rating.Star; i++)
+                        {
+                            <i class="bi bi-star-fill" style="color: #ffc700;"></i>
+                        }
+                        @for (int i = 0; i < 5 - rating.Star; i++)
+                        {
+                            <i class="bi bi-star"></i>
+                        }
+
+                    </span>
+                    <p><span class="text-secondary">Written by </span>@rating.Reviewer</p>
+                </div>
+                <p class="card-text">@rating.Comment</p>
+            </div>
+        </div>
+    }
+
 </div>
+
+<style>
+    .rate {
+        float: left;
+        height: 46px;
+        padding: 0 10px;
+    }
+
+    .rate:not(:checked)>input {
+        position: absolute;
+        top: -9999px;
+    }
+
+    .rate:not(:checked)>label {
+        float: right;
+        width: 1em;
+        overflow: hidden;
+        white-space: nowrap;
+        cursor: pointer;
+        font-size: 30px;
+        color: #ccc;
+    }
+
+    .rate:not(:checked)>label:before {
+        content: '★ ';
+    }
+
+    .rate>input:checked~label {
+        color: #ffc700;
+    }
+
+    .rate:not(:checked)>label:hover,
+    .rate:not(:checked)>label:hover~label {
+        color: #deb217;
+    }
+
+    .rate>input:checked+label:hover,
+    .rate>input:checked+label:hover~label,
+    .rate>input:checked~label:hover,
+    .rate>input:checked~label:hover~label,
+    .rate>label:hover~input:checked~label {
+        color: #c59b08;
+    }
+</style>

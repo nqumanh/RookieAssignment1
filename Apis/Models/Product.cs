@@ -20,4 +20,5 @@ public class Product
     public DateTime UpdatedDate { get; set; }
     public Category? Category { get; set; }
     public ICollection<OrderLine>? OrderLines { get; set; }
+    public virtual ICollection<Rating> Ratings { get; set; } = new List<Rating>();
 }

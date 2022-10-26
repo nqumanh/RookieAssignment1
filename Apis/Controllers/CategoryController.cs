@@ -16,7 +16,7 @@ public class CategoryController : ControllerBase
         _context = context;
     }
 
-    [HttpGet("GetAllCategories")]
+    [HttpGet("[action]")]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategories()
     {
         return await _context.Categories!

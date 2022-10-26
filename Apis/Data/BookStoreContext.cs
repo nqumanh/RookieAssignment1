@@ -15,4 +15,5 @@ public class BookStoreContext : DbContext
     public DbSet<User>? Users { get; set; }
     public DbSet<Order>? Orders { get; set; }
     public DbSet<OrderLine>? OrderLines { get; set; }
+    public DbSet<Rating>? Ratings { get; set; }
 }

@@ -7,7 +7,8 @@ public class User
     public string Username { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
-    public byte[] PasswordSalt { get; set; } = new byte[]{};
+    public byte[] PasswordSalt { get; set; } = new byte[] { };
     public string Address { get; set; } = string.Empty;
+    public ICollection<Rating>? Ratings { get; set; }
 
 }

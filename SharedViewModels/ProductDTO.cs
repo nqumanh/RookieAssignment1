@@ -6,7 +6,7 @@ namespace SharedViewModels;
 public class ProductDTO
 {
     public int Id { get; set; }
-    
+
     [Required]
     public string Name { get; set; } = string.Empty;
 
@@ -15,6 +15,7 @@ public class ProductDTO
     public string? Image { get; set; }
 
     public string Author { get; set; } = string.Empty;
+    public decimal AverageRating { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")]
     public decimal Price { get; set; }
@@ -26,6 +27,6 @@ public class ProductDTO
 
     [DataType(DataType.Date)]
     public DateTime UpdatedDate { get; set; }
-    
+
     public string? Category { get; set; }
 }

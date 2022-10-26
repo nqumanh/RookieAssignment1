@@ -15,7 +15,7 @@ public class RegisterModel : PageModel
         _logger = logger;
     }
     [BindProperty]
-    public RegisterFormDTO RegisterForm { get; set; }
+    public RegisterFormDTO RegisterForm { get; set; } = new RegisterFormDTO();
     public async Task<IActionResult> OnPostAsync()
     {
         HttpClient client = _api.initial();

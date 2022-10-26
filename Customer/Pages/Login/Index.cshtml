@@ -15,11 +15,11 @@
                 <hr>
                 <form method="post">
                     <div class="mb-3">
-                        <input asp-for="@Model.LoginForm.Username" type="text" class="form-control"
+                        <input asp-for="@Model.LoginForm!.Username" type="text" class="form-control"
                             placeholder="Username">
                     </div>
                     <div class="mb-3">
-                        <input asp-for="@Model.LoginForm.Password" type="password" class="form-control"
+                        <input asp-for="@Model.LoginForm!.Password" type="password" class="form-control"
                             placeholder="Password">
                     </div>
                     <div class="d-flex justify-content-end">

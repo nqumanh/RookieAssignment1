@@ -32,7 +32,7 @@ public class UserController : ControllerBase
     //     return RegisterFormDTO(user);
     // }
 
-    [HttpPost("Register")]
+    [HttpPost("[action]")]
     public async Task<ActionResult<RegisterFormDTO>> CreateUser(RegisterFormDTO userDTO)
     {
         byte[] salt = new byte[128 / 8];
@@ -58,10 +58,10 @@ public class UserController : ControllerBase
         return Ok(userDTO);
     }
 
-    [HttpPost("Login")]
+    [HttpPost("[action]")]
     public async Task<ActionResult<LoginFormDTO>> Login(LoginFormDTO userDTO)
     {
-        var user = await _context.Users.Where(x => x.Username == userDTO.Username).FirstOrDefaultAsync();
+        var user = await _context.Users!.Where(x => x.Username == userDTO.Username).FirstOrDefaultAsync();
         if (user == null)
         {
             return BadRequest("User not found.");
