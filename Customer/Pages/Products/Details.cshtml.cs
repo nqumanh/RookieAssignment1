@@ -20,7 +20,7 @@ public class DetailsModel : PageModel
     public ProductDTO Product { get; set; } = default!;
 
     [BindProperty]
-    public string? Stars { get; set; }
+    public string Stars { get; set; } = "5";
     [BindProperty]
     public ReviewFormDTO ReviewForm { get; set; } = default!;
     public List<RatingDTO> RatingList { get; set; } = new List<RatingDTO>();
