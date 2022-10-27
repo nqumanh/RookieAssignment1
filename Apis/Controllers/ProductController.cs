@@ -21,6 +21,7 @@ public class ProductController : ControllerBase
     {
         return await _context.Products!
                         .Include(x => x.Category)
+                        .Include(x => x.Ratings)
                         .Select(x => ProductDTO(x))
                         .ToListAsync();
     }

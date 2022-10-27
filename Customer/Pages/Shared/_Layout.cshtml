@@ -13,6 +13,7 @@
 
 @{
     string token = Context.Request.Cookies["access_token"] ?? "";
+    string name = Context.Request.Cookies["name"] ?? "";
 }
 
 <body>
@@ -23,10 +24,10 @@
                     <p class='m-0 d-flex'><strong class="d-flex align-items-center">WELCOME TO NASHBOOK</strong></p>
                     @if (token != "")
                     {
-                        <ul class="navbar-nav d-flex flex-row p-2">
+                        <ul class="navbar-nav d-flex flex-row p-2 align-middle">
                             <li class="nav-item" style="margin: 0 18px">
-                                <p style="font-weight: 500;">
-                                    Hello Manh
+                                <p style="font-weight: 500;" class="m-0">
+                                    Hello <span class="text-danger">@name</span>
                                 </p>
                             </li>
                             <li class="nav-item" style="margin: 0 18px;">

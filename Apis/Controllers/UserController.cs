@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 using SharedViewModels;
 
 namespace Apis.Controllers;
@@ -14,23 +18,12 @@ namespace Apis.Controllers;
 public class UserController : ControllerBase
 {
     private readonly BookStoreContext _context;
-    public UserController(BookStoreContext context)
+    private readonly IConfiguration _configuration;
+    public UserController(BookStoreContext context, IConfiguration configuration)
     {
         _context = context;
+        _configuration = configuration;
     }
-
-    // [HttpPost("GetUser/{id}")]
-    // public async Task<ActionResult<RegisterFormDTO>> GetUser(int id)
-    // {
-    //     var user = await _context.Users!.FindAsync(id);
-
-    //     if (user == null)
-    //     {
-    //         return NotFound();
-    //     }
-
-    //     return RegisterFormDTO(user);
-    // }
 
     [HttpPost("[action]")]
     public async Task<ActionResult<RegisterFormDTO>> CreateUser(RegisterFormDTO userDTO)
@@ -59,7 +52,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<ActionResult<LoginFormDTO>> Login(LoginFormDTO userDTO)
+    public async Task<IActionResult> Login(LoginFormDTO userDTO)
     {
         var user = await _context.Users!.Where(x => x.Username == userDTO.Username).FirstOrDefaultAsync();
         if (user == null)
@@ -72,9 +65,36 @@ public class UserController : ControllerBase
             return BadRequest("Wrong password");
         }
 
-        string token = "token ne";
-        // string token = CreateToken(user);
-        return Ok(token);
+        var authClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToString()),
+            };
+
+        var token = CreateToken(authClaims);
+
+        return Ok(new
+        {
+            Id = user.Id,
+            Name = user.Name,
+            AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
+            Expiration = token.ValidTo
+        });
+    }
+
+    private JwtSecurityToken CreateToken(List<Claim> authClaims)
+    {
+        var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SymmetricKey"]));
+
+        var token = new JwtSecurityToken(
+            issuer: _configuration["Jwt:Issuer"],
+            audience: _configuration["Jwt:Audience"],
+            expires: DateTime.Now.AddMinutes(5),
+            claims: authClaims,
+            signingCredentials: new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256));
+
+        return token;
     }
 
     private string HashPassword(string password, byte[] salt)
@@ -99,14 +119,4 @@ public class UserController : ControllerBase
 
         return hash == hashedPassword;
     }
-
-    // private static RegisterFormDTO RegisterFormDTO(User user) =>
-    //     new RegisterFormDTO
-    //     {
-    //         Name = user.Name,
-    //         Username = user.Username,
-    //         Password = user.Password,
-    //         Email = user.Email,
-    //         Address = user.Address
-    //     };
 }
