@@ -1,0 +1,55 @@
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@using CustomerSite.Pages.Models
+@inject IHttpContextAccessor HttpContextAccessor
+
+
+@{
+    var session = HttpContextAccessor.HttpContext!.Session;
+    string jsoncart = session.GetString("cart")!;
+    List<CartItem> cart = new List<CartItem>();
+    if (jsoncart != null)
+    {
+        cart = JsonConvert.DeserializeObject<List<CartItem>>(jsoncart) ?? new List<CartItem>();
+    }
+
+
+    <div class="col-md-1 d-flex justify-content-end">
+        <button type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+            style="background: inherit; border: 0;" class="position-relative p-0">
+            <i class="bi bi-cart3" style="margin: auto 0; font-size:40px"></i>
+            <span class="position-absolute top-30 start-100 translate-middle badge rounded-pill bg-danger">
+                @cart.Count
+                <span class="visually-hidden">unread messages</span>
+            </span></button>
+    </div>
+
+
+    <div class="offcanvas offcanvas-end p-0" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header" style="border-bottom: 1px solid;">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Shopping
+                Cart</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body bg-light p-0">
+            <ul class="list-group">
+                @foreach (var item in cart)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-start border-0">
+                        <div class="d-flex">
+                            <img src="~/images/@item.Image" style="width: 50px;" alt="">
+                            <div class="d-flex ms-2 me-auto flex-column">
+                                <div class="fw-bold">@item.Name</div>
+                                <span>Quantity: @item.Quantity</span>
+                            </div>
+                        </div>
+                        <span class="fw-bold text-danger">$@item.Price</span>
+                    </li>
+                }
+            </ul>
+            <div class="d-flex justify-content-end me-2 mt-2">
+                <a asp-page="/Order/Index" class="btn btn-success fw-bold text-white">View Cart</a>
+            </div>
+        </div>
+    </div>
+}

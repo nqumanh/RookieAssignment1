@@ -43,8 +43,8 @@
                             <i class="bi bi-star"></i>
                         }
                     </div>
-                    <button class="btn btn-success">Add to Cart</button>
-
+                    <a class="btn btn-success" asp-page="../Order/Index" asp-page-handler="AddToCart"
+                        asp-route-id="@Model.Product.Id">Add To Cart</a>
                 </div>
             </div>
         </div>

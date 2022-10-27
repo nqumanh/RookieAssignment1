@@ -22,33 +22,32 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>
-                    <div class="d-flex flex-column">
-                        <img src="~/images/1.png" style="width: 80px;" alt="">
-                        <h6>Name</h6>
-                    </div>
-                </td>
-                <td class="align-middle">
-                    <div class="input-group mb-3" style="max-width: 30%">
-                        <span class="input-group-text">-</span>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
-                        <span class="input-group-text bg-success ">+</span>
-                    </div>
-                </td>
-                <td class="align-middle">1 X $7.89</td>
-                <td class="align-middle text-end">
-                    <i class="bi bi-x" style="font-size: 30px;"></i>
-                </td>
-            </tr>
+            @foreach (var item in @Model.Cart)
+            {
+                <tr>
+                    <td>
+                        <div class="d-flex flex-column">
+                            <img src="~/images/@item.Image" style="width: 80px;" alt="">
+                            <h6>@item.Name</h6>
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        @item.Quantity
+                    </td>
+                    <td class="align-middle">@item.Quantity X $@item.Price</td>
+                    <td class="align-middle text-end">
+                        <i class="bi bi-x" style="font-size: 30px;"></i>
+                    </td>
+                </tr>
+            }
             <tr>
                 <td class="py-5">Total</td>
-                <td colspan="3" class="text-center align-middle fw-bold">$50</td>
+                <td colspan="3" class="text-center align-middle fw-bold">$@Model.TotalPrice</td>
             </tr>
         </tbody>
     </table>
     <div class="d-flex justify-content-between">
-        <button class="btn btn-success">Clear Cart</button>
-        <button class="btn btn-success">Check Out</button>
+        <a class="btn btn-success" asp-page-handler="ClearCart">Clear Cart</a>
+        <a class="btn btn-success" asp-page-handler="CheckOut" class="btn btn-success">Check Out</a>
     </div>
 </div>

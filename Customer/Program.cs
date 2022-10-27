@@ -3,6 +3,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(cfg =>
+{
+    cfg.Cookie.Name = "ShoppingCart";
+    cfg.IdleTimeout = new TimeSpan(0, 30, 0);
+});
+
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
@@ -17,6 +24,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSession();
 
 app.UseRouting();
 
