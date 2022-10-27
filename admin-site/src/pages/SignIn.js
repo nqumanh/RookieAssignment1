@@ -5,7 +5,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
@@ -42,20 +41,17 @@ export default function SignIn() {
     formData.append("username", username);
     formData.append("password", password);
 
-    axios
-      .post("https://localhost:5001/token/authenticate", {
-        userName: "test@abc.acom",
-        password: "xxxasa",
+    axios.post("https://localhost:7133/Admin/Login",
+      {
+        username: username,
+        password: password
+      }).then(function (response) {
+        localStorage.setItem("token", response.data.access_token);
+        navigate(`/dashboard`);
       })
-      .then(function (response) {
-        console.log(response);
-        // tokenInfo = response.data;
-        navigate('/dashboard')
-      })
-      .catch(function (error) {
-        console.log(error);
+      .catch(function (response) {
+        alert(response.response.data);
       });
-
   };
 
   const onChange = (e) => {
@@ -123,18 +119,7 @@ export default function SignIn() {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link to="/#">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link to="/register">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
+
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

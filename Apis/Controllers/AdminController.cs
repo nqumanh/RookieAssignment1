@@ -15,52 +15,26 @@ namespace Apis.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController : ControllerBase
+public class AdminController : ControllerBase
 {
     private readonly BookStoreContext _context;
     private readonly IConfiguration _configuration;
-    public UserController(BookStoreContext context, IConfiguration configuration)
+    public AdminController(BookStoreContext context, IConfiguration configuration)
     {
         _context = context;
         _configuration = configuration;
     }
 
     [HttpPost("[action]")]
-    public async Task<ActionResult<RegisterFormDTO>> Register(RegisterFormDTO userDTO)
+    public async Task<IActionResult> Login([FromBody] AdminLoginForm data)
     {
-        byte[] salt = new byte[128 / 8];
-        using (var rng = RandomNumberGenerator.Create())
-        {
-            rng.GetBytes(salt);
-        }
-
-        var user = new User
-        {
-            Role = UserRole.Customer,
-            Name = userDTO.Name,
-            Username = userDTO.Username,
-            Password = HashPassword(userDTO.Password, salt),
-            PasswordSalt = salt,
-            Email = userDTO.Email,
-            Address = userDTO.Address
-        };
-
-        _context.Users!.Add(user);
-        await _context.SaveChangesAsync();
-
-        return Ok(userDTO);
-    }
-
-    [HttpPost("[action]")]
-    public async Task<IActionResult> Login(LoginFormDTO userDTO)
-    {
-        var user = await _context.Users!.Where(x => x.Username == userDTO.Username).FirstOrDefaultAsync();
+        var user = await _context.Users!.Where(x => x.Username == data.Username && x.Role == UserRole.Admin).FirstOrDefaultAsync();
         if (user == null)
         {
             return BadRequest("User not found.");
         }
 
-        if (!VerifyPasswordHash(userDTO.Password, user.Password, user.PasswordSalt))
+        if (!VerifyPasswordHash(data.Password!, user.Password, user.PasswordSalt))
         {
             return BadRequest("Wrong password");
         }
@@ -76,8 +50,6 @@ public class UserController : ControllerBase
 
         return Ok(new
         {
-            Id = user.Id,
-            Name = user.Name,
             AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
             Expiration = token.ValidTo
         });
