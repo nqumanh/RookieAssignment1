@@ -24,15 +24,6 @@ public class CategoryController : ControllerBase
                         .ToListAsync();
     }
 
-    // [HttpPost("AddCategory")]
-    // public async Task<ActionResult<Category>> AddCategory(Category category)
-    // {
-    //     _context.Categories!.Add(category);
-    //     await _context.SaveChangesAsync();
-
-    //     return Ok();
-    // }
-
     private static CategoryDTO CategoryDTO(Category category) =>
         new CategoryDTO
         {

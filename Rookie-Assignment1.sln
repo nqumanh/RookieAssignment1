@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedViewModels", "SharedViewModels\SharedViewModels.csproj", "{BF38FD6D-0060-43BE-8BBA-72D7E6C00404}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Tests", "Api.Tests\Api.Tests.csproj", "{F02ECD58-4CF1-4BA2-82DE-60B925C0BA10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{BF38FD6D-0060-43BE-8BBA-72D7E6C00404}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF38FD6D-0060-43BE-8BBA-72D7E6C00404}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF38FD6D-0060-43BE-8BBA-72D7E6C00404}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F02ECD58-4CF1-4BA2-82DE-60B925C0BA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F02ECD58-4CF1-4BA2-82DE-60B925C0BA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F02ECD58-4CF1-4BA2-82DE-60B925C0BA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F02ECD58-4CF1-4BA2-82DE-60B925C0BA10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
