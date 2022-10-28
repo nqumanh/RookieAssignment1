@@ -25,6 +25,15 @@ public class UserController : ControllerBase
         _configuration = configuration;
     }
 
+    [HttpGet("[action]")]
+
+    public async Task<ActionResult<IEnumerable<User>>> GetAllUsers()
+    {
+        return await _context.Users!
+                        .Where(x => x.Role == UserRole.Customer)
+                        .ToListAsync();
+    }
+
     [HttpPost("[action]")]
     public async Task<ActionResult<RegisterFormDTO>> Register(RegisterFormDTO userDTO)
     {
