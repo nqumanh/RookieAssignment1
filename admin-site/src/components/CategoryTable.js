@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import axios from "axios";
+import { getCategories } from "../hooks/useApi"
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -187,10 +187,9 @@ export default function EnhancedTable() {
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
-        axios.get("https://localhost:7133/Category/GetAllCategories")
-            .then((response) => {
-                setRows(response.data)
-            })
+        getCategories().then((response) => {
+            setRows(response.data)
+        })
     }, [])
 
 
