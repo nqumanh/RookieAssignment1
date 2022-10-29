@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Apis.Data;
+using Apis.Repository;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -13,9 +13,11 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           policy.WithOrigins("https://localhost:5001",
-                                              "http://localhost:3000")
-                                                .AllowAnyHeader()
-                                                .AllowAnyMethod();
+                                                "http://localhost:3000")
+                                                    .AllowAnyHeader()
+                                                    .AllowAnyMethod()
+                                                    .SetIsOriginAllowed(origin => true) // allow any origin
+                                                    .AllowCredentials(); // allow credentials
                       });
 });
 
@@ -24,6 +26,8 @@ builder.Services.AddDbContext<BookStoreContext>(options =>
         throw new InvalidOperationException("Connection string 'BookStoreContext' not found.")));
 
 builder.Services.AddControllers();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

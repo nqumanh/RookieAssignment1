@@ -1,7 +1,6 @@
-using Apis.Data;
 using Apis.Models;
+using Apis.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SharedViewModels;
 
 namespace Apis.Controllers;
@@ -10,18 +9,20 @@ namespace Apis.Controllers;
 [Route("[controller]")]
 public class CategoryController : ControllerBase
 {
-    private readonly BookStoreContext _context;
-    public CategoryController(BookStoreContext context)
+    private ICategoryRepository _categoryRepository;
+
+    public CategoryController(ICategoryRepository categoryRepository)
     {
-        _context = context;
+        _categoryRepository = categoryRepository;
     }
 
     [HttpGet("[action]")]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAllCategories()
     {
-        return await _context.Categories!
-                        .Select(x => CategoryDTO(x))
-                        .ToListAsync();
+        var categories = await _categoryRepository.GetAll();
+        if (categories == null) return NotFound("Category Empty");
+        var result = categories.Select(x => CategoryDTO(x)).ToList();
+        return Ok(result);
     }
 
     private static CategoryDTO CategoryDTO(Category category) =>
