@@ -47,7 +47,7 @@ export default function SignIn() {
         password: password
       }).then(function (response) {
         localStorage.setItem("token", response.data.access_token);
-        navigate(`/dashboard`);
+        navigate(`/dashboard/categories`);
       })
       .catch(function (response) {
         alert(response.response.data);

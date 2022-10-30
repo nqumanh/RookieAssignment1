@@ -13,6 +13,9 @@ import { Link } from 'react-router-dom';
 
 export const mainListItems = (
     <React.Fragment>
+        <ListSubheader component="div" inset>
+            Management
+        </ListSubheader>
         <Link style={{ textDecoration: 'none', color: "#000" }} to="/dashboard/categories">
             <ListItemButton>
                 <ListItemIcon>

@@ -20,8 +20,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import Stack from '@mui/material/Stack';
 import { visuallyHidden } from '@mui/utils';
-import { getCategories } from "../apis/useApi"
+import { getCategories } from "../../apis/useApi"
+import AddCategory from './AddCategory';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -228,6 +230,19 @@ export default function EnhancedTable() {
         setSelected(newSelected);
     };
 
+    const createCategory = (category) => {
+        setRows([category, ...rows])
+    }
+
+    // const readCategory = (category) => {
+    // }
+
+    // const updateCategory = (category) => {
+    // }
+
+    // const deleteCategory = (id) => {
+    // }
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -248,7 +263,7 @@ export default function EnhancedTable() {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
     return (
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', marginTop: "2em" }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <EnhancedTableToolbar numSelected={selected.length} />
                 <TableContainer>
@@ -281,7 +296,7 @@ export default function EnhancedTable() {
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={index}
                                             selected={isItemSelected}
                                         >
                                             <TableCell padding="checkbox">
@@ -299,10 +314,11 @@ export default function EnhancedTable() {
                                                 scope="row"
                                                 padding="none"
                                                 align="center"
+                                                sx={{ minWidth: "200px" }}
                                             >
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="center">{row.calories}</TableCell>
+                                            <TableCell align="center">{row.description}</TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -318,20 +334,24 @@ export default function EnhancedTable() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
+                <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between" }}>
+                    <AddCategory addCategory={createCategory} />
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        sx={{ display: "flex" }}
+                    />
+                </Stack>
+            </Paper >
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Dense padding"
             />
-        </Box>
+        </Box >
     );
 }
