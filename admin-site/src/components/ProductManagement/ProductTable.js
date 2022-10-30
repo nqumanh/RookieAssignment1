@@ -21,7 +21,9 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { getProducts } from "../apis/useApi"
+import { getProducts } from "../../apis/useApi"
+import { Stack } from '@mui/material';
+import CreateProduct from './CreateProduct';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -247,6 +249,19 @@ export default function EnhancedTable() {
         setSelected(newSelected);
     };
 
+    const createCategory = (category) => {
+        setRows([category, ...rows])
+    }
+
+    // const readCategory = (category) => {
+    // }
+
+    // const updateCategory = (category) => {
+    // }
+
+    // const deleteCategory = (id) => {
+    // }
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -339,15 +354,19 @@ export default function EnhancedTable() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between" }}>
+                    <CreateProduct createProduct={createCategory} />
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={rows.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        sx={{ display: "flex" }}
+                    />
+                </Stack>
             </Paper>
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
