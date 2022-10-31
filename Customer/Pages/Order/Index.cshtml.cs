@@ -37,19 +37,19 @@ public class OrderModel : PageModel
         {
             Cart[index].Quantity++;
         }
-        foreach (var item in Cart)
-        {
-            TotalPrice += item.Quantity * item.Price;
-        }
         var session = HttpContext.Session;
         string jsoncart = JsonConvert.SerializeObject(Cart);
         session.SetString("cart", jsoncart);
-        return Page();
+        return RedirectToPage();
     }
 
     public void OnGet(int id)
     {
         Cart = GetCartItems();
+        foreach (var item in Cart)
+        {
+            TotalPrice += item.Quantity * item.Price;
+        }
     }
 
     public void OnGetClearCart(int id)

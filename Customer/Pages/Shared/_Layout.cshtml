@@ -132,7 +132,8 @@
     }
     const logOut = () => {
         delete_cookie("access_token")
-        location.reload()
-        return false
+        delete_cookie("name")
+        delete_cookie("Id")
+        location.href = 'https://localhost:5001/'
     }
 </script>

@@ -25,7 +25,7 @@ export default function DataTable() {
     }, [])
 
     return (
-        <Paper sx={{ width: '100%', mb: 2, height: 400 }}>
+        <Paper sx={{ width: '100%', mb: 2, height: 400, mt: 5 }}>
             <DataGrid
                 rows={rows}
                 columns={columns}

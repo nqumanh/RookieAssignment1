@@ -42,6 +42,10 @@ public class DetailsModel : PageModel
         HttpClient client = _api.initial();
         ReviewForm.ProductId = id;
         string userId = Request.Cookies["Id"]!;
+        if (userId == null)
+        {
+            return RedirectToPage();
+        }
         ReviewForm.UserId = Int32.Parse(userId);
         ReviewForm.Star = Int32.Parse(Stars);
         await client.PostAsJsonAsync("Product/WriteReview", ReviewForm);
