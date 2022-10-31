@@ -21,9 +21,9 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-import { getProducts } from "../../apis/useApi"
 import { Stack } from '@mui/material';
 import CreateProduct from './CreateProduct';
+import { getProducts } from "../../apis/useApi"
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -251,6 +251,7 @@ export default function EnhancedTable() {
 
     const createCategory = (category) => {
         setRows([category, ...rows])
+        // addCategory(category).then((response) => console.log(response))
     }
 
     // const readCategory = (category) => {
@@ -313,7 +314,7 @@ export default function EnhancedTable() {
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={index}
+                                            key={row.id}
                                             selected={isItemSelected}
                                         >
                                             <TableCell padding="checkbox">

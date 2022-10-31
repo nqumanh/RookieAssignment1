@@ -24,7 +24,7 @@ public class IndexModel : PageModel
         var result = response.Content.ReadAsStringAsync().Result;
         Products = JsonConvert.DeserializeObject<List<ProductDTO>>(result);
 
-        response = await client.GetAsync("Category/GetAllCategories");
+        response = await client.GetAsync("Category/GetAll");
         result = response.Content.ReadAsStringAsync().Result;
         Categories = JsonConvert.DeserializeObject<List<CategoryDTO>>(result);
 

@@ -1,11 +1,34 @@
 import axios from "axios";
 
-const getCategories = () => axios.get("https://localhost:7133/Category/GetAllCategories");
-const getProducts = () => axios.get("https://localhost:7133/Product/GetAllProducts");
-const getCustomers = () => axios.get("https://localhost:7133/User/GetAllUsers");
+// const BASE_URL = "https://localhost:7133/";
+
+// Category
+const getAllCategories = () =>
+    axios.get("https://localhost:7133/Category/GetAll");
+const addCategory = (category) =>
+    axios.post("https://localhost:7133/Category/Create", category);
+const getCategoryById = (id) =>
+    axios.get(`https://localhost:7133/Category/Get/${id}`);
+const updateCategory = (id, category) =>
+    axios.put(`https://localhost:7133/Category/Update/${id}`, category);
+const deleteCategoryApi = (id) =>
+    axios.delete(`https://localhost:7133/Category/Delete/${id}`);
+
+// Product
+const getProducts = () =>
+    axios.get("https://localhost:7133/Product/GetAllProducts");
+
+// Customer
+const getCustomers = () =>
+    axios.get("https://localhost:7133/User/GetAllUsers");
 
 export {
-    getCategories,
+    getAllCategories,
+    addCategory,
+    getCategoryById,
+    updateCategory,
+    deleteCategoryApi,
+    
     getProducts,
     getCustomers
 };

@@ -31,6 +31,10 @@ public class LoginModel : PageModel
             AccessToken = "",
             Expiration = new DateTime()
         };
+        if ((int)response.StatusCode != 200)
+        {
+            return Page();
+        }
         var info = JsonConvert.DeserializeAnonymousType(result, definition);
 
         CookieOptions options = new CookieOptions();
