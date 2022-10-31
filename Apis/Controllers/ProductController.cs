@@ -17,7 +17,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("[action]")]
-    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAllProducts()
+    public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
     {
         return await _context.Products!
                         .Include(x => x.Category)
@@ -26,8 +26,31 @@ public class ProductController : ControllerBase
                         .ToListAsync();
     }
 
+    [HttpPost("[action]")]
+    public async Task<ActionResult<ProductDTO>> Create(ProductDTO productDTO)
+    {
+        var product = new Product
+        {
+            Name = productDTO.Name,
+            Description = productDTO.Description,
+            Image = productDTO.Image,
+            Author = productDTO.Author,
+            Price = productDTO.Price,
+            Quantity = productDTO.Quantity,
+            CreatedDate = new DateTime(),
+            UpdatedDate = new DateTime()
+        };
+        _context.Products!.Add(product);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(
+                nameof(Read),
+                new { id = product.Id },
+                ProductDTO(product));
+    }
+
     [HttpGet("[action]/{id}")]
-    public async Task<ActionResult<ProductDTO>> GetProductById(int id)
+    public async Task<ActionResult<ProductDTO>> Read(int id)
     {
         var product = await _context.Products!
                                 .Include(x => x.Category)
@@ -42,46 +65,61 @@ public class ProductController : ControllerBase
         return ProductDTO(product);
     }
 
-    [HttpPost("[action]")]
-    public async Task<ActionResult<Product>> CreateProduct(Product product)
+    [HttpPut("[action]/{id}")]
+    public async Task<IActionResult> Update(int id, ProductDTO productDTO)
     {
-        _context.Products!.Add(product);
-        await _context.SaveChangesAsync();
-
-        return Ok();
-    }
-
-    [HttpGet("[action]/{id}")]
-    public async Task<ActionResult<IEnumerable<RatingDTO>>> GetAllRatingsOfProduct(int id)
-    {
-        return await _context.Ratings!
-                        .Include(x => x.Product)
-                        .Include(x => x.User)
-                        .Where(x => x.Product.Id == id)
-                        .Select(x => RatingDTO(x))
-                        .ToListAsync();
-    }
-
-    [HttpPost("[action]")]
-    public async Task<ActionResult<Rating>> WriteReview(ReviewFormDTO reviewForm)
-    {
-        var product = await _context.Products!.FindAsync(reviewForm.ProductId);
-        var user = await _context.Users!.FindAsync(reviewForm.UserId);
-        if (user == null || product == null)
-            return BadRequest();
-        var rating = new Rating
+        if (id != productDTO.Id)
         {
-            Star = reviewForm.Star,
-            Title = reviewForm.Title,
-            Comment = reviewForm.Comment,
-            UpdatedDate = new DateTime(),
-            Product = product,
-            User = user
-        };
-        _context.Ratings!.Add(rating);
+            return BadRequest();
+        }
+
+        var product = await _context.Products!.FindAsync(id);
+        if (product == null)
+        {
+            return NotFound();
+        }
+        var category = (productDTO.CategoryId != null) ? await _context.Categories!.FindAsync(Int32.Parse(productDTO.CategoryId)) : null;
+
+        product.Name = productDTO.Name;
+        product.Description = productDTO.Description;
+        product.Image = productDTO.Image;
+        product.Author = productDTO.Author;
+        product.Price = productDTO.Price;
+        product.Quantity = productDTO.Quantity;
+        product.CreatedDate = productDTO.CreatedDate;
+        product.UpdatedDate = new DateTime();
+        product.Category = category;
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException) when (!ProductExists(id))
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
+
+    [HttpDelete("[action]/{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var product = await _context.Products!.FindAsync(id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        _context.Products.Remove(product);
         await _context.SaveChangesAsync();
 
-        return Ok();
+        return NoContent();
+    }
+
+    private bool ProductExists(int id)
+    {
+        return _context.Products!.Any(e => e.Id == id);
     }
 
     private static RatingDTO RatingDTO(Rating rating) =>
@@ -98,6 +136,7 @@ public class ProductController : ControllerBase
     {
         var numberOfRating = product.Ratings.Count;
         var avgRating = numberOfRating > 0 ? Convert.ToDecimal(product.Ratings.Aggregate(0, (sum, rating) => sum + rating.Star)) / numberOfRating : 0;
+        var categoryId = (product.Category == null) ? null : product.Category.Id.ToString();
         return new ProductDTO
         {
             Id = product.Id,
@@ -105,12 +144,12 @@ public class ProductController : ControllerBase
             Description = product.Description,
             Image = product.Image,
             Author = product.Author,
+            AverageRating = avgRating,
             Price = product.Price,
             Quantity = product.Quantity,
+            CategoryId = categoryId,
             CreatedDate = product.CreatedDate,
-            UpdatedDate = product.UpdatedDate,
-            Category = product.Category!.Name,
-            AverageRating = avgRating
+            UpdatedDate = product.UpdatedDate
         };
     }
 }
