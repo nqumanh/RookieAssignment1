@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { visuallyHidden } from '@mui/utils';
-import { getAllProducts, addCategory, updateCategory, deleteCategoryApi, getAllCategories } from "../../apis/useApi"
+import { getAllProducts, addProductApi, updateCategory, deleteCategoryApi, getAllCategories } from "../../apis/useApi"
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 
@@ -62,6 +62,11 @@ const headCells = [
         label: 'Name',
     },
     {
+        id: 'author',
+        disablePadding: true,
+        label: 'Author',
+    },
+    {
         id: 'category',
         disablePadding: true,
         label: 'Category',
@@ -82,6 +87,11 @@ const headCells = [
         label: 'Image',
     },
     {
+        id: 'quantity',
+        disablePadding: true,
+        label: 'Quantity',
+    },
+    {
         id: 'createdDate',
         disablePadding: false,
         label: 'Created Date',
@@ -90,7 +100,7 @@ const headCells = [
         id: 'updatedDate',
         disablePadding: false,
         label: 'Updated Date',
-    },
+    }
 ];
 
 function EnhancedTableHead(props) {
@@ -193,7 +203,7 @@ function EnhancedTableToolbar(props) {
 
             {selectedId > 0 ? (
                 <Box sx={{ display: "flex" }}>
-                    <EditProduct editCategory={onEdit} selectedId={selectedId} />
+                    <EditProduct editProduct={onEdit} selectedId={selectedId} />
 
                     <Tooltip title="Delete">
                         <IconButton onClick={onDelete}>
@@ -222,12 +232,10 @@ export default function EnhancedTable() {
 
     useEffect(() => {
         getAllProducts().then((response) => {
-            // console.log(response.data)
             setRows(response.data)
         })
 
         getAllCategories().then((response) => {
-            // console.log(response.data)
             setCategories(response.data)
         })
     }, [])
@@ -248,9 +256,19 @@ export default function EnhancedTable() {
         setSelectedId(id)
     };
 
-    const createCategory = (category) => {
-        addCategory(category).then((response) =>
-            setRows([{ id: response.data.id, ...category }, ...rows]))
+    const addProduct = (product) => {
+        let productModel = {
+            name: product.name,
+            description: product.description,
+            image: product.image,
+            author: product.author,
+            price: product.price,
+            quantity: product.quantity,
+            categoryId: product.categoryId.toString(),
+        }
+        addProductApi(productModel).then((response) => {
+            setRows([{ id: response.data.id, ...productModel }, ...rows])
+        })
     }
 
     // const readCategory = (category) => {
@@ -345,10 +363,12 @@ export default function EnhancedTable() {
                                             >
                                                 {row.name}
                                             </TableCell>
+                                            <TableCell align="center">{row.author}</TableCell>
                                             <TableCell align="center">{category}</TableCell>
                                             <TableCell align="center">{row.description}</TableCell>
                                             <TableCell align="center">{row.price}</TableCell>
                                             <TableCell align="center">{row.image}</TableCell>
+                                            <TableCell align="center">{row.quantity}</TableCell>
                                             <TableCell align="center">{row.createdDate}</TableCell>
                                             <TableCell align="center">{row.updatedDate}</TableCell>
                                         </TableRow>
@@ -367,7 +387,7 @@ export default function EnhancedTable() {
                     </Table>
                 </TableContainer>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between" }}>
-                    <AddProduct addCategory={createCategory} />
+                    <AddProduct addProduct={addProduct} />
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"

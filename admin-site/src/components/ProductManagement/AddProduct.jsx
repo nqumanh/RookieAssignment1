@@ -9,19 +9,30 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { DialogContent, DialogContentText, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { getAllCategories } from "../../apis/useApi";
+import { useEffect } from "react";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddCategory(props) {
+export default function AddProduct(props) {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
+    const [author, setAuthor] = useState("");
     const [categoryId, setCategoryId] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [image, setImage] = useState("");
-    const { addCategory } = props
+    const [quantity, setQuantity] = useState("");
+    const [categoryList, setCategoryList] = useState([])
+    const { addProduct } = props
+
+    useEffect(() => {
+        getAllCategories().then((response) => {
+            setCategoryList(response.data)
+        })
+    }, [])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -33,14 +44,24 @@ export default function AddCategory(props) {
 
     const handleClear = () => {
         setName("")
+        setAuthor("")
         setCategoryId("")
         setDescription("")
         setPrice("")
         setImage("")
+        setQuantity("")
     };
 
     const handleSubmit = () => {
-        addCategory({ name: name, description: description });
+        addProduct({
+            name: name,
+            author: author,
+            categoryId: categoryId,
+            description: description,
+            price: price,
+            image: image,
+            quantity: quantity
+        });
         setOpen(false);
         handleClear();
     };
@@ -49,12 +70,16 @@ export default function AddCategory(props) {
         const { name, value } = e.target
         if (name === "name")
             setName(value)
+        else if (name === "author")
+            setAuthor(value)
         else if (name === "category")
             setCategoryId(value)
         else if (name === "description")
             setDescription(value)
         else if (name === "price")
             setPrice(value)
+        else if (name === "quantity")
+            setQuantity(value)
         else
             setImage(value)
     }
@@ -88,7 +113,7 @@ export default function AddCategory(props) {
                             clear
                         </Button>
                         <Button autoFocus color="inherit" onClick={handleSubmit}>
-                            save
+                            submit
                         </Button>
                     </div>
                 </Toolbar>
@@ -108,6 +133,17 @@ export default function AddCategory(props) {
                     name="name"
                     value={name}
                 />
+                <TextField
+                    id="outlined-textarea"
+                    label="Author"
+                    placeholder="Author"
+                    multiline
+                    fullWidth
+                    sx={{ margin: "30px 0" }}
+                    onChange={handleChange}
+                    name="author"
+                    value={author}
+                />
                 <FormControl fullWidth sx={{ margin: "30px 0" }}>
                     <InputLabel id="demo-simple-select-label">Category</InputLabel>
                     <Select
@@ -119,9 +155,9 @@ export default function AddCategory(props) {
                         onChange={handleChange}
                     >
                         <MenuItem value={""}>None</MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {categoryList.map((category, index) =>
+                            <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
+                        )}
                     </Select>
                 </FormControl>
                 <TextField
@@ -154,6 +190,16 @@ export default function AddCategory(props) {
                     onChange={handleChange}
                     name="image"
                     value={image}
+                />
+                <TextField
+                    id="outlined-textarea"
+                    label="Quantity"
+                    multiline
+                    fullWidth
+                    sx={{ margin: "30px 0" }}
+                    onChange={handleChange}
+                    name="quantity"
+                    value={quantity}
                 />
             </DialogContent>
         </Dialog>

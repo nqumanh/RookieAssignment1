@@ -17,6 +17,8 @@ const deleteCategoryApi = (id) =>
 // Product
 const getAllProducts = () =>
     axios.get("https://localhost:7133/Product/GetAll");
+const addProductApi = (product) =>
+    axios.post("https://localhost:7133/Product/Create", product);
 const getProductById = (id) =>
     axios.get(`https://localhost:7133/Product/Read/${id}`);
 
@@ -32,6 +34,7 @@ export {
     deleteCategoryApi,
     
     getAllProducts,
+    addProductApi,
     getProductById,
 
     getCustomers
