@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { getCustomers } from '../apis/useApi';
 import { DataGrid } from '@mui/x-data-grid';
 import { Paper } from '@mui/material';
+import { getCustomers } from '../../apis/useApi';
 import './CustomerTable.css'
 
 const columns = [

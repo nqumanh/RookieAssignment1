@@ -3,8 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import ProductTable from './components/ProductManagement/ProductTable'
-import CustomerTable from './components/CustomerTable'
-import OrderTable from './components/OrderTable'
+import CustomerTable from './components/ViewCustomer'
 import CategoryManagement from './components/CategoryManagement'
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
           <Route path="categories" element={<CategoryManagement />} />
           <Route path="products" element={<ProductTable />} />
           <Route path="customers" element={<CustomerTable />} />
-          <Route path="orders" element={<OrderTable />} />
         </Route>
       </Routes>
     </BrowserRouter>

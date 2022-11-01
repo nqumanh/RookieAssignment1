@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate, Link } from "react-router-dom";
-import axios from 'axios';
+import { loginApi } from "../apis/useApi"
 
 function Copyright(props) {
   return (
@@ -37,20 +37,14 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    let formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-
-    axios.post("https://localhost:7133/Admin/Login",
-      {
-        username: username,
-        password: password
-      }).then(function (response) {
-        navigate(`/dashboard/categories`);
-      })
-      .catch(function (response) {
-        alert(response.response.data);
-      });
+    loginApi({
+      username: username,
+      password: password
+    }).then(function (response) {
+      navigate(`/dashboard/categories`);
+    }).catch(function (response) {
+      alert(response.response.data);
+    });
   };
 
   const onChange = (e) => {
