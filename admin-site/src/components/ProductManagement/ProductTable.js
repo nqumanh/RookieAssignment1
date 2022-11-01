@@ -19,11 +19,11 @@ import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
+import Stack from '@mui/material/Stack';
 import { visuallyHidden } from '@mui/utils';
-import { Stack } from '@mui/material';
-import CreateProduct from './CreateProduct';
-import { getProducts } from "../../apis/useApi"
+import { getAllCategories, addCategory, updateCategory, deleteCategoryApi } from "../../apis/useApi"
+import AddProduct from './AddProduct';
+import EditProduct from './EditProduct';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -62,26 +62,6 @@ const headCells = [
         label: 'Name',
     },
     {
-        id: 'category',
-        disablePadding: false,
-        label: 'Category',
-    },
-    {
-        id: 'price',
-        disablePadding: false,
-        label: 'Price',
-    },
-    {
-        id: 'quantity',
-        disablePadding: false,
-        label: 'Quantity',
-    },
-    {
-        id: 'image',
-        disablePadding: false,
-        label: 'Image',
-    },
-    {
         id: 'description',
         disablePadding: false,
         label: 'Description',
@@ -89,7 +69,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+    const { onUncheck, order, orderBy, numSelected, onRequestSort } =
         props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -101,9 +81,9 @@ function EnhancedTableHead(props) {
                 <TableCell padding="checkbox">
                     <Checkbox
                         color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
+                        indeterminate={numSelected > 0}
+                        checked={numSelected > 0}
+                        onChange={onUncheck}
                         inputProps={{
                             'aria-label': 'select all desserts',
                         }}
@@ -112,7 +92,7 @@ function EnhancedTableHead(props) {
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
-                        align={"center"}
+                        align={'center'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}
                         sortDirection={orderBy === headCell.id ? order : false}
                     >
@@ -138,34 +118,42 @@ function EnhancedTableHead(props) {
 EnhancedTableHead.propTypes = {
     numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
+    onUncheck: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
 };
 
 function EnhancedTableToolbar(props) {
-    const { numSelected } = props;
+    const { selectedId } = props;
+
+    const onDelete = () => {
+        props.deleteCategory()
+    }
+
+    const onEdit = (category) => {
+        props.editCategory(category)
+    }
 
     return (
         <Toolbar
             sx={{
                 pl: { sm: 2 },
                 pr: { xs: 1, sm: 1 },
-                ...(numSelected > 0 && {
+                ...(selectedId > 0 && {
                     bgcolor: (theme) =>
                         alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
                 }),
             }}
         >
-            {numSelected > 0 ? (
+            {selectedId > 0 ? (
                 <Typography
                     sx={{ flex: '1 1 100%' }}
                     color="inherit"
                     variant="subtitle1"
                     component="div"
                 >
-                    {numSelected} selected
+                    1 selected
                 </Typography>
             ) : (
                 <Typography
@@ -174,45 +162,44 @@ function EnhancedTableToolbar(props) {
                     id="tableTitle"
                     component="div"
                 >
-                    Product Management
+                    Category Management
                 </Typography>
             )}
 
-            {numSelected > 0 ? (
-                <Tooltip title="Delete">
-                    <IconButton>
-                        <DeleteIcon />
-                    </IconButton>
-                </Tooltip>
-            ) : (
-                <Tooltip title="Filter list">
-                    <IconButton>
-                        <FilterListIcon />
-                    </IconButton>
-                </Tooltip>
-            )}
+            {selectedId > 0 ? (
+                <Box sx={{ display: "flex" }}>
+                    <EditProduct editCategory={onEdit} selectedId={selectedId} />
+
+                    <Tooltip title="Delete">
+                        <IconButton onClick={onDelete}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+            ) : ""}
         </Toolbar>
     );
 }
 
 EnhancedTableToolbar.propTypes = {
-    numSelected: PropTypes.number.isRequired,
+    selectedId: PropTypes.number.isRequired,
 };
 
 export default function EnhancedTable() {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
-    const [selected, setSelected] = React.useState([]);
+    const [selectedId, setSelectedId] = useState(-1)
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [rows, setRows] = useState([]);
 
     useEffect(() => {
-        getProducts().then((response) => {
+        getAllCategories().then((response) => {
             setRows(response.data)
         })
     }, [])
+
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -220,48 +207,34 @@ export default function EnhancedTable() {
         setOrderBy(property);
     };
 
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelected = rows.map((n) => n.name);
-            setSelected(newSelected);
-            return;
-        }
-        setSelected([]);
+    const handleUncheck = (event) => {
+        setSelectedId(-1);
+        return false
     };
 
-    const handleClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
+    const handleClick = (event, id) => {
+        setSelectedId(id)
     };
 
     const createCategory = (category) => {
-        setRows([category, ...rows])
-        // addCategory(category).then((response) => console.log(response))
+        addCategory(category).then((response) =>
+            setRows([{ id: response.data.id, ...category }, ...rows]))
     }
 
     // const readCategory = (category) => {
     // }
 
-    // const updateCategory = (category) => {
-    // }
+    const editCategory = (category) => {
+        updateCategory(selectedId, category).then((response) =>
+            setRows(rows.map(row => (row.id === selectedId) ? category : row)))
+    }
 
-    // const deleteCategory = (id) => {
-    // }
+    const deleteCategory = () => {
+        deleteCategoryApi(selectedId).then((response) => {
+            setRows(rows.filter(row => row.id !== selectedId))
+            setSelectedId(-1)
+        })
+    }
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -276,8 +249,6 @@ export default function EnhancedTable() {
         setDense(event.target.checked);
     };
 
-    const isSelected = (name) => selected.indexOf(name) !== -1;
-
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -285,7 +256,10 @@ export default function EnhancedTable() {
     return (
         <Box sx={{ width: '100%', mt: 5 }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar
+                    selectedId={selectedId}
+                    deleteCategory={deleteCategory}
+                    editCategory={editCategory} />
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}
@@ -293,34 +267,35 @@ export default function EnhancedTable() {
                         size={dense ? 'small' : 'medium'}
                     >
                         <EnhancedTableHead
-                            numSelected={selected.length}
+                            numSelected={selectedId}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
+                            onUncheck={handleUncheck}
                             onRequestSort={handleRequestSort}
                             rowCount={rows.length}
                         />
                         <TableBody>
+                            {/* if you don't need to support IE11, you can replace the `stableSort` call with:
+                 rows.sort(getComparator(order, orderBy)).slice() */}
                             {stableSort(rows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(row.name);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row.name)}
+                                            onClick={(event) => handleClick(event, row.id)}
                                             role="checkbox"
-                                            aria-checked={isItemSelected}
                                             tabIndex={-1}
                                             key={row.id}
-                                            selected={isItemSelected}
+                                            selected={selectedId === row.id}
                                         >
+                                            {/* aria-checked={isItemSelected} */}
                                             <TableCell padding="checkbox">
                                                 <Checkbox
                                                     color="primary"
-                                                    checked={isItemSelected}
+                                                    checked={selectedId === row.id}
                                                     inputProps={{
                                                         'aria-labelledby': labelId,
                                                     }}
@@ -332,13 +307,10 @@ export default function EnhancedTable() {
                                                 scope="row"
                                                 padding="none"
                                                 align="center"
+                                                sx={{ minWidth: "200px" }}
                                             >
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="center">{row.category}</TableCell>
-                                            <TableCell align="center">{row.price}</TableCell>
-                                            <TableCell align="center">{row.quantity}</TableCell>
-                                            <TableCell align="center">{row.image}</TableCell>
                                             <TableCell align="center">{row.description}</TableCell>
                                         </TableRow>
                                     );
@@ -356,7 +328,7 @@ export default function EnhancedTable() {
                     </Table>
                 </TableContainer>
                 <Stack direction="row" spacing={2} sx={{ justifyContent: "space-between" }}>
-                    <CreateProduct createProduct={createCategory} />
+                    <AddProduct addCategory={createCategory} />
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
@@ -368,11 +340,11 @@ export default function EnhancedTable() {
                         sx={{ display: "flex" }}
                     />
                 </Stack>
-            </Paper>
+            </Paper >
             <FormControlLabel
                 control={<Switch checked={dense} onChange={handleChangeDense} />}
                 label="Dense padding"
             />
-        </Box>
+        </Box >
     );
 }

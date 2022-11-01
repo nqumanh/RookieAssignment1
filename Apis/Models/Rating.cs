@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Apis.Models;
 
@@ -13,5 +12,5 @@ public class Rating
     [DataType(DataType.Date)]
     public DateTime UpdatedDate { get; set; }
     public Product Product { get; set; } = new Product();
-    public User User { get; set; } = new User();
+    public User User { get; set; } = null!;
 }

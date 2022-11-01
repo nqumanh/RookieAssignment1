@@ -14,7 +14,7 @@ public class ProductDTO
 
     public string? Image { get; set; }
 
-    public string Author { get; set; } = string.Empty;
+    public string? Author { get; set; }
     public decimal AverageRating { get; set; }
 
     [Column(TypeName = "decimal(18, 2)")]
@@ -28,5 +28,5 @@ public class ProductDTO
     [DataType(DataType.Date)]
     public DateTime UpdatedDate { get; set; }
 
-    public string? Category { get; set; }
+    public string? CategoryId { get; set; }
 }
