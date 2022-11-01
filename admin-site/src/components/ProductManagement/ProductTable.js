@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { visuallyHidden } from '@mui/utils';
-import { getAllCategories, addCategory, updateCategory, deleteCategoryApi } from "../../apis/useApi"
+import { getAllProducts, addCategory, updateCategory, deleteCategoryApi, getAllCategories } from "../../apis/useApi"
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 
@@ -62,9 +62,34 @@ const headCells = [
         label: 'Name',
     },
     {
+        id: 'category',
+        disablePadding: true,
+        label: 'Category',
+    },
+    {
         id: 'description',
-        disablePadding: false,
+        disablePadding: true,
         label: 'Description',
+    },
+    {
+        id: 'price',
+        disablePadding: true,
+        label: 'Price',
+    },
+    {
+        id: 'image',
+        disablePadding: true,
+        label: 'Image',
+    },
+    {
+        id: 'createdDate',
+        disablePadding: false,
+        label: 'Created Date',
+    },
+    {
+        id: 'updatedDate',
+        disablePadding: false,
+        label: 'Updated Date',
     },
 ];
 
@@ -162,7 +187,7 @@ function EnhancedTableToolbar(props) {
                     id="tableTitle"
                     component="div"
                 >
-                    Category Management
+                    Product Management
                 </Typography>
             )}
 
@@ -193,10 +218,17 @@ export default function EnhancedTable() {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [rows, setRows] = useState([]);
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
-        getAllCategories().then((response) => {
+        getAllProducts().then((response) => {
+            // console.log(response.data)
             setRows(response.data)
+        })
+
+        getAllCategories().then((response) => {
+            // console.log(response.data)
+            setCategories(response.data)
         })
     }, [])
 
@@ -281,7 +313,9 @@ export default function EnhancedTable() {
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     const labelId = `enhanced-table-checkbox-${index}`;
-
+                                    const categoryId = categories.findIndex(category => category.id === parseInt(row.categoryId))
+                                    let category = "";
+                                    if (categoryId >= 0) category = categories[categoryId].name
                                     return (
                                         <TableRow
                                             hover
@@ -311,7 +345,12 @@ export default function EnhancedTable() {
                                             >
                                                 {row.name}
                                             </TableCell>
+                                            <TableCell align="center">{category}</TableCell>
                                             <TableCell align="center">{row.description}</TableCell>
+                                            <TableCell align="center">{row.price}</TableCell>
+                                            <TableCell align="center">{row.image}</TableCell>
+                                            <TableCell align="center">{row.createdDate}</TableCell>
+                                            <TableCell align="center">{row.updatedDate}</TableCell>
                                         </TableRow>
                                     );
                                 })}

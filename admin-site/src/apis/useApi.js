@@ -15,8 +15,10 @@ const deleteCategoryApi = (id) =>
     axios.delete(`https://localhost:7133/Category/Delete/${id}`);
 
 // Product
-const getProducts = () =>
-    axios.get("https://localhost:7133/Product/GetAllProducts");
+const getAllProducts = () =>
+    axios.get("https://localhost:7133/Product/GetAll");
+const getProductById = (id) =>
+    axios.get(`https://localhost:7133/Product/Read/${id}`);
 
 // Customer
 const getCustomers = () =>
@@ -29,6 +31,8 @@ export {
     updateCategory,
     deleteCategoryApi,
     
-    getProducts,
+    getAllProducts,
+    getProductById,
+
     getCustomers
 };

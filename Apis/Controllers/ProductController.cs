@@ -89,6 +89,7 @@ public class ProductController : ControllerBase
         product.CreatedDate = productDTO.CreatedDate;
         product.UpdatedDate = new DateTime();
         product.Category = category;
+        
         try
         {
             await _context.SaveChangesAsync();
@@ -122,15 +123,15 @@ public class ProductController : ControllerBase
         return _context.Products!.Any(e => e.Id == id);
     }
 
-    // private static RatingDTO RatingDTO(Rating rating) =>
-    //     new RatingDTO
-    //     {
-    //         Star = rating.Star,
-    //         Title = rating.Title,
-    //         Comment = rating.Comment,
-    //         Reviewer = rating.User.Name,
-    //         UpdatedDate = rating.UpdatedDate
-    //     };
+    private static RatingDTO RatingDTO(Rating rating) =>
+        new RatingDTO
+        {
+            Star = rating.Star,
+            Title = rating.Title,
+            Comment = rating.Comment,
+            Reviewer = rating.User.Name,
+            UpdatedDate = rating.UpdatedDate
+        };
 
     private static ProductDTO ProductDTO(Product product)
     {
