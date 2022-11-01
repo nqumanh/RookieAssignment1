@@ -29,6 +29,8 @@ public class ProductController : ControllerBase
     [HttpPost("[action]")]
     public async Task<ActionResult<ProductDTO>> Create(ProductDTO productDTO)
     {
+        DateTime time = DateTime.Now;
+
         var product = new Product
         {
             Name = productDTO.Name,
@@ -37,8 +39,8 @@ public class ProductController : ControllerBase
             Author = productDTO.Author,
             Price = productDTO.Price,
             Quantity = productDTO.Quantity,
-            CreatedDate = new DateTime(),
-            UpdatedDate = new DateTime()
+            CreatedDate = time,
+            UpdatedDate = time
         };
         _context.Products!.Add(product);
         await _context.SaveChangesAsync();
@@ -89,7 +91,7 @@ public class ProductController : ControllerBase
         product.CreatedDate = productDTO.CreatedDate;
         product.UpdatedDate = new DateTime();
         product.Category = category;
-        
+
         try
         {
             await _context.SaveChangesAsync();

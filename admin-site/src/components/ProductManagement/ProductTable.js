@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { visuallyHidden } from '@mui/utils';
-import { getAllProducts, addProductApi, updateCategory, deleteCategoryApi, getAllCategories } from "../../apis/useApi"
+import { getAllProducts, addProductApi, updateCategory, deleteProductApi, getAllCategories } from "../../apis/useApi"
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 
@@ -163,7 +163,7 @@ function EnhancedTableToolbar(props) {
     const { selectedId } = props;
 
     const onDelete = () => {
-        props.deleteCategory()
+        props.deleteProduct()
     }
 
     const onEdit = (category) => {
@@ -268,6 +268,7 @@ export default function EnhancedTable() {
         }
         addProductApi(productModel).then((response) => {
             setRows([{ id: response.data.id, ...productModel }, ...rows])
+            setPage(1)
         })
     }
 
@@ -279,8 +280,8 @@ export default function EnhancedTable() {
             setRows(rows.map(row => (row.id === selectedId) ? category : row)))
     }
 
-    const deleteCategory = () => {
-        deleteCategoryApi(selectedId).then((response) => {
+    const deleteProduct = () => {
+        deleteProductApi(selectedId).then((response) => {
             setRows(rows.filter(row => row.id !== selectedId))
             setSelectedId(-1)
         })
@@ -308,7 +309,7 @@ export default function EnhancedTable() {
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <EnhancedTableToolbar
                     selectedId={selectedId}
-                    deleteCategory={deleteCategory}
+                    deleteProduct={deleteProduct}
                     editCategory={editCategory} />
                 <TableContainer>
                     <Table
@@ -380,7 +381,7 @@ export default function EnhancedTable() {
                                         height: (dense ? 33 : 53) * emptyRows,
                                     }}
                                 >
-                                    <TableCell colSpan={6} />
+                                    <TableCell colSpan={12} />
                                 </TableRow>
                             )}
                         </TableBody>
