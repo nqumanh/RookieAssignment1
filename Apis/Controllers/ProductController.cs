@@ -68,7 +68,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut("[action]/{id}")]
-    public async Task<IActionResult> Update(int id, ProductDTO productDTO)
+    public async Task<ActionResult<ProductDTO>> Update(int id, ProductDTO productDTO)
     {
         if (id != productDTO.Id)
         {
@@ -88,9 +88,9 @@ public class ProductController : ControllerBase
         product.Author = productDTO.Author;
         product.Price = productDTO.Price;
         product.Quantity = productDTO.Quantity;
-        product.CreatedDate = productDTO.CreatedDate;
-        product.UpdatedDate = new DateTime();
+        product.UpdatedDate = DateTime.Now;
         product.Category = category;
+        Console.WriteLine(product.CreatedDate);
 
         try
         {
@@ -101,7 +101,10 @@ public class ProductController : ControllerBase
             return NotFound();
         }
 
-        return NoContent();
+        return CreatedAtAction(
+                nameof(Read),
+                new { id = product.Id },
+                ProductDTO(product));
     }
 
     [HttpDelete("[action]/{id}")]

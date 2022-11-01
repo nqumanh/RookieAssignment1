@@ -5,24 +5,47 @@ import Dialog from '@mui/material/Dialog';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
+import EditIcon from '@mui/icons-material/Edit';
 import { DialogContent, DialogContentText, FormControl, InputLabel, MenuItem, Select, Tooltip } from "@mui/material";
+import { getAllCategories, getProductById } from "../../apis/useApi";
+import { useEffect } from "react";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AddCategory(props) {
+export default function AddProduct(props) {
     const [open, setOpen] = useState(false);
     const [name, setName] = useState("");
+    const [author, setAuthor] = useState("");
     const [categoryId, setCategoryId] = useState("");
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState("");
     const [image, setImage] = useState("");
-    const { addCategory } = props
+    const [quantity, setQuantity] = useState("");
+    const [categoryList, setCategoryList] = useState([])
+    const { editProduct, selectedId } = props
+
+    useEffect(() => {
+        getAllCategories().then((response) => {
+            setCategoryList(response.data)
+        })
+    }, [])
+
+    useEffect(() => {
+        getProductById(selectedId).then((response) => {
+            setName(response.data.name)
+            setAuthor(response.data.author)
+            setCategoryId(response.data.categoryId == null ? "" : response.data.categoryId)
+            setDescription(response.data.description)
+            setPrice(response.data.price)
+            setImage(response.data.image)
+            setQuantity(response.data.quantity)
+        })
+    }, [selectedId, open])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -34,14 +57,25 @@ export default function AddCategory(props) {
 
     const handleClear = () => {
         setName("")
+        setAuthor("")
         setCategoryId("")
         setDescription("")
         setPrice("")
         setImage("")
+        setQuantity("")
     };
 
     const handleSubmit = () => {
-        addCategory({ name: name, description: description });
+        editProduct({
+            id: selectedId,
+            name: name,
+            author: author,
+            categoryId: categoryId,
+            description: description,
+            price: price,
+            image: image,
+            quantity: quantity
+        });
         setOpen(false);
         handleClear();
     };
@@ -50,12 +84,16 @@ export default function AddCategory(props) {
         const { name, value } = e.target
         if (name === "name")
             setName(value)
+        else if (name === "author")
+            setAuthor(value)
         else if (name === "category")
             setCategoryId(value)
         else if (name === "description")
             setDescription(value)
         else if (name === "price")
             setPrice(value)
+        else if (name === "quantity")
+            setQuantity(value)
         else
             setImage(value)
     }
@@ -84,21 +122,21 @@ export default function AddCategory(props) {
                         <CloseIcon />
                     </IconButton>
                     <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                        Add Product
+                        Edit Product
                     </Typography>
                     <div>
                         <Button autoFocus color="inherit" onClick={handleClear}>
                             clear
                         </Button>
                         <Button autoFocus color="inherit" onClick={handleSubmit}>
-                            save
+                            submit
                         </Button>
                     </div>
                 </Toolbar>
             </AppBar>
             <DialogContent>
                 <DialogContentText>
-                    Add your Product category and necessary information from here
+                    Edit your Product category and necessary information from here
                 </DialogContentText>
                 <TextField
                     id="outlined-textarea"
@@ -111,6 +149,17 @@ export default function AddCategory(props) {
                     name="name"
                     value={name}
                 />
+                <TextField
+                    id="outlined-textarea"
+                    label="Author"
+                    placeholder="Author"
+                    multiline
+                    fullWidth
+                    sx={{ margin: "30px 0" }}
+                    onChange={handleChange}
+                    name="author"
+                    value={author}
+                />
                 <FormControl fullWidth sx={{ margin: "30px 0" }}>
                     <InputLabel id="demo-simple-select-label">Category</InputLabel>
                     <Select
@@ -122,9 +171,9 @@ export default function AddCategory(props) {
                         onChange={handleChange}
                     >
                         <MenuItem value={""}>None</MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {categoryList.map((category, index) =>
+                            <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
+                        )}
                     </Select>
                 </FormControl>
                 <TextField
@@ -157,6 +206,16 @@ export default function AddCategory(props) {
                     onChange={handleChange}
                     name="image"
                     value={image}
+                />
+                <TextField
+                    id="outlined-textarea"
+                    label="Quantity"
+                    multiline
+                    fullWidth
+                    sx={{ margin: "30px 0" }}
+                    onChange={handleChange}
+                    name="quantity"
+                    value={quantity}
                 />
             </DialogContent>
         </Dialog>

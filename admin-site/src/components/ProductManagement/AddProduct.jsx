@@ -53,6 +53,7 @@ export default function AddProduct(props) {
     };
 
     const handleSubmit = () => {
+        console.log(categoryId)
         addProduct({
             name: name,
             author: author,

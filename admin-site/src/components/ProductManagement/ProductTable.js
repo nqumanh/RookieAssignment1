@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { visuallyHidden } from '@mui/utils';
-import { getAllProducts, addProductApi, updateCategory, deleteProductApi, getAllCategories } from "../../apis/useApi"
+import { getAllProducts, addProductApi, updateProductApi, deleteProductApi, getAllCategories } from "../../apis/useApi"
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
 
@@ -167,7 +167,7 @@ function EnhancedTableToolbar(props) {
     }
 
     const onEdit = (category) => {
-        props.editCategory(category)
+        props.editProduct(category)
     }
 
     return (
@@ -267,17 +267,38 @@ export default function EnhancedTable() {
             categoryId: product.categoryId.toString(),
         }
         addProductApi(productModel).then((response) => {
-            setRows([{ id: response.data.id, ...productModel }, ...rows])
-            setPage(1)
+            setRows([
+                {
+                    id: response.data.id,
+                    createdDate: response.data.createdDate,
+                    updatedDate: response.data.updatedDate,
+                    ...productModel
+                },
+                ...rows
+            ])
+            setPage(0)
         })
     }
 
     // const readCategory = (category) => {
     // }
 
-    const editCategory = (category) => {
-        updateCategory(selectedId, category).then((response) =>
-            setRows(rows.map(row => (row.id === selectedId) ? category : row)))
+    const editProduct = (product) => {
+        let productModel = {
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            image: product.image,
+            author: product.author,
+            price: product.price,
+            quantity: product.quantity,
+            categoryId: (product.categoryId === "") ? null : product.categoryId.toString(),
+        }
+        updateProductApi(selectedId, productModel).then((response) => {
+            console.log(response)
+            setRows(rows.map(row => (row.id === selectedId) ?
+                { ...productModel, createdDate: response.data.createdDate, updatedDate: response.data.updatedDate } : row))
+        })
     }
 
     const deleteProduct = () => {
@@ -310,7 +331,7 @@ export default function EnhancedTable() {
                 <EnhancedTableToolbar
                     selectedId={selectedId}
                     deleteProduct={deleteProduct}
-                    editCategory={editCategory} />
+                    editProduct={editProduct} />
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}
