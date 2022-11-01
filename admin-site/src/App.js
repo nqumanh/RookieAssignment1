@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
-import Login from './pages/SignIn'
+import Login from './pages/Login'
 import ProductTable from './components/ProductManagement/ProductTable'
 import CustomerTable from './components/CustomerTable'
 import OrderTable from './components/OrderTable'

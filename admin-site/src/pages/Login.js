@@ -46,7 +46,7 @@ export default function SignIn() {
         username: username,
         password: password
       }).then(function (response) {
-        localStorage.setItem("token", response.data.access_token);
+        // console.log(response.data)
         navigate(`/dashboard/categories`);
       })
       .catch(function (response) {

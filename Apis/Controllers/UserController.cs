@@ -25,11 +25,10 @@ public class UserController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            var user = new User { UserName = input.Email, Email = input.Email };
+            var user = new User { UserName = input.UserName, Email = input.Email };
             var result = await _userManager.CreateAsync(user, input.Password);
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, isPersistent: false);
                 return Ok();
             }
             else
@@ -41,7 +40,6 @@ public class UserController : ControllerBase
         {
             return BadRequest();
         }
-
     }
 
     [HttpPost("[action]")]
@@ -65,7 +63,6 @@ public class UserController : ControllerBase
         {
             return BadRequest();
         }
-
     }
 
     [HttpPost("[action]")]

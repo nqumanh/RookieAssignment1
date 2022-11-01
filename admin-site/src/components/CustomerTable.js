@@ -6,12 +6,13 @@ import './CustomerTable.css'
 
 const columns = [
     { field: 'name', headerName: 'Name', flex: 1 },
-    { field: 'username', headerName: 'Username', flex: 1 },
+    { field: 'userName', headerName: 'Username', flex: 1 },
     {
         field: 'email',
         headerName: 'Email'
         , flex: 1
     },
+    { field: 'phoneNumber', headerName: 'Phone Number', flex: 1 },
     { field: 'address', headerName: 'Address', flex: 1 },
 ];
 // name,username, email, address

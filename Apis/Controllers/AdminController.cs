@@ -13,12 +13,31 @@ public class AdminController : ControllerBase
 {
     private readonly BookStoreContext _context;
     private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
 
-
-    public AdminController(BookStoreContext context, UserManager<User> userManager)
+    public AdminController(BookStoreContext context, UserManager<User> userManager, SignInManager<User> signInManager)
     {
         _context = context;
         _userManager = userManager;
+        _signInManager = signInManager;
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Login(LoginFormDTO input)
+    {
+        var result = await _signInManager.PasswordSignInAsync(input.Username,
+                           input.Password, isPersistent: false, lockoutOnFailure: true);
+
+        if (!result.Succeeded)
+            return BadRequest("Invalid Account!");
+        return Ok("Login Successfully!");
+    }
+
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return Ok();
     }
 
     [HttpGet("[action]")]

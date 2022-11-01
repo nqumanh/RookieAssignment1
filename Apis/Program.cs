@@ -27,7 +27,9 @@ builder.Services.AddDbContext<BookStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookStoreContext") ??
         throw new InvalidOperationException("Connection string 'BookStoreContext' not found.")));
 
-builder.Services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<BookStoreContext>();
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<BookStoreContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

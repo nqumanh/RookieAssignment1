@@ -20,7 +20,7 @@ const getProducts = () =>
 
 // Customer
 const getCustomers = () =>
-    axios.get("https://localhost:7133/User/GetAllUsers");
+    axios.get("https://localhost:7133/Admin/GetAllUsers");
 
 export {
     getAllCategories,
