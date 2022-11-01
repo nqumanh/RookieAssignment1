@@ -217,8 +217,11 @@ export default function EnhancedTable() {
     };
 
     const createCategory = (category) => {
-        addCategory(category).then((response) =>
-            setRows([{ id: response.data.id, ...category }, ...rows]))
+        addCategory(category).then((response) => {
+            setRows([{ id: response.data.id, ...category }, ...rows])
+            setSelectedId(-1)
+            setPage(0)
+        })
     }
 
     // const readCategory = (category) => {

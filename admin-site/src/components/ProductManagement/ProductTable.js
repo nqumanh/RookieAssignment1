@@ -295,7 +295,6 @@ export default function EnhancedTable() {
             categoryId: (product.categoryId === "") ? null : product.categoryId.toString(),
         }
         updateProductApi(selectedId, productModel).then((response) => {
-            console.log(response)
             setRows(rows.map(row => (row.id === selectedId) ?
                 { ...productModel, createdDate: response.data.createdDate, updatedDate: response.data.updatedDate } : row))
         })

@@ -46,7 +46,6 @@ export default function SignIn() {
         username: username,
         password: password
       }).then(function (response) {
-        // console.log(response.data)
         navigate(`/dashboard/categories`);
       })
       .catch(function (response) {

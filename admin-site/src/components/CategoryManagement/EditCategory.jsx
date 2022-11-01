@@ -21,7 +21,8 @@ export default function EditCategory(props) {
     useEffect(() => {
         getCategoryById(selectedId).then((response) => {
             setName(response.data.name)
-            setDescription(response.data.description)
+            if (response.data.description !== null)
+                setDescription(response.data.description)
         })
     }, [selectedId, open])
 
