@@ -79,7 +79,6 @@
             {
                 foreach (var product in Model.Products)
                 {
-
                     <div class="col-2 d-flex align-items-stretch px-3">
                         <div class="card border-0" style="width: 100%;">
                             <a asp-page="./Products/Details" asp-route-id="@product.Id">
@@ -93,7 +92,7 @@
                                     <i>@product.Author</i>
                                 </p>
                                 <p class="card-text" style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
-                                    <i>@product.Category</i>
+                                    <i>@product.CategoryName</i>
                                 </p>
                                 <div class="mb-3">
                                     @for (int i = 0; i < Math.Floor(@product.AverageRating); i++)

@@ -143,6 +143,7 @@ public class ProductController : ControllerBase
         var numberOfRating = product.Ratings.Count;
         var avgRating = numberOfRating > 0 ? Convert.ToDecimal(product.Ratings.Aggregate(0, (sum, rating) => sum + rating.Star)) / numberOfRating : 0;
         var categoryId = (product.Category == null) ? null : product.Category.Id.ToString();
+        var categoryName = (product.Category == null) ? null : product.Category.Name;
         return new ProductDTO
         {
             Id = product.Id,
@@ -154,6 +155,7 @@ public class ProductController : ControllerBase
             Price = product.Price,
             Quantity = product.Quantity,
             CategoryId = categoryId,
+            CategoryName = categoryName,
             CreatedDate = product.CreatedDate,
             UpdatedDate = product.UpdatedDate
         };

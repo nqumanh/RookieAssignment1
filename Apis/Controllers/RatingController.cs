@@ -1,5 +1,6 @@
 using Apis.Data;
 using Apis.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedViewModels;
@@ -10,9 +11,11 @@ namespace Apis.Controllers;
 [Route("[controller]")]
 public class RatingController : ControllerBase
 {
+    private readonly UserManager<User> _userManager;
     private readonly BookStoreContext _context;
-    public RatingController(BookStoreContext context)
+    public RatingController(BookStoreContext context, UserManager<User> userManager)
     {
+        _userManager = userManager;
         _context = context;
     }
 
@@ -26,12 +29,22 @@ public class RatingController : ControllerBase
     //                     .Select(x => RatingDTO(x))
     //                     .ToListAsync();
     // }
+    [HttpGet("[action]/{id}")]
+    public async Task<ActionResult<IEnumerable<RatingDTO>>> GetAll(int id)
+    {
+        return await _context.Ratings!
+                         .Include(x => x.Product)
+                         .Include(x => x.User)
+                         .Where(x => x.Product.Id == id)
+                         .Select(x => RatingDTO(x))
+                         .ToListAsync();
+    }
 
     // [HttpPost("[action]")]
-    // public async Task<ActionResult<Rating>> WriteReview(ReviewFormDTO reviewForm)
+    // public async Task<ActionResult<Rating>> Add(ReviewFormDTO reviewForm)
     // {
     //     var product = await _context.Products!.FindAsync(reviewForm.ProductId);
-    //     var user = await _context.Users!.FindAsync(reviewForm.UserId);
+    //     var user = await _userManager.Users!.FindAsync(reviewForm.UserId);
     //     if (user == null || product == null)
     //         return BadRequest();
     //     var rating = new Rating
@@ -49,13 +62,13 @@ public class RatingController : ControllerBase
     //     return Ok();
     // }
 
-    // private static RatingDTO RatingDTO(Rating rating) =>
-    //     new RatingDTO
-    //     {
-    //         Star = rating.Star,
-    //         Title = rating.Title,
-    //         Comment = rating.Comment,
-    //         Reviewer = rating.User.Name,
-    //         UpdatedDate = rating.UpdatedDate
-    //     };
+    private static RatingDTO RatingDTO(Rating rating) =>
+        new RatingDTO
+        {
+            Star = rating.Star,
+            Title = rating.Title,
+            Comment = rating.Comment,
+            Reviewer = rating.User.Name,
+            UpdatedDate = rating.UpdatedDate
+        };
 }

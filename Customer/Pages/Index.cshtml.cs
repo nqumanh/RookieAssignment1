@@ -20,7 +20,7 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         HttpClient client = _api.initial();
-        var response = await client.GetAsync("Product/GetAllProducts");
+        var response = await client.GetAsync("Product/GetAll");
         var result = response.Content.ReadAsStringAsync().Result;
         Products = JsonConvert.DeserializeObject<List<ProductDTO>>(result);
 

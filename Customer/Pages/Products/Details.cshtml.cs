@@ -28,7 +28,7 @@ public class DetailsModel : PageModel
     public async Task OnGetAsync(int? id)
     {
         HttpClient client = _api.initial();
-        var response = await client.GetAsync($"Product/GetProductById/{id}");
+        var response = await client.GetAsync($"Product/Read/{id}");
         var result = response.Content.ReadAsStringAsync().Result;
         Product = JsonConvert.DeserializeObject<ProductDTO>(result) ?? new ProductDTO();
 

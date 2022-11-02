@@ -30,7 +30,7 @@ public class ProductModel : PageModel
     public async Task OnGetAsync()
     {
         HttpClient client = _api.initial();
-        var response = await client.GetAsync("Product/GetAllProducts");
+        var response = await client.GetAsync("Product/GetAll");
         var result = response.Content.ReadAsStringAsync().Result;
         Products = JsonConvert.DeserializeObject<List<ProductDTO>>(result);
 
@@ -45,10 +45,7 @@ public class ProductModel : PageModel
 
         if (!string.IsNullOrEmpty(SelectedCategory))
         {
-            Products = Products!.Where(x =>
-            {
-                return (x.Category == SelectedCategory);
-            }).ToList();
+            Products = Products!.Where(x => x.CategoryName == SelectedCategory).ToList();
         }
 
         OptionCategories = new SelectList(Categories?.Select(x => x.Name));
