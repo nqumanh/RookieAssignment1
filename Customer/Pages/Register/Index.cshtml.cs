@@ -29,5 +29,14 @@ public class RegisterModel : PageModel
         }
         return Page();
     }
+
+    public async Task<IActionResult> OnGetAsync()
+    {
+        if (string.IsNullOrEmpty(HttpContext!.Session.GetString("jwt")))
+        {
+            return Page();
+        }
+        return RedirectToPage("../Index");
+    }
 }
 

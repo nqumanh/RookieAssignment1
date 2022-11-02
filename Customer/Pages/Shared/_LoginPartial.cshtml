@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
+
+<ul class="navbar-nav d-flex flex-row p-2 align-middle">
+    @if (string.IsNullOrEmpty(@Accessor.HttpContext!.Session.GetString("jwt")))
+    {
+        <li class="nav-item" style="margin: 0 18px">
+            <a class="navHeader" asp-area="" asp-page="/Register/index">
+                REGISTER
+            </a>
+        </li>
+        <li class="nav-item" style="margin: 0 18px">
+            <a class="navHeader" asp-area="" asp-page="/Login/index">
+                LOGIN
+            </a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item" style="margin: 0 18px">
+            <p style="font-weight: 500;" class="m-0">
+                Hello <span class="text-danger">@Accessor.HttpContext!.Session.GetString("name")</span>
+            </p>
+        </li>
+        <li class="nav-item" style="margin: 0 18px;">
+            <a asp-page="/Index" asp-page-handler="Logout" style="color: #000; text-decoration: none; font-weight: 500;">
+                LOGOUT
+            </a>
+        </li>
+    }
+</ul>

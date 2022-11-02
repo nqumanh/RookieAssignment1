@@ -22,36 +22,37 @@
             <div class="border-bottom w-100">
                 <div class="container d-flex justify-content-between">
                     <p class='m-0 d-flex'><strong class="d-flex align-items-center">WELCOME TO NASHBOOK</strong></p>
-                    @if (token != "")
-                    {
+                    <partial name="_LoginPartial" />
+                    @* @if (string.IsNullOrEmpty(HttpContext.Session.GetString("jwt")))
+                        {
                         <ul class="navbar-nav d-flex flex-row p-2 align-middle">
-                            <li class="nav-item" style="margin: 0 18px">
-                                <p style="font-weight: 500;" class="m-0">
-                                    Hello <span class="text-danger">@name</span>
-                                </p>
-                            </li>
-                            <li class="nav-item" style="margin: 0 18px;">
-                                <button onclick="logOut()" style="border: 0; background: inherit; font-weight: 500;">
-                                    LOGOUT
-                                </button>
-                            </li>
+                        <li class="nav-item" style="margin: 0 18px">
+                        <p style="font-weight: 500;" class="m-0">
+                        Hello <span class="text-danger">Manh</span>
+                        </p>
+                        </li>
+                        <li class="nav-item" style="margin: 0 18px;">
+                        <button onclick="logOut()" style="border: 0; background: inherit; font-weight: 500;">
+                        LOGOUT
+                        </button>
+                        </li>
                         </ul>
-                    }
-                    else
-                    {
+                        }
+                        else
+                        {
                         <ul class="navbar-nav d-flex flex-row p-2">
-                            <li class="nav-item" style="margin: 0 18px">
-                                <a class="navHeader" asp-area="" asp-page="/Register/index">
-                                    REGISTER
-                                </a>
-                            </li>
-                            <li class="nav-item" style="margin: 0 18px">
-                                <a class="navHeader" asp-area="" asp-page="/Login/index">
-                                    LOGIN
-                                </a>
-                            </li>
+                        <li class="nav-item" style="margin: 0 18px">
+                        <a class="navHeader" asp-area="" asp-page="/Register/index">
+                        REGISTER
+                        </a>
+                        </li>
+                        <li class="nav-item" style="margin: 0 18px">
+                        <a class="navHeader" asp-area="" asp-page="/Login/index">
+                        LOGIN
+                        </a>
+                        </li>
                         </ul>
-                    }
+                        } *@
                 </div>
             </div>
             <div class="d-flex container" style="height: 100px">

@@ -4,11 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(cfg =>
-{
-    cfg.Cookie.Name = "ShoppingCart";
-    cfg.IdleTimeout = new TimeSpan(0, 30, 0);
-});
+builder.Services.AddSession();
 
 builder.Services.AddHttpContextAccessor();
 

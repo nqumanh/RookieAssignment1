@@ -30,4 +30,15 @@ public class IndexModel : PageModel
 
         return Page();
     }
+
+    public async Task<IActionResult> OnGetLogoutAsync()
+    {
+        HttpClient client = _api.initial();
+        var response = await client.GetAsync("User/Logout");
+
+        HttpContext.Session.Remove("jwt");
+
+        return RedirectToPage("/Index");
+    }
+
 }
