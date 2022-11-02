@@ -46,7 +46,7 @@ public class DetailsModel : PageModel
         {
             return RedirectToPage();
         }
-        ReviewForm.UserId = Int32.Parse(userId);
+        ReviewForm.UserId = userId;
         ReviewForm.Star = Int32.Parse(Stars);
         await client.PostAsJsonAsync("Product/WriteReview", ReviewForm);
         return RedirectToPage();

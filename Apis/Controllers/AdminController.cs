@@ -43,7 +43,8 @@ public class AdminController : ControllerBase
     [HttpGet("[action]")]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
     {
-        return await _userManager.Users.Select(x => new UserDTO
+        var users = await _userManager.GetUsersInRoleAsync("customer");
+        return users.Select(x => new UserDTO
         {
             Id = x.Id,
             Name = x.Name,
@@ -51,6 +52,6 @@ public class AdminController : ControllerBase
             PhoneNumber = x.PhoneNumber,
             Address = x.Address,
             UserName = x.UserName,
-        }).ToListAsync();
+        }).ToList();
     }
 }

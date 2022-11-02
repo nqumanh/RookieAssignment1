@@ -40,27 +40,28 @@ public class RatingController : ControllerBase
                          .ToListAsync();
     }
 
-    // [HttpPost("[action]")]
-    // public async Task<ActionResult<Rating>> Add(ReviewFormDTO reviewForm)
-    // {
-    //     var product = await _context.Products!.FindAsync(reviewForm.ProductId);
-    //     var user = await _userManager.Users!.FindAsync(reviewForm.UserId);
-    //     if (user == null || product == null)
-    //         return BadRequest();
-    //     var rating = new Rating
-    //     {
-    //         Star = reviewForm.Star,
-    //         Title = reviewForm.Title,
-    //         Comment = reviewForm.Comment,
-    //         UpdatedDate = new DateTime(),
-    //         Product = product,
-    //         User = user
-    //     };
-    //     _context.Ratings!.Add(rating);
-    //     await _context.SaveChangesAsync();
+    [HttpPost("[action]")]
+    public async Task<ActionResult<Rating>> Add(ReviewFormDTO reviewForm)
+    {
+        var product = await _context.Products!.FindAsync(reviewForm.ProductId);
+        var user = await _userManager.Users!
+            .FirstOrDefaultAsync(x => x.Id == reviewForm.UserId);
+        if (user == null || product == null)
+            return BadRequest();
+        var rating = new Rating
+        {
+            Star = reviewForm.Star,
+            Title = reviewForm.Title,
+            Comment = reviewForm.Comment,
+            UpdatedDate = new DateTime(),
+            Product = product,
+            User = user
+        };
+        _context.Ratings!.Add(rating);
+        await _context.SaveChangesAsync();
 
-    //     return Ok();
-    // }
+        return Ok();
+    }
 
     private static RatingDTO RatingDTO(Rating rating) =>
         new RatingDTO

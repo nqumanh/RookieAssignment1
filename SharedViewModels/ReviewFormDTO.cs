@@ -4,8 +4,11 @@ namespace SharedViewModels;
 
 public class ReviewFormDTO
 {
-    public int UserId { get; set; }
+    [Required]
+    public string UserId { get; set; } = null!;
+    [Required]
     public int ProductId { get; set; }
+    [Required]
     public int Star { get; set; }
     public string? Title { get; set; }
     public string? Comment { get; set; }

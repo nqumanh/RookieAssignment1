@@ -25,10 +25,11 @@ public class UserController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            var user = new User { UserName = input.UserName, Email = input.Email };
+            var user = new User { UserName = input.UserName, Email = input.Email, Name = input.Name, PhoneNumber = input.PhoneNumber, Address = input.Address };
             var result = await _userManager.CreateAsync(user, input.Password);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "customer");
                 return Ok();
             }
             else
@@ -43,11 +44,11 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> Login(RegisterFormDTO input)
+    public async Task<IActionResult> Login(LoginFormDTO input)
     {
         if (ModelState.IsValid)
         {
-            var result = await _signInManager.PasswordSignInAsync(input.Email,
+            var result = await _signInManager.PasswordSignInAsync(input.Username,
                            input.Password, isPersistent: false, lockoutOnFailure: true);
 
             if (result.Succeeded)
