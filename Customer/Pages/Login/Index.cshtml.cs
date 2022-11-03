@@ -29,19 +29,21 @@ public class LoginModel : PageModel
         if ((int)response.StatusCode != 200)
             return Page();
 
-        HttpContext.Session.SetString("jwt", obj.AccessToken);
-        HttpContext.Session.SetString("name", obj.Name);
+        var session = HttpContext.Session;
+        if (obj != null)
+        {
+            session.SetString("jwt", obj.AccessToken);
+            session.SetString("name", obj.Name);
+        }
 
         return RedirectToPage("../Index");
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public IActionResult OnGetAsync()
     {
         if (string.IsNullOrEmpty(HttpContext!.Session.GetString("jwt")))
-        {
-            return Page();
-        }
-        return RedirectToPage("../Index");
+            return RedirectToPage("../Index");
+        return Page();
     }
 }
 

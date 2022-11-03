@@ -30,7 +30,7 @@ public class RegisterModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnGetAsync()
+    public IActionResult OnGetAsync()
     {
         if (string.IsNullOrEmpty(HttpContext!.Session.GetString("jwt")))
         {

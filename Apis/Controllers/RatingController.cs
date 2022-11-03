@@ -51,7 +51,6 @@ public class RatingController : ControllerBase
         var rating = new Rating
         {
             Star = reviewForm.Star,
-            Title = reviewForm.Title,
             Comment = reviewForm.Comment,
             UpdatedDate = new DateTime(),
             Product = product,

@@ -32,7 +32,7 @@ public class DetailsModel : PageModel
         var result = response.Content.ReadAsStringAsync().Result;
         Product = JsonConvert.DeserializeObject<ProductDTO>(result) ?? new ProductDTO();
 
-        response = await client.GetAsync($"Product/GetAllRatingsOfProduct/{id}");
+        response = await client.GetAsync($"Rating/GetAll/{id}");
         result = response.Content.ReadAsStringAsync().Result;
         RatingList = JsonConvert.DeserializeObject<List<RatingDTO>>(result) ?? new List<RatingDTO>();
     }
@@ -48,7 +48,7 @@ public class DetailsModel : PageModel
         }
         ReviewForm.UserId = userId;
         ReviewForm.Star = Int32.Parse(Stars);
-        await client.PostAsJsonAsync("Product/WriteReview", ReviewForm);
+        await client.PostAsJsonAsync("Rating/Add", ReviewForm);
         return RedirectToPage();
     }
 }
