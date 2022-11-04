@@ -24,7 +24,7 @@ public class OrderModel : PageModel
     {
         Cart = GetCartItems();
         HttpClient client = _api.initial();
-        var response = await client.GetAsync($"Product/GetProductById/{id}");
+        var response = await client.GetAsync($"Product/Read/{id}");
         var result = response.Content.ReadAsStringAsync().Result;
         var cartItem = JsonConvert.DeserializeObject<CartItem>(result) ?? new CartItem();
         var index = Cart.FindIndex(x => x.Id == cartItem.Id);
@@ -39,6 +39,7 @@ public class OrderModel : PageModel
         }
         var session = HttpContext.Session;
         string jsoncart = JsonConvert.SerializeObject(Cart);
+        Console.WriteLine(jsoncart);
         session.SetString("cart", jsoncart);
         return RedirectToPage();
     }
