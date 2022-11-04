@@ -66,7 +66,7 @@ public class UserController : ControllerBase
                 new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.StreetAddress, user.Address),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
             foreach (var userRole in userRoles)
             {

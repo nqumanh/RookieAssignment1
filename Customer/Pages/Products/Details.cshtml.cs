@@ -21,6 +21,8 @@ public class DetailsModel : PageModel
     [BindProperty]
     public string Stars { get; set; } = "0";
     [BindProperty]
+    public List<string> TitleList { get; set; } = new List<string>() { "Very Bad", "Poor", "OK", "Good", "Excellent" };
+    [BindProperty]
     public ReviewFormDTO ReviewForm { get; set; } = default!;
     public List<RatingDTO> RatingList { get; set; } = new List<RatingDTO>();
 
@@ -44,7 +46,7 @@ public class DetailsModel : PageModel
             TempData["error"] = "Click a star to rate!";
             return RedirectToPage();
         }
-        
+
         ReviewForm.ProductId = id;
         ReviewForm.UserId = HttpContext!.Request.Cookies["Id"]!;
 
@@ -54,13 +56,14 @@ public class DetailsModel : PageModel
             TempData["error"] = "You have to login first!";
             return RedirectToPage();
         }
-        
+
         HttpClient client = _api.initial();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
         var response = await client.PostAsJsonAsync("User/WriteReview", ReviewForm);
         var result = response.Content.ReadAsStringAsync().Result;
         Console.WriteLine(response);
-        
+
         if ((int)response.StatusCode != 200)
         {
             TempData["error"] = result;

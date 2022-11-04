@@ -21,8 +21,8 @@ builder.Services.AddCors(options =>
                                                 "http://localhost:3000")
                                                     .AllowAnyHeader()
                                                     .AllowAnyMethod();
-                                                    // .SetIsOriginAllowed(origin => true) // allow any origin
-                                                    // .AllowCredentials(); // allow credentials
+                          // .SetIsOriginAllowed(origin => true) // allow any origin
+                          // .AllowCredentials(); // allow credentials
                       });
 });
 
@@ -32,7 +32,8 @@ builder.Services.AddDbContext<BookStoreContext>(options =>
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<BookStoreContext>();
+    .AddEntityFrameworkStores<BookStoreContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -57,19 +58,25 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddControllers();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
-            {
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SymmetricKey"]))
-                };
-            });
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SymmetricKey"]))
+        };
+    });
 
 builder.Services.AddAuthorization();
 
