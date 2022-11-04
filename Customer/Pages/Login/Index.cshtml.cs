@@ -23,25 +23,32 @@ public class LoginModel : PageModel
         HttpClient client = _api.initial();
         var response = await client.PostAsJsonAsync("User/Login", LoginForm);
         var result = response.Content.ReadAsStringAsync().Result;
-        var definition = new { Name = "", AccessToken = "" };
-        var obj = JsonConvert.DeserializeAnonymousType(result, definition);
 
         if ((int)response.StatusCode != 200)
-            return Page();
-
-        var session = HttpContext.Session;
-        if (obj != null)
         {
-            session.SetString("jwt", obj.AccessToken);
-            session.SetString("name", obj.Name);
+            TempData["error"] = "Login failed!";
+            return Page();
         }
 
+        var definition = new { Id = "", Name = "", AccessToken = "" };
+        var obj = JsonConvert.DeserializeAnonymousType(result, definition);
+
+        if (obj != null)
+        {
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddMinutes(30);
+            Response.Cookies.Append("Id", obj.Id, options);
+            Response.Cookies.Append("Name", obj.Name, options);
+            Response.Cookies.Append("AccessToken", obj.AccessToken, options);
+        }
+
+        TempData["success"] = "Login Successfully";
         return RedirectToPage("../Index");
     }
 
     public IActionResult OnGetAsync()
     {
-        if (string.IsNullOrEmpty(HttpContext!.Session.GetString("jwt")))
+        if (!string.IsNullOrEmpty(HttpContext.Request!.Cookies["AccessToken"]))
             return RedirectToPage("../Index");
         return Page();
     }

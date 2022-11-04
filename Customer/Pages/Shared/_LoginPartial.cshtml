@@ -2,7 +2,7 @@
 @inject IHttpContextAccessor Accessor
 
 <ul class="navbar-nav d-flex flex-row p-2 align-middle">
-    @if (string.IsNullOrEmpty(@Accessor.HttpContext!.Session.GetString("jwt")))
+    @if (string.IsNullOrEmpty(@Context.Request.Cookies["Name"]))
     {
         <li class="nav-item" style="margin: 0 18px">
             <a class="navHeader" asp-area="" asp-page="/Register/index">
@@ -19,7 +19,7 @@
     {
         <li class="nav-item" style="margin: 0 18px">
             <p style="font-weight: 500;" class="m-0">
-                Hello <span class="text-danger">@Accessor.HttpContext!.Session.GetString("name")</span>
+                Hello <span class="text-danger">@Context.Request.Cookies["Name"]</span>
             </p>
         </li>
         <li class="nav-item" style="margin: 0 18px;">

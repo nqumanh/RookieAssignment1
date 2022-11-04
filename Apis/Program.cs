@@ -20,9 +20,9 @@ builder.Services.AddCors(options =>
                           policy.WithOrigins("https://localhost:5001",
                                                 "http://localhost:3000")
                                                     .AllowAnyHeader()
-                                                    .AllowAnyMethod()
-                                                    .SetIsOriginAllowed(origin => true) // allow any origin
-                                                    .AllowCredentials(); // allow credentials
+                                                    .AllowAnyMethod();
+                                                    // .SetIsOriginAllowed(origin => true) // allow any origin
+                                                    // .AllowCredentials(); // allow credentials
                       });
 });
 
@@ -70,6 +70,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SymmetricKey"]))
                 };
             });
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 

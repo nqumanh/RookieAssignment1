@@ -132,7 +132,6 @@ public class ProductController : ControllerBase
         new RatingDTO
         {
             Star = rating.Star,
-            Title = rating.Title,
             Comment = rating.Comment,
             Reviewer = rating.User.Name,
             UpdatedDate = rating.UpdatedDate

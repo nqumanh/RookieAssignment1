@@ -19,16 +19,6 @@ public class RatingController : ControllerBase
         _context = context;
     }
 
-    // [HttpGet("[action]/{id}")]
-    // public async Task<ActionResult<IEnumerable<RatingDTO>>> GetAllRatingsOfProduct(int id)
-    // {
-    //     return await _context.Ratings!
-    //                     .Include(x => x.Product)
-    //                     .Include(x => x.User)
-    //                     .Where(x => x.Product.Id == id)
-    //                     .Select(x => RatingDTO(x))
-    //                     .ToListAsync();
-    // }
     [HttpGet("[action]/{id}")]
     public async Task<ActionResult<IEnumerable<RatingDTO>>> GetAll(int id)
     {
@@ -40,33 +30,10 @@ public class RatingController : ControllerBase
                          .ToListAsync();
     }
 
-    [HttpPost("[action]")]
-    public async Task<ActionResult<Rating>> Add(ReviewFormDTO reviewForm)
-    {
-        var product = await _context.Products!.FindAsync(reviewForm.ProductId);
-        var user = await _userManager.Users!
-            .FirstOrDefaultAsync(x => x.Id == reviewForm.UserId);
-        if (user == null || product == null)
-            return BadRequest();
-        var rating = new Rating
-        {
-            Star = reviewForm.Star,
-            Comment = reviewForm.Comment,
-            UpdatedDate = new DateTime(),
-            Product = product,
-            User = user
-        };
-        _context.Ratings!.Add(rating);
-        await _context.SaveChangesAsync();
-
-        return Ok();
-    }
-
     private static RatingDTO RatingDTO(Rating rating) =>
         new RatingDTO
         {
             Star = rating.Star,
-            Title = rating.Title,
             Comment = rating.Comment,
             Reviewer = rating.User.Name,
             UpdatedDate = rating.UpdatedDate

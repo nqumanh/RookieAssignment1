@@ -4,8 +4,10 @@ namespace SharedViewModels;
 
 public class RatingDTO
 {
-    public string? Title { get; set; }
+    [Required]
+    [Range(1,5)]
     public int Star { get; set; }
+    [Required]
     public string? Comment { get; set; }
     public string Reviewer { get; set; } = string.Empty;
     [DataType(DataType.Date)]

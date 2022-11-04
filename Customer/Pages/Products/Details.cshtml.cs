@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Configuration;
+﻿using Newtonsoft.Json;
 using CustomerSite.Helper;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using SharedViewModels;
 
 namespace CustomerSite.Pages;
@@ -20,7 +19,7 @@ public class DetailsModel : PageModel
     public ProductDTO Product { get; set; } = default!;
 
     [BindProperty]
-    public string Stars { get; set; } = "5";
+    public string Stars { get; set; } = "0";
     [BindProperty]
     public ReviewFormDTO ReviewForm { get; set; } = default!;
     public List<RatingDTO> RatingList { get; set; } = new List<RatingDTO>();
@@ -39,16 +38,36 @@ public class DetailsModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(int id)
     {
-        HttpClient client = _api.initial();
-        ReviewForm.ProductId = id;
-        string userId = Request.Cookies["Id"]!;
-        if (userId == null)
+        ReviewForm.Star = Int32.Parse(Stars);
+        if (ReviewForm.Star < 1 || ReviewForm.Star > 5)
         {
+            TempData["error"] = "Click a star to rate!";
             return RedirectToPage();
         }
-        ReviewForm.UserId = userId;
-        ReviewForm.Star = Int32.Parse(Stars);
-        await client.PostAsJsonAsync("Rating/Add", ReviewForm);
+        
+        ReviewForm.ProductId = id;
+        ReviewForm.UserId = HttpContext!.Request.Cookies["Id"]!;
+
+        var token = HttpContext.Request.Cookies["AccessToken"];
+        if (token == null)
+        {
+            TempData["error"] = "You have to login first!";
+            return RedirectToPage();
+        }
+        
+        HttpClient client = _api.initial();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var response = await client.PostAsJsonAsync("User/WriteReview", ReviewForm);
+        var result = response.Content.ReadAsStringAsync().Result;
+        Console.WriteLine(response);
+        
+        if ((int)response.StatusCode != 200)
+        {
+            TempData["error"] = result;
+            return RedirectToPage();
+        }
+
+        TempData["success"] = "Rating Successfully!";
         return RedirectToPage();
     }
 }

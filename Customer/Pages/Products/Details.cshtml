@@ -87,7 +87,7 @@
             <div class="rate">
                 @for (int i = 5; i > 0; i--)
                 {
-                    <input type="radio" id="@i" name="Stars" value="@i" />
+                    <input type="radio" id="@i" name="Stars" value=@i />
                     <label for="@i" title="text"></label>
                 }
             </div>
@@ -115,10 +115,11 @@
     }
     @foreach (var rating in @Model.RatingList)
     {
+        List<string> titles = new List<string>() { "Very Bad", "Poor", "Ok", "Good", "Excellent" };
         <div class="card mb-3">
             <div class="card-body">
                 <div class='d-flex justify-content-between'>
-                    <h5 class="card-title">@rating.Title</h5>
+                    @* <h5 class="card-title">@titles[rating.Star-1]</h5> *@
                     <p class="text-secondary">Created Date</p>
                 </div>
                 <div class='d-flex justify-content-between'>

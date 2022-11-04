@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Apis.Data;
 using Apis.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -76,6 +77,7 @@ public class UserController : ControllerBase
 
             return Ok(new
             {
+                Id = user.Id,
                 Name = user.Name,
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
             });
@@ -93,6 +95,52 @@ public class UserController : ControllerBase
         return Ok();
     }
 
+    [Authorize]
+    [HttpPost("[action]")]
+    public async Task<ActionResult<RatingDTO>> WriteReview(ReviewFormDTO reviewForm)
+    {
+        if (reviewForm.Star < 1 || reviewForm.Star > 5)
+            return BadRequest("Click a star to rate");
+
+        var product = await _context.Products!.FindAsync(reviewForm.ProductId);
+
+        if (product == null)
+        {
+            return BadRequest("Product does not exist.");
+        }
+
+        var claimsPrincipal = HttpContext.User;
+        var user = _userManager.Users.FirstOrDefault(x => x.Id == reviewForm.UserId);
+
+        if (user == null)
+            return BadRequest("Require Login");
+
+        DateTime time = DateTime.Now;
+        var rating = new Rating
+        {
+            Star = reviewForm.Star,
+            Comment = reviewForm.Comment,
+            CreatedDate = time,
+            UpdatedDate = time,
+            Product = product,
+            User = user
+        };
+
+        _context.Ratings!.Add(rating);
+        await _context.SaveChangesAsync();
+
+        return Ok(RatingDTO(rating));
+    }
+
+    private static RatingDTO RatingDTO(Rating rating) =>
+        new RatingDTO
+        {
+            Star = rating.Star,
+            Comment = rating.Comment,
+            Reviewer = rating.User.Name,
+            UpdatedDate = rating.UpdatedDate
+        };
+
     private JwtSecurityToken CreateToken(List<Claim> authClaims)
     {
         var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SymmetricKey"]));
@@ -100,7 +148,7 @@ public class UserController : ControllerBase
         var token = new JwtSecurityToken(
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
-            expires: DateTime.Now.AddMinutes(5),
+            expires: DateTime.Now.AddMinutes(30),
             claims: authClaims,
             signingCredentials: new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256));
 

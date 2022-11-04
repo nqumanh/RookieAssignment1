@@ -32,7 +32,7 @@ public class RegisterModel : PageModel
 
     public IActionResult OnGetAsync()
     {
-        if (string.IsNullOrEmpty(HttpContext!.Session.GetString("jwt")))
+        if (!string.IsNullOrEmpty(HttpContext.Request.Cookies["AccessToken"]))
         {
             return Page();
         }

@@ -69,7 +69,6 @@ public class CategoryController : ControllerBase
 
         if (category == null) return NotFound();
 
-
         category.Name = categoryDTO.Name;
         category.Description = categoryDTO.Description;
 

@@ -36,8 +36,11 @@ public class IndexModel : PageModel
         HttpClient client = _api.initial();
         var response = await client.GetAsync("User/Logout");
 
-        HttpContext.Session.Remove("jwt");
+        HttpContext.Response.Cookies.Delete("AccessToken");
+        HttpContext.Response.Cookies.Delete("Name");
+        HttpContext.Response.Cookies.Delete("Id");
 
+        TempData["success"] = "Logout!";
         return RedirectToPage("/Index");
     }
 
