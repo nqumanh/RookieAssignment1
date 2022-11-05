@@ -14,11 +14,13 @@ public class AdminController : ControllerBase
     private readonly BookStoreContext _context;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AdminController(BookStoreContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+    public AdminController(BookStoreContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
     {
         _context = context;
         _userManager = userManager;
+        _roleManager = roleManager;
         _signInManager = signInManager;
     }
 
@@ -34,10 +36,13 @@ public class AdminController : ControllerBase
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> Logout()
+    public async Task<IActionResult> AddRole(string name)
     {
-        await _signInManager.SignOutAsync();
-        return Ok();
+        IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(name));
+        if (result.Succeeded)
+            return Ok();
+        else
+            return BadRequest(result);
     }
 
     [HttpGet("[action]")]
@@ -53,5 +58,12 @@ public class AdminController : ControllerBase
             Address = x.Address,
             UserName = x.UserName,
         }).ToList();
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return Ok();
     }
 }

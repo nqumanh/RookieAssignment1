@@ -62,7 +62,6 @@ public class DetailsModel : PageModel
 
         var response = await client.PostAsJsonAsync("User/WriteReview", ReviewForm);
         var result = response.Content.ReadAsStringAsync().Result;
-        Console.WriteLine(response);
 
         if ((int)response.StatusCode != 200)
         {

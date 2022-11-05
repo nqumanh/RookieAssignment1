@@ -90,7 +90,6 @@ public class ProductController : ControllerBase
         product.Quantity = productDTO.Quantity;
         product.UpdatedDate = DateTime.Now;
         product.Category = category;
-        Console.WriteLine(product.CreatedDate);
 
         try
         {

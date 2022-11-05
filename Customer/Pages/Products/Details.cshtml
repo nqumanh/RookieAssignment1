@@ -30,7 +30,7 @@
                         $@Model.Product.Price
                     </p>
                     <div class="mb-3">
-                        @for (int i = 0; i < Math.Floor(@Model.Product.AverageRating); i++)
+                        @for (int i = 0; i < Math.Round(@Model.Product.AverageRating * 2) / 2; i++)
                         {
                             <i class="bi bi-star-fill" style="color: #ffc700;"></i>
                         }

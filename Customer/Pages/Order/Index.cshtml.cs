@@ -39,7 +39,6 @@ public class OrderModel : PageModel
         }
         var session = HttpContext.Session;
         string jsoncart = JsonConvert.SerializeObject(Cart);
-        Console.WriteLine(jsoncart);
         session.SetString("cart", jsoncart);
         return RedirectToPage();
     }
@@ -60,12 +59,40 @@ public class OrderModel : PageModel
         Cart = new List<CartItem>();
     }
 
-    public IActionResult OnGetCheckOut(int id)
+    public async Task<IActionResult> OnPostAsync()
     {
+        // HttpClient client = _api.initial();
+        // var response = await client.PostAsJsonAsync("User/Order", OrderForm);
+        // var result = response.Content.ReadAsStringAsync().Result;
+
         var session = HttpContext.Session;
         session.Remove("cart");
         Cart = new List<CartItem>();
         return RedirectToPage("./Success");
+        // HttpClient client = _api.initial();
+        // var response = await client.PostAsJsonAsync("User/Login", LoginForm);
+        // var result = response.Content.ReadAsStringAsync().Result;
+
+        // if ((int)response.StatusCode != 200)
+        // {
+        //     TempData["error"] = "Login failed!";
+        //     return Page();
+        // }
+
+        // var definition = new { Id = "", Name = "", AccessToken = "" };
+        // var obj = JsonConvert.DeserializeAnonymousType(result, definition);
+
+        // if (obj != null)
+        // {
+        //     CookieOptions options = new CookieOptions();
+        //     options.Expires = DateTime.Now.AddMinutes(30);
+        //     Response.Cookies.Append("Id", obj.Id, options);
+        //     Response.Cookies.Append("Name", obj.Name, options);
+        //     Response.Cookies.Append("AccessToken", obj.AccessToken, options);
+        // }
+
+        // TempData["success"] = "Login Successfully";
+        // return RedirectToPage("../Index");
     }
 
     public List<CartItem> GetCartItems()

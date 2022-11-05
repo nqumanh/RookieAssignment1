@@ -88,13 +88,6 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpGet("[action]")]
-    public async Task<IActionResult> Logout()
-    {
-        await _signInManager.SignOutAsync();
-        return Ok();
-    }
-
     [Authorize]
     [HttpPost("[action]")]
     public async Task<ActionResult<RatingDTO>> WriteReview(ReviewFormDTO reviewForm)
@@ -132,6 +125,49 @@ public class UserController : ControllerBase
         return Ok(RatingDTO(rating));
     }
 
+    // [Authorize]
+    [HttpPost("[action]")]
+    public async Task<ActionResult<OrderDTO>> Order(OrderDTO orderDTO)
+    {
+        var claimsPrincipal = HttpContext.User;
+        var user = _userManager.Users.FirstOrDefault(x => x.Id == orderDTO.UserId);
+
+        if (user == null)
+            return BadRequest("Require Login");
+
+        var cart = new List<OrderLine>();
+        foreach (var item in orderDTO.Cart)
+        {
+            var product = await _context.Products!.FindAsync(item.ProductId);
+            if (product == null) return BadRequest("Product not found");
+            var orderLine = new OrderLine
+            {
+                Quantity = item.Quantity,
+                Product = product,
+            };
+            cart.Add(orderLine);
+        }
+
+        var order = new Order
+        {
+            User = user,
+            Address = orderDTO.Address,
+            OrderLines = cart,
+        };
+
+        _context.Orders!.Add(order);
+        await _context.SaveChangesAsync();
+
+        return Ok(OrderDTO(order));
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return Ok();
+    }
+
     private static RatingDTO RatingDTO(Rating rating) =>
         new RatingDTO
         {
@@ -139,6 +175,21 @@ public class UserController : ControllerBase
             Comment = rating.Comment,
             Reviewer = rating.User.Name,
             UpdatedDate = rating.UpdatedDate
+        };
+
+    private static OrderDTO OrderDTO(Order order) =>
+        new OrderDTO
+        {
+            UserId = order.User.Id,
+            Address = order.Address,
+            Cart = order.OrderLines!.Select(x => CartItemDTO(x)).ToList()
+        };
+
+    private static CartItemDTO CartItemDTO(OrderLine orderLine) =>
+        new CartItemDTO
+        {
+            ProductId = orderLine.Product.Id,
+            Quantity = orderLine.Quantity
         };
 
     private JwtSecurityToken CreateToken(List<Claim> authClaims)
