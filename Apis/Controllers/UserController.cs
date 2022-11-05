@@ -125,7 +125,7 @@ public class UserController : ControllerBase
         return Ok(RatingDTO(rating));
     }
 
-    // [Authorize]
+    [Authorize]
     [HttpPost("[action]")]
     public async Task<ActionResult<OrderDTO>> Order(OrderDTO orderDTO)
     {
@@ -148,11 +148,13 @@ public class UserController : ControllerBase
             cart.Add(orderLine);
         }
 
+        DateTime time = DateTime.Now;
         var order = new Order
         {
             User = user,
             Address = orderDTO.Address,
             OrderLines = cart,
+            Time = time
         };
 
         _context.Orders!.Add(order);

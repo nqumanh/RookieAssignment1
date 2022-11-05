@@ -49,12 +49,16 @@
     <a class="btn btn-success" asp-page-handler="ClearCart">Clear Cart</a>
 
     <div class="info-form" style="margin-top: 40px;">
-        <h4 style="border-bottom: 3px solid #e1e1e1;margin-bottom: 50px;" class="py-3">PLEASE COMPILE THE FORM!</h4>
-        <form method="post">
-            <input class="form-control mb-3" type="text" placeholder="Address" aria-label="default input example"
-                style="border: 0; border-bottom: 2px solid #e1e1e1; border-radius: 0;">
-            <input class="form-control mb-3" type="text" placeholder="Your message" aria-label="Your message"
-                style="border: 0; border-bottom: 2px solid #e1e1e1; border-radius: 0;">
+        <h4 style="border-bottom: 3px solid #e1e1e1;margin-bottom: 50px;" class="py-3">PLEASE FILL THE FORM!</h4>
+        <form method="post" class="needs-validation">
+            <input asp-for="@Model.OrderForm.Address" class="form-control mb-3" type="text" placeholder="Address"
+                aria-label="default input example"
+                style="border: 0; border-bottom: 2px solid #e1e1e1; border-radius: 0;" required>
+            <div class="invalid-feedback">
+                Please provide an address.
+            </div>
+            <input asp-for="@Model.OrderForm.Message" class="form-control mb-3" type="text" placeholder="Your message"
+                aria-label="Your message" style="border: 0; border-bottom: 2px solid #e1e1e1; border-radius: 0;">
             <button class="btn btn-success my-4" type="submit" class="btn btn-success">Check Out</button>
         </form>
     </div>

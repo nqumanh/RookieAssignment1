@@ -9,5 +9,6 @@ public class Order
     public User User { get; set; } = null!;
     [Required]
     public string Address { get; set; } = string.Empty;
+    public DateTime Time { get; set; }
     public ICollection<OrderLine>? OrderLines { get; set; }
 }
