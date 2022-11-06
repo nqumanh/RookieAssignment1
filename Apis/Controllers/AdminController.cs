@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using SharedViewModels;
+using AutoMapper;
 
 namespace Apis.Controllers;
 
@@ -11,13 +12,20 @@ namespace Apis.Controllers;
 [Route("[controller]")]
 public class AdminController : ControllerBase
 {
+    private readonly IMapper _mapper;
     private readonly BookStoreContext _context;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public AdminController(BookStoreContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
+    public AdminController(
+        BookStoreContext context,
+        UserManager<User> userManager,
+        SignInManager<User> signInManager,
+        RoleManager<IdentityRole> roleManager,
+        IMapper mapper)
     {
+        _mapper = mapper;
         _context = context;
         _userManager = userManager;
         _roleManager = roleManager;
@@ -32,6 +40,7 @@ public class AdminController : ControllerBase
 
         if (!result.Succeeded)
             return BadRequest("Invalid Account!");
+
         return Ok("Login Successfully!");
     }
 
@@ -49,15 +58,7 @@ public class AdminController : ControllerBase
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
     {
         var users = await _userManager.GetUsersInRoleAsync("customer");
-        return users.Select(x => new UserDTO
-        {
-            Id = x.Id,
-            Name = x.Name,
-            Email = x.Email,
-            PhoneNumber = x.PhoneNumber,
-            Address = x.Address,
-            UserName = x.UserName,
-        }).ToList();
+        return _mapper.Map<List<UserDTO>>(users);
     }
 
     [HttpGet("[action]")]

@@ -56,6 +56,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = false;
 });
 
+builder.Services.AddAutoMapper(typeof(Program)); 
+
 builder.Services.AddControllers();
 
 builder.Services.AddAuthentication(options =>

@@ -1,5 +1,6 @@
 using Apis.Models;
 using Apis.Repository;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedViewModels;
@@ -11,10 +12,12 @@ namespace Apis.Controllers;
 public class CategoryController : ControllerBase
 {
     private ICategoryRepository _categoryRepository;
+    private readonly IMapper _mapper;
 
-    public CategoryController(ICategoryRepository categoryRepository)
+    public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
     {
         _categoryRepository = categoryRepository;
+        _mapper = mapper;
     }
 
     [HttpGet("[action]")]
@@ -22,7 +25,7 @@ public class CategoryController : ControllerBase
     {
         var categories = await _categoryRepository.GetAll();
         if (categories == null) return NotFound("Category Empty");
-        var result = categories.Select(x => CategoryDTO(x)).ToList();
+        var result = _mapper.Map<List<CategoryDTO>>(categories);
         return Ok(result);
     }
 
@@ -36,7 +39,7 @@ public class CategoryController : ControllerBase
             return NotFound();
         }
 
-        return CategoryDTO(category);
+        return _mapper.Map<CategoryDTO>(category);
     }
 
     [HttpPost("[action]")]
@@ -54,7 +57,7 @@ public class CategoryController : ControllerBase
         return CreatedAtAction(
             nameof(Get),
             new { id = category.Id },
-            CategoryDTO(category));
+            _mapper.Map<CategoryDTO>(category));
     }
 
     [HttpPut("[action]/{id}")]
@@ -101,12 +104,4 @@ public class CategoryController : ControllerBase
     {
         return _categoryRepository.IsExisted(id);
     }
-
-    private static CategoryDTO CategoryDTO(Category category) =>
-        new CategoryDTO
-        {
-            Id = category.Id,
-            Name = category.Name,
-            Description = category.Description
-        };
 }

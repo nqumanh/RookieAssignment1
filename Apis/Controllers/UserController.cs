@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Apis.Data;
 using Apis.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +19,11 @@ public class UserController : ControllerBase
     private readonly BookStoreContext _context;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
-    public UserController(BookStoreContext context, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration)
+    public UserController(BookStoreContext context, UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration configuration, IMapper mapper)
     {
+        _mapper = mapper;
         _context = context;
         _userManager = userManager;
         _signInManager = signInManager;
@@ -32,7 +35,14 @@ public class UserController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            var user = new User { UserName = input.UserName, Email = input.Email, Name = input.Name, PhoneNumber = input.PhoneNumber, Address = input.Address };
+            var user = new User
+            {
+                Name = input.Name,
+                Email = input.Email,
+                Address = input.Address,
+                UserName = input.UserName,
+                PhoneNumber = input.PhoneNumber,
+            };
             var result = await _userManager.CreateAsync(user, input.Password);
             if (result.Succeeded)
             {
@@ -122,7 +132,7 @@ public class UserController : ControllerBase
         _context.Ratings!.Add(rating);
         await _context.SaveChangesAsync();
 
-        return Ok(RatingDTO(rating));
+        return Ok(_mapper.Map<RatingDTO>(rating));
     }
 
     [Authorize]
@@ -169,15 +179,6 @@ public class UserController : ControllerBase
         await _signInManager.SignOutAsync();
         return Ok();
     }
-
-    private static RatingDTO RatingDTO(Rating rating) =>
-        new RatingDTO
-        {
-            Star = rating.Star,
-            Comment = rating.Comment,
-            Reviewer = rating.User.Name,
-            UpdatedDate = rating.UpdatedDate
-        };
 
     private static OrderDTO OrderDTO(Order order) =>
         new OrderDTO
