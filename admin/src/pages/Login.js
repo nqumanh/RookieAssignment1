@@ -10,8 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useNavigate, Link } from "react-router-dom";
-import { loginApi } from "../apis/useApi"
+import { Link } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -28,8 +27,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
-  let navigate = useNavigate();
+export default function SignIn(props) {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -37,14 +35,15 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    loginApi({
+    props.login({
       username: username,
       password: password
-    }).then(function (response) {
-      navigate(`/dashboard/categories`);
-    }).catch(function (response) {
-      alert(response.response.data);
     });
+    // loginApi().then(function (response) {
+    //   navigate(`/dashboard/categories`);
+    // }).catch(function (response) {
+    //   alert(response.response.data);
+    // });
   };
 
   const onChange = (e) => {

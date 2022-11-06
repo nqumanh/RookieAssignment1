@@ -65,7 +65,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+export default function DashboardContent(props) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -123,7 +123,7 @@ function DashboardContent() {
             </IconButton>
           </Toolbar>
           <Divider />
-          <SideBar />
+          <SideBar logout={props.logout} />
         </Drawer>
         <Box
           component="main"
@@ -147,8 +147,4 @@ function DashboardContent() {
       </Box>
     </ThemeProvider>
   );
-}
-
-export default function Dashboard() {
-  return <DashboardContent />;
 }

@@ -4,18 +4,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { logoutApi } from '../../apis/useApi';
 import { useNavigate } from 'react-router-dom';
 
-export default function SecondaryListItems() {
-    let navigate = useNavigate();
+export default function SecondaryListItems(props) {
+    const navigate = useNavigate();
 
-    const logout = () => {
-        logoutApi().then(function (response) {
-            navigate("/");
-        }).catch(function (response) {
-            alert(response.response.data);
-        });
+    const handleClick = () => {
+        props.logout();
+        navigate("/")
     }
 
     return <React.Fragment>
@@ -30,7 +26,7 @@ export default function SecondaryListItems() {
             <ListItemText primary="Settings" />
             </ListItemButton>
         </Link> */}
-        <ListItemButton onClick={logout}>
+        <ListItemButton onClick={handleClick}>
             <ListItemIcon>
                 <LogoutIcon />
             </ListItemIcon>

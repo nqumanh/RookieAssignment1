@@ -6,7 +6,7 @@ const BASE_URL = "https://localhost:7133";
 const loginApi = (loginForm) =>
     axios.post(`${BASE_URL}/Admin/Login`, loginForm)
 const logoutApi = () =>
-    axios.post(`${BASE_URL}/Admin/Logout`);
+    axios.get(`${BASE_URL}/Admin/Logout`);
 
 // Category
 const getAllCategories = () =>
