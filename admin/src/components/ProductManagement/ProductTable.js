@@ -264,7 +264,7 @@ export default function EnhancedTable() {
             author: product.author,
             price: product.price,
             quantity: product.quantity,
-            categoryId: product.categoryId.toString(),
+            categoryId: (product.categoryId != null) ? product.categoryId.toString() : null,
         }
         addProductApi(productModel).then((response) => {
             setRows([
@@ -277,7 +277,10 @@ export default function EnhancedTable() {
                 ...rows
             ])
             setPage(0)
-        })
+        }).catch(function (response) {
+            console.log(response)
+            alert(response.response.data.errors.productDTO[0])
+        });
     }
 
     // const readCategory = (category) => {
@@ -292,7 +295,7 @@ export default function EnhancedTable() {
             author: product.author,
             price: product.price,
             quantity: product.quantity,
-            categoryId: (product.categoryId === "") ? null : product.categoryId.toString(),
+            categoryId: (product.categoryId != null) ? product.categoryId.toString() : null
         }
         updateProductApi(selectedId, productModel).then((response) => {
             setRows(rows.map(row => (row.id === selectedId) ?

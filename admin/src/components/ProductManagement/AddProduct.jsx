@@ -11,6 +11,8 @@ import Slide from '@mui/material/Slide';
 import { DialogContent, DialogContentText, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { getAllCategories } from "../../apis/useApi";
 import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import Alert from '@mui/material/Alert';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -27,6 +29,8 @@ export default function AddProduct(props) {
     const [quantity, setQuantity] = useState("");
     const [categoryList, setCategoryList] = useState([])
     const { addProduct } = props
+
+    const { register, handleSubmit, formState: { errors } } = useForm();
 
     useEffect(() => {
         getAllCategories().then((response) => {
@@ -52,16 +56,8 @@ export default function AddProduct(props) {
         setQuantity("")
     };
 
-    const handleSubmit = () => {
-        addProduct({
-            name: name,
-            author: author,
-            categoryId: categoryId,
-            description: description,
-            price: price,
-            image: image,
-            quantity: quantity
-        });
+    const onSubmit = (data) => {
+        addProduct(data);
         setOpen(false);
         handleClear();
     };
@@ -95,113 +91,118 @@ export default function AddProduct(props) {
             onClose={handleClose}
             TransitionComponent={Transition}
         >
-            <AppBar sx={{ position: 'relative' }}>
-                <Toolbar>
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        onClick={handleClose}
-                        aria-label="close"
-                    >
-                        <CloseIcon />
-                    </IconButton>
-                    <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                        Add Product
-                    </Typography>
-                    <div>
-                        <Button autoFocus color="inherit" onClick={handleClear}>
-                            clear
-                        </Button>
-                        <Button autoFocus color="inherit" onClick={handleSubmit}>
-                            submit
-                        </Button>
-                    </div>
-                </Toolbar>
-            </AppBar>
-            <DialogContent>
-                <DialogContentText>
-                    Add your Product category and necessary information from here
-                </DialogContentText>
-                <TextField
-                    id="outlined-textarea"
-                    label="Product Name"
-                    placeholder="Name"
-                    multiline
-                    fullWidth
-                    sx={{ margin: "30px 0" }}
-                    onChange={handleChange}
-                    name="name"
-                    value={name}
-                />
-                <TextField
-                    id="outlined-textarea"
-                    label="Author"
-                    placeholder="Author"
-                    multiline
-                    fullWidth
-                    sx={{ margin: "30px 0" }}
-                    onChange={handleChange}
-                    name="author"
-                    value={author}
-                />
-                <FormControl fullWidth sx={{ margin: "30px 0" }}>
-                    <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        name="category"
-                        value={categoryId}
-                        label="Category"
-                        onChange={handleChange}
-                    >
-                        <MenuItem value={""}>None</MenuItem>
-                        {categoryList.map((category, index) =>
-                            <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
-                        )}
-                    </Select>
-                </FormControl>
-                <TextField
-                    id="outlined-multiline-static"
-                    label="Description"
-                    multiline
-                    fullWidth
-                    sx={{ margin: "30px 0" }}
-                    rows={4}
-                    onChange={handleChange}
-                    name="description"
-                    value={description}
-                />
-                <TextField
-                    id="outlined-textarea"
-                    label="Price"
-                    multiline
-                    fullWidth
-                    sx={{ margin: "30px 0" }}
-                    onChange={handleChange}
-                    name="price"
-                    value={price}
-                />
-                <TextField
-                    id="outlined-textarea"
-                    label="Image"
-                    multiline
-                    fullWidth
-                    sx={{ margin: "30px 0" }}
-                    onChange={handleChange}
-                    name="image"
-                    value={image}
-                />
-                <TextField
-                    id="outlined-textarea"
-                    label="Quantity"
-                    multiline
-                    fullWidth
-                    sx={{ margin: "30px 0" }}
-                    onChange={handleChange}
-                    name="quantity"
-                    value={quantity}
-                />
-            </DialogContent>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <AppBar sx={{ position: 'relative' }}>
+                    <Toolbar>
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            onClick={handleClose}
+                            aria-label="close"
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                        <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                            Add Product
+                        </Typography>
+                        <div>
+                            <Button autoFocus color="inherit" onClick={handleClear}>
+                                clear
+                            </Button>
+                            <Button type="submit" autoFocus color="inherit">
+                                submit
+                            </Button>
+                        </div>
+                    </Toolbar>
+                </AppBar>
+                <DialogContent>
+                    <DialogContentText>
+                        Add your Product category and necessary information from here
+                    </DialogContentText>
+                    <TextField
+                        id="outlined-textarea"
+                        label="Product Name"
+                        placeholder="Name"
+                        multiline
+                        fullWidth
+                        sx={{ marginTop: "30px" }}
+                        name="name"
+                        value={name}
+                        {...register("name", { required: true, onChange: handleChange })}
+                    />
+                    {errors.name && <Alert severity="error">Product name is required</Alert>}
+                    <TextField
+                        id="outlined-textarea"
+                        label="Author"
+                        placeholder="Author"
+                        multiline
+                        fullWidth
+                        sx={{ margin: "30px 0" }}
+                        name="author"
+                        value={author}
+                        {...register("author", { onChange: handleChange })}
+                    />
+                    <FormControl fullWidth sx={{ margin: "30px 0" }}>
+                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            name="category"
+                            value={categoryId}
+                            label="Category"
+                            {...register("category", { onChange: handleChange })}
+                        >
+                            <MenuItem value={""}>None</MenuItem>
+                            {categoryList.map((category, index) =>
+                                <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
+                            )}
+                        </Select>
+                    </FormControl>
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Description"
+                        multiline
+                        fullWidth
+                        sx={{ margin: "30px 0" }}
+                        rows={4}
+                        name="description"
+                        value={description}
+                        {...register("description", { onChange: handleChange })}
+                    />
+                    <TextField
+                        id="outlined-number"
+                        type="number"
+                        label="Price"
+                        fullWidth
+                        name="price"
+                        value={price}
+                        {...register("price", { required: true, onChange: handleChange })}
+                    />
+                    {errors.price && <Alert severity="error">Product price is required</Alert>}
+
+                    <TextField
+                        id="outlined-textarea"
+                        label="Image"
+                        multiline
+                        fullWidth
+                        sx={{ margin: "30px 0" }}
+                        name="image"
+                        value={image}
+                        {...register("image", { onChange: handleChange })}
+                    />
+                    <TextField
+                        id="outlined-number"
+                        label="Quantity"
+                        type="number"
+                        fullWidth
+                        sx={{ marginTop: "30px" }}
+                        name="quantity"
+                        value={quantity}
+                        {...register("quantity", { required: true, onChange: handleChange })}
+                    />
+                    {errors.quantity && <Alert severity="error">Product quantity is required</Alert>}
+                </DialogContent>
+            </form>
         </Dialog>
     </>
 }
