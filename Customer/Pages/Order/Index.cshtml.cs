@@ -84,6 +84,7 @@ public class OrderModel : PageModel
 
         HttpClient client = _api.initial();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        OrderForm.Cart = Cart.Select(x => new CartItemDTO { ProductId = x.Id, Quantity = x.Quantity }).ToList();
         var response = await client.PostAsJsonAsync("User/Order", OrderForm);
         var result = response.Content.ReadAsStringAsync().Result;
 
@@ -107,10 +108,11 @@ public class OrderModel : PageModel
         var item = Cart.Find(s => s.Id == id);
         if (item == null)
             return RedirectToPage();
-        if (quantity < 0){
-            TempData["error"]="Quantity cannot be a negative number!";
+        if (quantity < 0)
+        {
+            TempData["error"] = "Quantity cannot be a negative number!";
             return RedirectToPage();
-        } 
+        }
         else if (quantity == 0)
             Cart = Cart.Where(x => x.Id != id).ToList();
         else
