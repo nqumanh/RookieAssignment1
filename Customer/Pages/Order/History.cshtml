@@ -5,12 +5,12 @@
 }
 
 <h1 class="text-center mt-5">Order History</h1>
+<p class="text-center mb-4">Click an order below to view in detail.</p>
 
 <div class="container">
     <table class="table table-striped table-hover">
         <thead>
             <tr>
-                <th scope="col">#</th>
                 <th scope="col">Address</th>
                 <th scope="col">Time</th>
             </tr>
@@ -19,15 +19,14 @@
             @if (@Model.OrderHistory.Count < 1)
             {
                 <tr>
-                    <td colspan="3" class="text-center">You have not made any previous orders!</td>
+                    <td colspan="2" class="text-center">You have not made any previous orders!</td>
                 </tr>
             }
             else
             {
                 @foreach (var order in @Model.OrderHistory)
                 {
-                    <tr>
-                        <th scope="row">1</th>
+                    <tr onclick="Redirect(@order.Id)">
                         <td>@order.Address</td>
                         <td>@order.Time</td>
                     </tr>
@@ -36,3 +35,9 @@
         </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+    function Redirect(id) {
+        location.href = "/Order/Detail/" + id;
+    }
+</script>

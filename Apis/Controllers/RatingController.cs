@@ -27,7 +27,17 @@ public class RatingController : ControllerBase
                          .Include(x => x.Product)
                          .Include(x => x.User)
                          .Where(x => x.Product.Id == id)
+                         .Select(x => RatingDTO(x))
                          .ToListAsync();
-        return _mapper.Map<List<RatingDTO>>(ratings);
+        return ratings;
     }
+
+    private static RatingDTO RatingDTO(Rating rating) =>
+        new RatingDTO
+        {
+            Star = rating.Star,
+            Comment = rating.Comment,
+            Reviewer = rating.User.Name,
+            UpdatedDate = rating.UpdatedDate
+        };
 }

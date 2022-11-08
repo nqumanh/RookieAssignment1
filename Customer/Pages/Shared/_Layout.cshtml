@@ -45,11 +45,14 @@
                                     PRODUCTS
                                 </a>
                             </li>
-                            <li style="padding: 0 19px">
-                                <a asp-page="/Service/Index" class="navHeader">
-                                    SERVICE
-                                </a>
-                            </li>
+                            @if (!string.IsNullOrEmpty(@Context.Request.Cookies["Name"]))
+                            {
+                                <li style="padding: 0 19px">
+                                    <a asp-page="/Order/History" class="navHeader">
+                                        ORDER HISTORY
+                                    </a>
+                                </li>
+                            }
                             <li style="padding: 0 19px">
                                 <a asp-page="/contact/index" class="navHeader">
                                     CONTACT US

@@ -11,12 +11,12 @@ public class ProductModel : PageModel
 {
     private APIHelper _api = new APIHelper();
     private readonly ILogger<ProductModel> _logger;
-    private readonly IConfiguration Configuration;
+    private readonly IConfiguration _configuration;
 
     public ProductModel(ILogger<ProductModel> logger, IConfiguration configuration)
     {
         _logger = logger;
-        Configuration = configuration;
+        _configuration = configuration;
     }
 
     public List<ProductDTO>? Products = new List<ProductDTO>();
@@ -26,8 +26,8 @@ public class ProductModel : PageModel
     public SelectList? OptionCategories { get; set; }
     [BindProperty(SupportsGet = true)]
     public string? SelectedCategory { get; set; }
-
-    public async Task OnGetAsync()
+    public PaginatedList<ProductDTO> paginatedProducts { get; set; } = null!;
+    public async Task OnGetAsync(int? pageIndex)
     {
         HttpClient client = _api.initial();
         var response = await client.GetAsync("Product/GetAll");
@@ -49,5 +49,9 @@ public class ProductModel : PageModel
         }
 
         OptionCategories = new SelectList(Categories?.Select(x => x.Name));
+
+        var pageSize = _configuration.GetValue("PageSize", 4);
+        paginatedProducts = PaginatedList<ProductDTO>.Create(
+            Products ?? new List<ProductDTO>(), pageIndex ?? 1, pageSize);
     }
 }

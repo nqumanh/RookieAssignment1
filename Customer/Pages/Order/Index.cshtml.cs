@@ -74,6 +74,14 @@ public class OrderModel : PageModel
             return RedirectToPage();
         }
 
+        Cart = GetCartItems();
+
+        if (Cart.Count == 0)
+        {
+            TempData["error"] = "Your cart is empty!";
+            return RedirectToPage();
+        }
+
         HttpClient client = _api.initial();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         var response = await client.PostAsJsonAsync("User/Order", OrderForm);
@@ -85,16 +93,35 @@ public class OrderModel : PageModel
             return RedirectToPage();
         }
 
-        if (Cart.Count==0){
-            TempData["error"] = "Your cart is empty!";
-            return RedirectToPage();
-        }
-
         var session = HttpContext.Session;
         session.Remove("cart");
         Cart = new List<CartItem>();
         TempData["success"] = "Order Successfully";
         return RedirectToPage("/Index");
+    }
+
+    public IActionResult OnPostUpdateOrderLine(int id, int quantity)
+    {
+        Cart = GetCartItems();
+
+        var item = Cart.Find(s => s.Id == id);
+        if (item == null)
+            return RedirectToPage();
+        if (quantity < 0){
+            TempData["error"]="Quantity cannot be a negative number!";
+            return RedirectToPage();
+        } 
+        else if (quantity == 0)
+            Cart = Cart.Where(x => x.Id != id).ToList();
+        else
+        {
+            item.Quantity = quantity;
+        }
+
+        var session = HttpContext.Session;
+        string jsoncart = JsonConvert.SerializeObject(Cart);
+        session.SetString("cart", jsoncart);
+        return RedirectToPage();
     }
 
     public List<CartItem> GetCartItems()

@@ -24,6 +24,7 @@
         <tbody>
             @foreach (var item in @Model.Cart)
             {
+
                 <tr>
                     <td>
                         <div class="d-flex flex-column">
@@ -32,13 +33,27 @@
                         </div>
                     </td>
                     <td class="align-middle">
-                        @item.Quantity
+                        <form method="post" asp-page="./Index" asp-page-handler="UpdateOrderLine" asp-route-id="item.Id"
+                        asp-route-quantity="@item.Quantity" class="d-flex">
+                            <input hidden value="@item.Id" name="id">
+                            <input asp-for="@item.Quantity" type="number" value="@item.Quantity" name="quantity"
+                            class="form-control me-3" style="width: 80px;">
+                            <button type="submit" class="btn btn-success">Update</button>
+                        </form>
                     </td>
                     <td class="align-middle">@item.Quantity X $@item.Price</td>
                     <td class="align-middle text-end">
-                        <i class="bi bi-x" style="font-size: 30px;"></i>
+                        <form method="post" asp-page="./Index" asp-page-handler="UpdateOrderLine" asp-route-id="item.Id"
+                        asp-route-quantity="@item.Quantity" class="d-flex">
+                            <button type="submit" style="background: inherit; border: 0;">
+                                <input hidden value="@item.Id" name="id">
+                                <input hidden value=0 name="quantity">
+                                <i class="bi bi-x" style="font-size: 30px;"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
+
             }
             <tr>
                 <td class="py-5">Total</td>

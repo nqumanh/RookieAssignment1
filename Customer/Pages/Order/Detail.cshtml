@@ -1,0 +1,41 @@
+﻿@page "{id:int?}"
+@model OrderDetailModel
+@{
+    ViewData["Title"] = "Order Detail";
+}
+
+<h1 class="text-center mt-5">Order Detail</h1>
+
+<div class="container" style="margin-bottom: 200px;">
+    <p><b>Your Order</b> at <em>@Model.Order.Time</em></p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th class="w-50">PRODUCT</th>
+                <th class="w-25">QUANTITY</th>
+                <th class="w-25">PRICE</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in @Model.Cart)
+            {
+                <tr>
+                    <td>
+                        <div class="d-flex flex-column">
+                            <img src="~/images/@item.Image" style="width: 80px;" alt="">
+                            <h6>@item.ProductName</h6>
+                        </div>
+                    </td>
+                    <td class="align-middle">
+                        @item.Quantity
+                    </td>
+                    <td class="align-middle">@item.Quantity X $@item.Price</td>
+                </tr>
+            }
+            <tr>
+                <td class="py-5">Total</td>
+                <td colspan="2" class="text-center align-middle fw-bold">$@Model.TotalPrice</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

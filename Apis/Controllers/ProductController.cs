@@ -1,6 +1,5 @@
 using Apis.Data;
 using Apis.Models;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedViewModels;
@@ -11,22 +10,20 @@ namespace Apis.Controllers;
 [Route("[controller]")]
 public class ProductController : ControllerBase
 {
-    private readonly IMapper _mapper;
     private readonly BookStoreContext _context;
-    public ProductController(BookStoreContext context, IMapper mapper)
+    public ProductController(BookStoreContext context)
     {
-        _mapper = mapper;
         _context = context;
     }
 
     [HttpGet("[action]")]
     public async Task<ActionResult<IEnumerable<ProductDTO>>> GetAll()
     {
-        var product = await _context.Products!
+        return await _context.Products!
                         .Include(x => x.Category)
                         .Include(x => x.Ratings)
+                        .Select(x => ProductDTO(x))
                         .ToListAsync();
-        return _mapper.Map<List<ProductDTO>>(product);
     }
 
     [HttpPost("[action]")]
@@ -34,11 +31,18 @@ public class ProductController : ControllerBase
     {
         DateTime time = DateTime.Now;
 
-        var product = _mapper.Map<Product>(productDTO);
-        product.CreatedDate = time;
-        product.UpdatedDate = time;
+        var product = new Product
+        {
+            Name = productDTO.Name,
+            Description = productDTO.Description,
+            Image = productDTO.Image,
+            Author = productDTO.Author,
+            Price = productDTO.Price,
+            Quantity = productDTO.Quantity,
+            CreatedDate = time,
+            UpdatedDate = time
+        };
         _context.Products!.Add(product);
-
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(
@@ -78,15 +82,13 @@ public class ProductController : ControllerBase
         }
         var category = (productDTO.CategoryId != null) ? await _context.Categories!.FindAsync(Int32.Parse(productDTO.CategoryId)) : null;
 
-        DateTime time = DateTime.Now;
-
         product.Name = productDTO.Name;
         product.Description = productDTO.Description;
         product.Image = productDTO.Image;
         product.Author = productDTO.Author;
         product.Price = productDTO.Price;
         product.Quantity = productDTO.Quantity;
-        product.UpdatedDate = time;
+        product.UpdatedDate = DateTime.Now;
         product.Category = category;
 
         try
@@ -125,17 +127,35 @@ public class ProductController : ControllerBase
         return _context.Products!.Any(e => e.Id == id);
     }
 
-    private ProductDTO ProductDTO(Product product)
-    {
-        var productDTO = _mapper.Map<ProductDTO>(product);
-        var avgRating = product.Ratings.Count > 0 ?
-            Convert.ToDecimal(product.Ratings.Aggregate(0, (sum, rating) => sum + rating.Star)) / product.Ratings.Count
-            : 0;
-        if (product.Category != null)
+    private static RatingDTO RatingDTO(Rating rating) =>
+        new RatingDTO
         {
-            productDTO.CategoryId = product.Category.Id.ToString();
-            productDTO.CategoryName = product.Category.Name;
-        }
-        return productDTO;
+            Star = rating.Star,
+            Comment = rating.Comment,
+            Reviewer = rating.User.Name,
+            UpdatedDate = rating.UpdatedDate
+        };
+
+    private static ProductDTO ProductDTO(Product product)
+    {
+        var numberOfRating = product.Ratings.Count;
+        var avgRating = numberOfRating > 0 ? Convert.ToDecimal(product.Ratings.Aggregate(0, (sum, rating) => sum + rating.Star)) / numberOfRating : 0;
+        var categoryId = (product.Category == null) ? null : product.Category.Id.ToString();
+        var categoryName = (product.Category == null) ? null : product.Category.Name;
+        return new ProductDTO
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Image = product.Image,
+            Author = product.Author,
+            AverageRating = avgRating,
+            Price = product.Price,
+            Quantity = product.Quantity,
+            CategoryId = categoryId,
+            CategoryName = categoryName,
+            CreatedDate = product.CreatedDate,
+            UpdatedDate = product.UpdatedDate
+        };
     }
 }

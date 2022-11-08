@@ -7,6 +7,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SharedViewModels;
 
@@ -135,6 +136,18 @@ public class UserController : ControllerBase
         return Ok(_mapper.Map<RatingDTO>(rating));
     }
 
+    // [Authorize]
+    [HttpGet("[action]/{id}")]
+    public async Task<ActionResult<List<OrderDTO>>> OrderHistory(string id)
+    {
+        var orderHistory = await _context.Orders!
+                                .Include(x => x.User)
+                                .Where(order => order.User.Id == id)
+                                .OrderBy(order => order.Time)
+                                .ToListAsync();
+        return _mapper.Map<List<OrderDTO>>(orderHistory);
+    }
+
     [Authorize]
     [HttpPost("[action]")]
     public async Task<ActionResult<OrderDTO>> Order(OrderDTO orderDTO)
@@ -183,6 +196,7 @@ public class UserController : ControllerBase
     private static OrderDTO OrderDTO(Order order) =>
         new OrderDTO
         {
+            Id = order.Id,
             UserId = order.User.Id,
             Address = order.Address,
             Cart = order.OrderLines!.Select(x => CartItemDTO(x)).ToList()

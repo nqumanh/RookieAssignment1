@@ -30,12 +30,28 @@
         </div>
         <div class="col-9">
             <img src="~/images/Product/banner3.png" alt="">
-            <h1 style="font-weight: 700; margin-top: 30px">Books</h1>
+            <div class="d-flex justify-content-between">
+                <h1 class="d-flex align-middle my-3" style="font-weight: 700;">Books</h1>
+                @{
+                    var prevDisabled = !Model.paginatedProducts.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.paginatedProducts.HasNextPage ? "disabled" : "";
+                }
+                <div class="d-flex align-items-center">
+                    <a asp-page="./Index" asp-route-pageIndex="@(Model.paginatedProducts.PageIndex - 1)"
+                        asp-route-SearchString="@Model.SearchString" class="btn btn-primary @prevDisabled">
+                        Previous
+                    </a>
+                    <a asp-page="./Index" asp-route-pageIndex="@(Model.paginatedProducts.PageIndex + 1)"
+                        asp-route-SearchString="@Model.SearchString" class="btn btn-primary ms-3 @nextDisabled">
+                        Next
+                    </a>
+                </div>
+            </div>
             <div class="row" style="margin:20px 0px 110px 0px">
                 @{
-                    if (Model.Products != null)
+                    if (Model.paginatedProducts != null)
                     {
-                        foreach (var product in Model.Products)
+                        foreach (var product in Model.paginatedProducts)
                         {
                             <div class="col-3 d-flex align-items-stretch px-3">
                                 <div class="card border-0" style="width: 100%;">
@@ -78,6 +94,8 @@
                         }
                     }
                 }
+
+
             </div>
         </div>
     </div>
