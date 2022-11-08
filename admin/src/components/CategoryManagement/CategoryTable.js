@@ -221,7 +221,9 @@ export default function EnhancedTable() {
             setRows([{ id: response.data.id, ...category }, ...rows])
             setSelectedId(-1)
             setPage(0)
-        })
+        }).catch(function (response) {
+            alert(response.response.data.errors.Name[0]);
+        });
     }
 
     // const readCategory = (category) => {

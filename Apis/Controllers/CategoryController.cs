@@ -45,6 +45,11 @@ public class CategoryController : ControllerBase
     [HttpPost("[action]")]
     public async Task<IActionResult> Create(CategoryDTO categoryDTO)
     {
+        if (categoryDTO.Name == null)
+        {
+            return BadRequest("Name of category is required!");
+        }
+        
         var category = new Category
         {
             Name = categoryDTO.Name,
