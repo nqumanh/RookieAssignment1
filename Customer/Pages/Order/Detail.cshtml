@@ -22,7 +22,14 @@
                 <tr>
                     <td>
                         <div class="d-flex flex-column">
-                            <img src="~/images/@item.Image" style="width: 80px;" alt="">
+                            @if (@item.Image == "")
+                            {
+                                <img src="~/images/NoImage.png" style="width: 80px;" alt="">
+                            }
+                            else
+                            {
+                                <img src="~/images/@item.Image" style="width: 80px;" alt="">
+                            }
                             <h6>@item.ProductName</h6>
                         </div>
                     </td>

@@ -56,8 +56,16 @@
                             <div class="col-3 d-flex align-items-stretch px-3">
                                 <div class="card border-0" style="width: 100%;">
                                     <a asp-page="./Details" asp-route-id="@product.Id">
-                                        <img src="~/images/@product.Image" class="img card-img-top" alt="..."
-                                style="object-fit: cover;" />
+                                        @if (@product.Image == "")
+                                        {
+                                            <img src="~/images/NoImage.png" class="img card-img-top" alt="..." cover
+                                style="object-fit: cover; height: 300px" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/@product.Image" class="img card-img-top" alt="..."
+                                style="object-fit: cover; height: 300px" />
+                                        }
                                     </a>
                                     <div class="card-body">
                                         <p class="card-title"

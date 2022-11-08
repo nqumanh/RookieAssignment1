@@ -37,7 +37,14 @@
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-start border-0">
                         <div class="d-flex">
-                            <img src="~/images/@item.Image" style="width: 50px;" alt="">
+                            @if (@item.Image == "")
+                            {
+                                <img src="~/images/NoImage.png" style="width: 50px;" alt="">
+                            }
+                            else
+                            {
+                                <img src="~/images/@item.Image" style="width: 50px;" alt="">
+                            }
                             <div class="d-flex ms-2 me-auto flex-column">
                                 <div class="fw-bold">@item.Name</div>
                                 <span>Quantity: @item.Quantity</span>

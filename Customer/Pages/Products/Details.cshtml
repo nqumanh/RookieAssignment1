@@ -17,8 +17,16 @@
     <div class="card border-0 mb-5">
         <div class="row g-0">
             <div class="col-md-4 text-center">
-                <img src="~/images/@Model.Product.Image" class="img-fluid rounded-start" alt="..."
+                @if (@Model.Product.Image == "")
+                {
+                    <img src="~/images/NoImage.png" class="img-fluid rounded-start" alt="..."
                     style="width: 242px; height: 341px;">
+                }
+                else
+                {
+                    <img src="~/images/@Model.Product.Image" class="img-fluid rounded-start" alt="..."
+                    style="width: 242px; height: 341px;">
+                }
             </div>
             <div class="col-md-8">
                 <div class="card-body">
