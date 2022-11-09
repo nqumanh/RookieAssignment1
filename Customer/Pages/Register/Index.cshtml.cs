@@ -20,23 +20,68 @@ public class RegisterModel : PageModel
     public RegisterFormDTO RegisterForm { get; set; } = new RegisterFormDTO();
     public async Task<IActionResult> OnPostAsync()
     {
+        if (RegisterForm.UserName == null)
+        {
+            TempData["error"] = "UserName is required!";
+            return Page();
+        }
+        if (RegisterForm.Password == null)
+        {
+            TempData["error"] = "Password is required!";
+            return Page();
+        }
+
+        if (RegisterForm.Password != RegisterForm.ConfirmPassword)
+        {
+            TempData["error"] = "Confirm Password does not match!";
+            return Page();
+        }
+
+        if (RegisterForm.Email == null)
+        {
+            TempData["error"] = "Email is required!";
+            return Page();
+        }
+
+        if (RegisterForm.Name == null)
+        {
+            TempData["error"] = "Name is required!";
+            return Page();
+        }
+
+        if (RegisterForm.PhoneNumber == null)
+        {
+            TempData["error"] = "PhoneNumber is required!";
+            return Page();
+        }
+
+        if (RegisterForm.Address == null)
+        {
+            TempData["error"] = "Address is required!";
+            return Page();
+        }
+
         HttpClient client = _api.initial();
         var response = await client.PostAsJsonAsync("User/Register", RegisterForm);
+        var result = response.Content.ReadAsStringAsync().Result;
 
         if ((int)response.StatusCode == 200)
         {
+            TempData["success"] = "Register successfully";
             return RedirectToPage("../Login/Index");
         }
-        return Page();
+        else
+        {
+            TempData["error"] = result;
+            return Page();
+        }
     }
 
     public IActionResult OnGetAsync()
     {
         if (!string.IsNullOrEmpty(HttpContext.Request.Cookies["AccessToken"]))
-        {
-            return Page();
-        }
-        return RedirectToPage("../Index");
+            return RedirectToPage("../Index");
+        return Page();
     }
 }
 

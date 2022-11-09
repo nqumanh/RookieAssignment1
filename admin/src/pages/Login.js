@@ -10,6 +10,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useForm } from "react-hook-form";
+import Alert from '@mui/material/Alert';
 
 const theme = createTheme();
 
@@ -18,18 +20,10 @@ export default function SignIn(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-    props.login({
-      username: username,
-      password: password
-    });
-    // loginApi().then(function (response) {
-    //   navigate(`/dashboard/categories`);
-    // }).catch(function (response) {
-    //   alert(response.response.data);
-    // });
+  const onSubmit = (data) => {
+    props.login(data);
   };
 
   const onChange = (e) => {
@@ -60,7 +54,11 @@ export default function SignIn(props) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            noValidate sx={{ minWidth: '400px', mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -71,8 +69,10 @@ export default function SignIn(props) {
               value={username}
               autoComplete="username"
               autoFocus
-              onChange={onChange}
+              {...register("username", { required: true, onChange: onChange })}
             />
+            {errors.username && <Alert severity="error">UserName is required</Alert>}
+
             <TextField
               margin="normal"
               required
@@ -83,8 +83,10 @@ export default function SignIn(props) {
               id="password"
               value={password}
               autoComplete="current-password"
-              onChange={onChange}
+              {...register("password", { required: true, onChange: onChange })}
             />
+            {errors.password && <Alert severity="error">Password is required</Alert>}
+
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"

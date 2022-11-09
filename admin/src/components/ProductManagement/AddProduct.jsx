@@ -13,6 +13,7 @@ import { getAllCategories } from "../../apis/useApi";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Alert from '@mui/material/Alert';
+// import UploadImage from "./UploadImage"
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -116,9 +117,10 @@ export default function AddProduct(props) {
                     </Toolbar>
                 </AppBar>
                 <DialogContent>
-                    <DialogContentText>
+                    <DialogContentText sx={{mb: "30px"}}>
                         Add your Product category and necessary information from here
                     </DialogContentText>
+                    {/* <UploadImage /> */}
                     <TextField
                         id="outlined-textarea"
                         label="Product Name"
@@ -176,9 +178,9 @@ export default function AddProduct(props) {
                         fullWidth
                         name="price"
                         value={price}
-                        {...register("price", { required: true, onChange: handleChange })}
+                        {...register("price", { required: true, min: 0, onChange: handleChange })}
                     />
-                    {errors.price && <Alert severity="error">Product price is required</Alert>}
+                    {errors.price && <Alert severity="error">Product price is required and non-negative</Alert>}
 
                     <TextField
                         id="outlined-textarea"
@@ -198,9 +200,9 @@ export default function AddProduct(props) {
                         sx={{ marginTop: "30px" }}
                         name="quantity"
                         value={quantity}
-                        {...register("quantity", { required: true, onChange: handleChange })}
+                        {...register("quantity", { required: true, min: 0, onChange: handleChange })}
                     />
-                    {errors.quantity && <Alert severity="error">Product quantity is required</Alert>}
+                    {errors.quantity && <Alert severity="error">Product quantity is required and non-negative</Alert>}
                 </DialogContent>
             </form>
         </Dialog>

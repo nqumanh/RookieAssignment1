@@ -52,7 +52,7 @@ public class UserController : ControllerBase
             }
             else
             {
-                return BadRequest();
+                return BadRequest("Password must contain digit, lowercase, uppercase, non-alphanumeric and have at least 6 characters");
             }
         }
         else

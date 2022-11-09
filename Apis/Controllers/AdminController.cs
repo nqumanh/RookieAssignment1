@@ -41,6 +41,16 @@ public class AdminController : ControllerBase
         if (!result.Succeeded)
             return BadRequest("Invalid Account!");
 
+        // var user = _userManager.FindByNameAsync(input.Username);
+        // if (user == null)
+        // {
+        //     return BadRequest("Invalid Account!");
+        // }
+        // if (!User.IsInRole("admin"))
+        // {
+        //     return BadRequest("You're not an admin");
+        // }
+
         return Ok("Login Successfully!");
     }
 

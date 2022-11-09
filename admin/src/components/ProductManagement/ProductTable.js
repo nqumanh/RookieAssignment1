@@ -24,6 +24,72 @@ import { visuallyHidden } from '@mui/utils';
 import { getAllProducts, addProductApi, updateProductApi, deleteProductApi, getAllCategories } from "../../apis/useApi"
 import AddProduct from './AddProduct';
 import EditProduct from './EditProduct';
+import { useTheme } from '@mui/material/styles';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+
+function TablePaginationActions(props) {
+    const theme = useTheme();
+    const { count, page, rowsPerPage, onPageChange } = props;
+
+    const handleFirstPageButtonClick = (event) => {
+        onPageChange(event, 0);
+    };
+
+    const handleBackButtonClick = (event) => {
+        onPageChange(event, page - 1);
+    };
+
+    const handleNextButtonClick = (event) => {
+        onPageChange(event, page + 1);
+    };
+
+    const handleLastPageButtonClick = (event) => {
+        onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    };
+
+    return (
+        <Box sx={{ flexShrink: 0, ml: 2.5 }}>
+            <IconButton
+                onClick={handleFirstPageButtonClick}
+                disabled={page === 0}
+                aria-label="first page"
+            >
+                {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+            </IconButton>
+            <IconButton
+                onClick={handleBackButtonClick}
+                disabled={page === 0}
+                aria-label="previous page"
+            >
+                {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+            </IconButton>
+            <IconButton
+                onClick={handleNextButtonClick}
+                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                aria-label="next page"
+            >
+                {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+            </IconButton>
+            <IconButton
+                onClick={handleLastPageButtonClick}
+                disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+                aria-label="last page"
+            >
+                {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+            </IconButton>
+        </Box>
+    );
+}
+
+TablePaginationActions.propTypes = {
+    count: PropTypes.number.isRequired,
+    onPageChange: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+};
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -82,11 +148,6 @@ const headCells = [
         label: 'Price',
     },
     {
-        id: 'image',
-        disablePadding: true,
-        label: 'Image',
-    },
-    {
         id: 'quantity',
         disablePadding: true,
         label: 'Quantity',
@@ -100,7 +161,12 @@ const headCells = [
         id: 'updatedDate',
         disablePadding: false,
         label: 'Updated Date',
-    }
+    },
+    {
+        id: 'image',
+        disablePadding: true,
+        label: 'Image',
+    },
 ];
 
 function EnhancedTableHead(props) {
@@ -278,7 +344,6 @@ export default function EnhancedTable() {
             ])
             setPage(0)
         }).catch(function (response) {
-            console.log(response)
             alert(response.response.data.errors.productDTO[0])
         });
     }
@@ -391,10 +456,10 @@ export default function EnhancedTable() {
                                             <TableCell align="center">{category}</TableCell>
                                             <TableCell align="center">{row.description}</TableCell>
                                             <TableCell align="center">{row.price}</TableCell>
-                                            <TableCell align="center">{row.image}</TableCell>
                                             <TableCell align="center">{row.quantity}</TableCell>
                                             <TableCell align="center">{row.createdDate}</TableCell>
                                             <TableCell align="center">{row.updatedDate}</TableCell>
+                                            <TableCell align="center">{row.image}</TableCell>
                                         </TableRow>
                                     );
                                 })}
@@ -421,6 +486,7 @@ export default function EnhancedTable() {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         sx={{ display: "flex" }}
+                        ActionsComponent={TablePaginationActions}
                     />
                 </Stack>
             </Paper >
