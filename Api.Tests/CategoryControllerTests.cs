@@ -1,5 +1,3 @@
-using Xunit;
-using Apis.Repository;
 using Apis.Models;
 using AutoMapper;
 using Moq;
@@ -7,6 +5,7 @@ using Apis.Controllers;
 using Apis.Profiles;
 using SharedViewModels;
 using System.Reflection;
+using Apis.Interface;
 
 namespace Api.UnitTests;
 
@@ -45,8 +44,6 @@ public class CategoryControllerTests
 
         var categoryRepositoryMock = new Mock<ICategoryRepository>();
         categoryRepositoryMock.Setup(s => s.Get(ID)).Returns(Task.FromResult<Category?>(category));
-        // var mapperMock = new Mock<IMapper>();
-        // mapperMock.Setup(s => s.Map<CategoryDTO>(category)).Returns(returnCategoryDTO);
 
         var controller = new CategoryController(categoryRepositoryMock.Object, _mapper);
 

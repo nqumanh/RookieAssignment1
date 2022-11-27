@@ -1,8 +1,7 @@
 using Apis.Data;
 using Apis.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SharedViewModels;
+using Apis.Interface;
 
 namespace Apis.Repository;
 

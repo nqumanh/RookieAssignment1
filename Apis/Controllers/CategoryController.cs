@@ -1,5 +1,5 @@
+using Apis.Interface;
 using Apis.Models;
-using Apis.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

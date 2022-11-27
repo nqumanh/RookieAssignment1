@@ -15,7 +15,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SideBar from '../components/SideBar';
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import { logoutApi } from "apis/useApi"
 
 const drawerWidth = 240;
 
@@ -65,11 +66,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-export default function DashboardContent(props) {
+const Dashboard = () => {
+  const navigate = useNavigate();
+
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  const logOut = () => {
+    logoutApi().then((response) => {
+      navigate("/")
+    })
+  }
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -123,7 +132,7 @@ export default function DashboardContent(props) {
             </IconButton>
           </Toolbar>
           <Divider />
-          <SideBar logout={props.logout} />
+          <SideBar logOut={logOut} />
         </Drawer>
         <Box
           component="main"
@@ -148,3 +157,5 @@ export default function DashboardContent(props) {
     </ThemeProvider>
   );
 }
+
+export default Dashboard;

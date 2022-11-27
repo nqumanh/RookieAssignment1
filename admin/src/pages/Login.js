@@ -12,10 +12,13 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
 import Alert from '@mui/material/Alert';
+import { loginApi } from 'apis/useApi'
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
-export default function SignIn(props) {
+const Login = () => {
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +26,11 @@ export default function SignIn(props) {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
-    props.login(data);
+    loginApi(data).then(function (response) {
+      navigate(`/dashboard`);
+    }).catch(function (response) {
+      alert(response.response.data);
+    });
   };
 
   const onChange = (e) => {
@@ -106,3 +113,5 @@ export default function SignIn(props) {
     </ThemeProvider>
   );
 }
+
+export default Login;

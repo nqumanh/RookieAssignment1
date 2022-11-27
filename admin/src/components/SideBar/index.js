@@ -9,7 +9,7 @@ export default function SideBar(props) {
     return <List component="nav">
         {mainListItems}
         <Divider sx={{ my: 1 }} />
-        <SecondaryListItems logout={props.logout} />
+        <SecondaryListItems logOut={props.logOut} />
     </List>
 }
 

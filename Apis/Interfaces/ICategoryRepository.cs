@@ -1,8 +1,6 @@
 using Apis.Models;
-using Microsoft.AspNetCore.Mvc;
-using SharedViewModels;
 
-namespace Apis.Repository;
+namespace Apis.Interface;
 
 public interface ICategoryRepository : IDisposable
 {
