@@ -24,7 +24,8 @@ public class CategoryController : ControllerBase
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAll()
     {
         var categories = await _categoryRepository.GetAll();
-        if (categories == null) return NotFound("Category Empty");
+        if (categories == null)
+            return NotFound("Category Empty");
         var result = _mapper.Map<List<CategoryDTO>>(categories);
         return Ok(result);
     }
@@ -35,9 +36,7 @@ public class CategoryController : ControllerBase
         var category = await _categoryRepository.Get(id);
 
         if (category == null)
-        {
             return NotFound();
-        }
 
         return _mapper.Map<CategoryDTO>(category);
     }
