@@ -1,7 +1,7 @@
 import { useRoutes } from "react-router-dom";
 import Login from "pages/Login";
-import Dashboard from "pages/Dashboard";
-import PaginationBackend from "features/Table";
+import Dashboard from "layout/Dashboard";
+import ManageProduct from "pages/ManageProducts";
 
 const Routes = () => {
     const routes = [
@@ -14,8 +14,8 @@ const Routes = () => {
             element: <Dashboard />,
             children: [
                 {
-                    path: "",
-                    element: <PaginationBackend />
+                    path: "products",
+                    element: <ManageProduct />
                 },
             ]
         },

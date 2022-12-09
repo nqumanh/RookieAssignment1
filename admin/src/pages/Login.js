@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from "react-hook-form";
 import Alert from '@mui/material/Alert';
-import { loginApi } from 'apis/useApi'
+import { loginApi } from 'services'
 import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
@@ -27,7 +27,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     loginApi(data).then(function (response) {
-      navigate(`/dashboard`);
+      navigate(`/dashboard/products`);
     }).catch(function (response) {
       alert(response.response.data);
     });

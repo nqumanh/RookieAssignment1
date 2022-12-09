@@ -10,7 +10,7 @@ import { Box, Tooltip } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import { useEffect } from "react";
-import { getCategoryById } from "../../apis/useApi";
+import { getCategoryById } from "../../services";
 import { useForm } from "react-hook-form";
 import Alert from '@mui/material/Alert';
 

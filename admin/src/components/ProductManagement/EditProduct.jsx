@@ -10,7 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import EditIcon from '@mui/icons-material/Edit';
 import { DialogContent, DialogContentText, FormControl, InputLabel, MenuItem, Select, Tooltip } from "@mui/material";
-import { getAllCategories, getProductById } from "../../apis/useApi";
+import { getAllCategories, getProductById } from "../../services";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Alert from '@mui/material/Alert';

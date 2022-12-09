@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { DialogContent, DialogContentText, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { getAllCategories } from "../../apis/useApi";
+import { getAllCategories } from "../../services";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Alert from '@mui/material/Alert';

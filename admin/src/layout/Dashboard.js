@@ -16,7 +16,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SideBar from '../components/SideBar';
 import { Outlet, useNavigate } from "react-router-dom";
-import { logoutApi } from "apis/useApi"
+import { logoutApi } from "services"
 
 const drawerWidth = 240;
 

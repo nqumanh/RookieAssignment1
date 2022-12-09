@@ -21,7 +21,7 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Stack from '@mui/material/Stack';
 import { visuallyHidden } from '@mui/utils';
-import { getAllCategories, addCategory, updateCategory, deleteCategoryApi } from "../../apis/useApi"
+import { getAllCategories, addCategory, updateCategory, deleteCategoryApi } from "../../services"
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
 import { useTheme } from '@mui/material/styles';

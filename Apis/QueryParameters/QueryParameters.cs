@@ -1,10 +1,9 @@
-namespace Apis.Models;
-
-public class ProductParameters
+namespace Apis.QueryParameters;
+public abstract class QueryStringParameters
 {
     const int maxPageSize = 50;
     public int PageNumber { get; set; } = 1;
-    private int _pageSize = 5;
+    private int _pageSize = 10;
     public int PageSize
     {
         get

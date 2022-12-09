@@ -2,6 +2,11 @@ import axios from "axios";
 
 const BASE_URL = "https://localhost:7133";
 
+const getAxios = (url, params = {}) =>
+    axios.get(url, {
+        params: params,
+    });
+
 // Admin
 const loginApi = (loginForm) =>
     axios.post(`${BASE_URL}/Admin/Login`, loginForm)
@@ -21,8 +26,12 @@ const deleteCategoryApi = (id) =>
     axios.delete(`${BASE_URL}/Category/Delete/${id}`);
 
 // Product
-const getProducts = () =>
-    axios.get(`${BASE_URL}/Product/GetProducts`);
+const getProducts = (pageSize, pageNumber) =>
+    getAxios(`${BASE_URL}/Product/GetProducts`, {
+        PageSize: pageSize,
+        PageNumber: pageNumber,
+    });
+
 const getAllProducts = () =>
     axios.get(`${BASE_URL}/Product/GetAll`);
 const addProductApi = (product) =>

@@ -1,9 +1,7 @@
-using Apis.Data;
 using Apis.Interface;
 using Apis.Models;
-using AutoMapper;
+using Apis.QueryParameters;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using SharedViewModels;
 
 namespace Apis.Controllers;
@@ -12,20 +10,18 @@ namespace Apis.Controllers;
 [Route("[controller]")]
 public class ProductController : ControllerBase
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IMapper _mapper;
+    private readonly IProductService _productService;
 
-    public ProductController(IProductRepository productRepository, IMapper mapper)
+    public ProductController(IProductService productService)
     {
-        _productRepository = productRepository;
-        _mapper = mapper;
+        _productService = productService;
     }
 
     [HttpGet("[action]")]
-    public ActionResult<IEnumerable<ProductDTO>> GetProducts([FromQuery] ProductParameters productParameters)
+    public async Task<ActionResult<PagedResponseModel<ProductDTO>>> GetProducts([FromQuery] ProductParameters productParameters)
     {
-        var products = _productRepository.GetProducts(productParameters);
-        return Ok(_mapper.Map<IEnumerable<ProductDTO>>(products));
+        var products = await _productService.GetProductsAsync(productParameters);
+        return Ok(products);
     }
 }
 
