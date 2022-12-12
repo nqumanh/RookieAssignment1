@@ -16,4 +16,5 @@ public class BookStoreContext : IdentityDbContext
     public DbSet<Order>? Orders { get; set; }
     public DbSet<OrderLine>? OrderLines { get; set; }
     public DbSet<Rating>? Ratings { get; set; }
+    // public DbSet<Image>? Images { get; set; }
 }

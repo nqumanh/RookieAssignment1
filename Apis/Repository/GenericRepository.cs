@@ -15,6 +15,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _dbSet = context.Set<T>();
     }
 
+    public IQueryable<T> Entities => _dbSet;
+
     public virtual IQueryable<T> GetWithCondition(
         Expression<Func<T, bool>>? filter,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy,

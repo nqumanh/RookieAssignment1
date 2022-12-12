@@ -4,6 +4,7 @@ namespace Apis.Repository;
 
 public interface IGenericRepository<T>
 {
+    IQueryable<T> Entities { get; }
     IQueryable<T> GetWithCondition(
         Expression<Func<T, bool>>? filter,
         Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy,

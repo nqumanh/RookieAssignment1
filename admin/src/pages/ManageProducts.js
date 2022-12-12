@@ -1,7 +1,7 @@
 import CustomTable from "components/Table/Table";
 import { getProducts } from 'services';
 
-const fields = ["name", "categoryName", "description", "price", "images", "createdDate", "updatedDate"]
+const fields = ["name", "categoryName", "description", "price", "image", "createdDate", "updatedDate"]
 const headers = ["Name", "Category", "Description", "Price", "Images", "Created Date", "Updated Date"]
 
 const ManageProduct = () => {

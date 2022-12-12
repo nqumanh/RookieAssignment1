@@ -19,7 +19,10 @@ public class ProductService : IProductService
     }
     public async Task<PagedResponseModel<ProductDTO>> GetProductsAsync(ProductParameters productParameters)
     {
-        var productQuery = _productRepository.GetWithCondition(null, null, "");
+        var productQuery = _productRepository.Entities
+                                .Include(x => x.Category)
+                                .AsQueryable()
+                                ;
 
         var totalItems = productQuery.Count();
 

@@ -27,6 +27,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     loginApi(data).then(function (response) {
+      console.log(response.data)
       navigate(`/dashboard/products`);
     }).catch(function (response) {
       alert(response.response.data);
