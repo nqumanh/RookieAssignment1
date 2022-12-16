@@ -79,7 +79,8 @@ public class RegisterModel : PageModel
 
     public IActionResult OnGetAsync()
     {
-        if (!string.IsNullOrEmpty(HttpContext.Request.Cookies["AccessToken"]))
+        var session = HttpContext.Session;
+        if (!string.IsNullOrEmpty(session.GetString("AccessToken")))
             return RedirectToPage("../Index");
         return Page();
     }

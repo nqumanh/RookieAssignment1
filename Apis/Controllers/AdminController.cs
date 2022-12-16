@@ -1,10 +1,14 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using Apis.Data;
 using Apis.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using SharedViewModels;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using SharedViewModels;
 
 namespace Apis.Controllers;
 
@@ -16,15 +20,18 @@ public class AdminController : ControllerBase
     private readonly BookStoreContext _context;
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
+    private readonly IConfiguration _configuration;
     private readonly RoleManager<IdentityRole> _roleManager;
 
     public AdminController(
+        IConfiguration configuration,
         BookStoreContext context,
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         RoleManager<IdentityRole> roleManager,
         IMapper mapper)
     {
+        _configuration = configuration;
         _mapper = mapper;
         _context = context;
         _userManager = userManager;
@@ -32,6 +39,7 @@ public class AdminController : ControllerBase
         _signInManager = signInManager;
     }
 
+    [AllowAnonymous]
     [HttpPost("[action]")]
     public async Task<IActionResult> Login(LoginFormDTO input)
     {
@@ -49,7 +57,24 @@ public class AdminController : ControllerBase
             return BadRequest("You're not authorized!");
         }
 
-        return Ok(userRoles);
+        var authClaims = new List<Claim> {
+                new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.StreetAddress, user.Address),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+        foreach (var userRole in userRoles)
+        {
+            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+        }
+
+        var token = CreateToken(authClaims);
+
+        return Ok(new
+        {
+            Token = new JwtSecurityTokenHandler().WriteToken(token)
+        });
     }
 
     [HttpPost("[action]")]
@@ -62,6 +87,8 @@ public class AdminController : ControllerBase
             return BadRequest(result);
     }
 
+
+    [Authorize]
     [HttpGet("[action]")]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
     {
@@ -74,5 +101,19 @@ public class AdminController : ControllerBase
     {
         await _signInManager.SignOutAsync();
         return Ok();
+    }
+
+    private JwtSecurityToken CreateToken(List<Claim> authClaims)
+    {
+        var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SymmetricKey"]));
+
+        var token = new JwtSecurityToken(
+            issuer: _configuration["Jwt:Issuer"],
+            audience: _configuration["Jwt:Audience"],
+            expires: DateTime.Now.AddMinutes(30),
+            claims: authClaims,
+            signingCredentials: new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256));
+
+        return token;
     }
 }

@@ -14,15 +14,17 @@ public class IndexModel : PageModel
     {
         _logger = logger;
     }
-    public List<ProductDTO>? Products = new List<ProductDTO>();
+    public IEnumerable<ProductDTO>? Products = new List<ProductDTO>();
     public List<CategoryDTO>? Categories = new List<CategoryDTO>();
 
     public async Task<IActionResult> OnGetAsync()
     {
         HttpClient client = _api.initial();
-        var response = await client.GetAsync("Product/GetAll");
+        var response = await client.GetAsync("Product/GetProducts?PageSize=6&PageNumber=1");
         var result = response.Content.ReadAsStringAsync().Result;
-        Products = JsonConvert.DeserializeObject<List<ProductDTO>>(result);
+        var pagingProduct = JsonConvert.DeserializeObject<PagedResponseModel<ProductDTO>>(result);
+
+        Products = pagingProduct?.Items;
 
         Products = Products!.OrderByDescending(x => x.AverageRating).ToList().GetRange(0, 6);
 
@@ -38,9 +40,9 @@ public class IndexModel : PageModel
         HttpClient client = _api.initial();
         var response = await client.GetAsync("User/Logout");
 
-        HttpContext.Response.Cookies.Delete("AccessToken");
-        HttpContext.Response.Cookies.Delete("Name");
-        HttpContext.Response.Cookies.Delete("Id");
+        HttpContext.Session.Remove("AccessToken");
+        HttpContext.Session.Remove("Name");
+        HttpContext.Session.Remove("Id");
 
         TempData["success"] = "Logout!";
         return RedirectToPage("/Index");

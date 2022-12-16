@@ -1,9 +1,9 @@
-using Apis.Interface;
-using Apis.Models;
 using AutoMapper;
+using Apis.Models;
+using Apis.Repository;
+using SharedViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SharedViewModels;
 
 namespace Apis.Controllers;
 
@@ -11,10 +11,10 @@ namespace Apis.Controllers;
 [Route("[controller]")]
 public class CategoryController : ControllerBase
 {
-    private ICategoryRepository _categoryRepository;
+    private readonly IGenericRepository<Category> _categoryRepository;
     private readonly IMapper _mapper;
 
-    public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
+    public CategoryController(IGenericRepository<Category> categoryRepository, IMapper mapper)
     {
         _categoryRepository = categoryRepository;
         _mapper = mapper;
@@ -23,9 +23,9 @@ public class CategoryController : ControllerBase
     [HttpGet("[action]")]
     public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetAll()
     {
-        var categories = await _categoryRepository.GetAll();
+        var categories = await _categoryRepository.Entities.ToListAsync();
         if (categories == null)
-            return NotFound("Category Empty");
+            return NotFound();
         var result = _mapper.Map<List<CategoryDTO>>(categories);
         return Ok(result);
     }
@@ -33,7 +33,7 @@ public class CategoryController : ControllerBase
     [HttpGet("[action]/{id}")]
     public async Task<ActionResult<CategoryDTO>> Get(int id)
     {
-        var category = await _categoryRepository.Get(id);
+        var category = await _categoryRepository.GetByIdAsync(id);
 
         if (category == null)
             return NotFound();
@@ -50,8 +50,7 @@ public class CategoryController : ControllerBase
             Description = categoryDTO.Description,
         };
 
-        _categoryRepository.Create(category);
-        await _categoryRepository.SaveAsync();
+        await _categoryRepository.AddAsync(category);
 
         return CreatedAtAction(
             nameof(Get),
@@ -67,21 +66,14 @@ public class CategoryController : ControllerBase
             return BadRequest();
         }
 
-        var category = await _categoryRepository.Get(id);
+        var category = await _categoryRepository.GetByIdAsync(id);
 
         if (category == null) return NotFound();
 
         category.Name = categoryDTO.Name;
         category.Description = categoryDTO.Description;
 
-        try
-        {
-            await _categoryRepository.SaveAsync();
-        }
-        catch (DbUpdateConcurrencyException) when (!CategoryExists(id))
-        {
-            return NotFound();
-        }
+        await _categoryRepository.UpdateAsync(category);
 
         return NoContent();
     }
@@ -89,18 +81,12 @@ public class CategoryController : ControllerBase
     [HttpDelete("[action]/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var category = await _categoryRepository.Get(id);
+        var category = await _categoryRepository.GetByIdAsync(id);
 
         if (category == null) return NotFound();
 
-        _categoryRepository.Delete(id);
-        await _categoryRepository.SaveAsync();
+        await _categoryRepository.DeleteAsync(category);
 
         return NoContent();
-    }
-
-    private bool CategoryExists(int id)
-    {
-        return _categoryRepository.IsExisted(id);
     }
 }

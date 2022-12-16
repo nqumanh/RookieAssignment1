@@ -28,7 +28,8 @@ const Login = () => {
   const onSubmit = (data) => {
     loginApi(data).then(function (response) {
       console.log(response.data)
-      navigate(`/dashboard/products`);
+      localStorage.setItem("token", response.data.token);
+      navigate(`/`);
     }).catch(function (response) {
       alert(response.response.data);
     });

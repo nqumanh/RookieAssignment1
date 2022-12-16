@@ -44,8 +44,13 @@ const deleteProductApi = (id) =>
     axios.delete(`${BASE_URL}/Product/Delete/${id}`);
 
 // Customer
-const getCustomers = () =>
-    axios.get(`${BASE_URL}/Admin/GetAllUsers`);
+const getCustomers = () => {
+    const token = localStorage.getItem("token")
+    console.log(token)
+    return axios.get(`${BASE_URL}/Admin/GetAllUsers`, {
+        headers: { Authorization: `Bearer ${token}` },
+    });
+}
 
 export {
     loginApi,

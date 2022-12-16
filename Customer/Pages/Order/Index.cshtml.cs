@@ -65,9 +65,11 @@ public class OrderModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
-        OrderForm.UserId = HttpContext!.Request.Cookies["Id"]!;
+        var session = HttpContext.Session;
+        var UserId = session.GetString("Id");
+        OrderForm.UserId = UserId != null ? UserId : "";
 
-        var token = HttpContext.Request.Cookies["AccessToken"];
+        var token = session.GetString("AccessToken");
         if (token == null)
         {
             TempData["error"] = "You have to login first!";
@@ -94,7 +96,6 @@ public class OrderModel : PageModel
             return RedirectToPage();
         }
 
-        var session = HttpContext.Session;
         session.Remove("cart");
         Cart = new List<CartItem>();
         TempData["success"] = "Order Successfully";

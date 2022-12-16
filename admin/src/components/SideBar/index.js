@@ -1,7 +1,5 @@
 import { Divider, List } from '@mui/material';
 import React from 'react';
-// import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-// import SettingsIcon from '@mui/icons-material/Settings';
 import { mainListItems } from './MainListItems';
 import SecondaryListItems from './SecondaryListItem';
 

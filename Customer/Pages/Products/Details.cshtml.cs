@@ -48,9 +48,11 @@ public class DetailsModel : PageModel
         }
 
         ReviewForm.ProductId = id;
-        ReviewForm.UserId = HttpContext!.Request.Cookies["Id"]!;
 
-        var token = HttpContext.Request.Cookies["AccessToken"];
+        var session = HttpContext.Session;
+        ReviewForm.UserId = session.GetString("Id");
+
+        var token = session.GetString("AccessToken");
         if (token == null)
         {
             TempData["error"] = "You have to login first!";

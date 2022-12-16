@@ -1,6 +1,7 @@
 using Apis.Interface;
 using Apis.Models;
 using Apis.QueryParameters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SharedViewModels;
 
@@ -23,6 +24,59 @@ public class ProductController : ControllerBase
         var products = await _productService.GetProductsAsync(productParameters);
         return Ok(products);
     }
+
+    [HttpGet("[action]/{id}")]
+    public async Task<ActionResult<ProductDTO>> Read(int id)
+    {
+        var product = await _productService.GetProductById(id);
+
+        if (product == null)
+        {
+            return NotFound();
+        }
+
+        return product;
+    }
+
+    // [HttpPost("[action]")]
+    // public async Task<ActionResult<ProductDTO>> Create(ProductDTO productDTO)
+    // {
+    //     DateTime time = DateTime.Now;
+
+    //     var product = new Product
+    //     {
+    //         Name = productDTO.Name,
+    //         Description = productDTO.Description,
+    //         Image = productDTO.Image,
+    //         Author = productDTO.Author,
+    //         Price = productDTO.Price,
+    //         Quantity = productDTO.Quantity,
+    //         CreatedDate = time,
+    //         UpdatedDate = time
+    //     };
+    //     _productService.Add(product);
+
+    //     return CreatedAtAction(
+    //             nameof(Read),
+    //             new { id = product.Id },
+    //             ProductDTO(product));
+    // }
+
+    // [HttpDelete("[action]/{id}")]
+    // public async Task<IActionResult> Delete(int id)
+    // {
+    //     var product = await _productService.(id);
+
+    //     if (product == null)
+    //     {
+    //         return NotFound();
+    //     }
+
+    //     _context.Products.Remove(product);
+    //     await _context.SaveChangesAsync();
+
+    //     return NoContent();
+    // }
 }
 
 // [HttpGet("[action]")]

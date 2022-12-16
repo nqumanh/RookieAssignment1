@@ -19,20 +19,32 @@ public class ProductModel : PageModel
         _configuration = configuration;
     }
 
-    public List<ProductDTO>? Products = new List<ProductDTO>();
+    public IEnumerable<ProductDTO>? Products = new List<ProductDTO>();
     public List<CategoryDTO>? Categories = new List<CategoryDTO>();
     [BindProperty(SupportsGet = true)]
     public string? SearchString { get; set; }
     public SelectList? OptionCategories { get; set; }
     [BindProperty(SupportsGet = true)]
     public string? SelectedCategory { get; set; }
-    public PaginatedList<ProductDTO> paginatedProducts { get; set; } = null!;
-    public async Task OnGetAsync(int? pageIndex)
+    [BindProperty(SupportsGet = true)]
+    public int CurrentPage { get; set; } = 1;
+    [BindProperty(SupportsGet = true)]
+    public int TotalPage { get; set; } = 0;
+    // public PaginatedList<ProductDTO> paginatedProducts { get; set; } = null!;
+    public async Task OnGetAsync(int pageIndex = 1)
     {
         HttpClient client = _api.initial();
-        var response = await client.GetAsync("Product/GetAll");
+        var response = await client.GetAsync($"Product/GetProducts?PageSize=4&PageNumber={pageIndex}");
+        CurrentPage = pageIndex;
+        Console.WriteLine(1111111111111111111);
+        Console.WriteLine(pageIndex);
         var result = response.Content.ReadAsStringAsync().Result;
-        Products = JsonConvert.DeserializeObject<List<ProductDTO>>(result);
+
+        Console.WriteLine(result);
+        var pagingProduct = JsonConvert.DeserializeObject<PagedResponseModel<ProductDTO>>(result);
+
+        TotalPage = pagingProduct == null ? 0 : Convert.ToInt32(Math.Ceiling(Convert.ToDecimal(pagingProduct.TotalItems) / 4));
+        Products = pagingProduct?.Items;
 
         response = await client.GetAsync("Category/GetAll");
         result = response.Content.ReadAsStringAsync().Result;
@@ -49,9 +61,5 @@ public class ProductModel : PageModel
         }
 
         OptionCategories = new SelectList(Categories?.Select(x => x.Name));
-
-        var pageSize = _configuration.GetValue("PageSize", 4);
-        paginatedProducts = PaginatedList<ProductDTO>.Create(
-            Products ?? new List<ProductDTO>(), pageIndex ?? 1, pageSize);
     }
 }

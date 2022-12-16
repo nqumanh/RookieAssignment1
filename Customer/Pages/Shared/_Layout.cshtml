@@ -45,7 +45,7 @@
                                     PRODUCTS
                                 </a>
                             </li>
-                            @if (!string.IsNullOrEmpty(@Context.Request.Cookies["Name"]))
+                            @if (@Context.Session.GetString("Name") != null)
                             {
                                 <li style="padding: 0 19px">
                                     <a asp-page="/Order/History" class="navHeader">

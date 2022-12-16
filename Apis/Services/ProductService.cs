@@ -43,4 +43,35 @@ public class ProductService : IProductService
             Items = productDTOs,
         };
     }
+
+    public async Task<ProductDTO?> GetProductById(int id)
+    {
+        var product = await _productRepository.GetByIdAsync(id);
+        if (product != null)
+            return ProductDTO(product);
+        return null;
+    }
+
+    private static ProductDTO ProductDTO(Product product)
+    {
+        var numberOfRating = product.Ratings.Count;
+        var avgRating = numberOfRating > 0 ? Convert.ToDecimal(product.Ratings.Aggregate(0, (sum, rating) => sum + rating.Star)) / numberOfRating : 0;
+        var categoryId = (product.Category == null) ? null : product.Category.Id.ToString();
+        var categoryName = (product.Category == null) ? null : product.Category.Name;
+        return new ProductDTO
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Image = product.Image,
+            Author = product.Author,
+            AverageRating = avgRating,
+            Price = product.Price,
+            Quantity = product.Quantity,
+            CategoryId = categoryId,
+            CategoryName = categoryName,
+            CreatedDate = product.CreatedDate,
+            UpdatedDate = product.UpdatedDate
+        };
+    }
 }

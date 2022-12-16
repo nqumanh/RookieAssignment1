@@ -23,7 +23,8 @@ public class OrderHistoryModel : PageModel
     public List<OrderDTO> OrderHistory { get; set; } = null!;
     public async Task<IActionResult> OnGetAsync()
     {
-        var UserId = HttpContext!.Request.Cookies["Id"]!;
+        var session = HttpContext.Session;
+        var UserId = session.GetString("Id");
         HttpClient client = _api.initial();
         var response = await client.GetAsync($"User/OrderHistory/{UserId}");
         var result = response.Content.ReadAsStringAsync().Result;

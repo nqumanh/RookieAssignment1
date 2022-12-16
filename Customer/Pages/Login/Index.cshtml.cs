@@ -33,13 +33,17 @@ public class LoginModel : PageModel
         var definition = new { Id = "", Name = "", AccessToken = "" };
         var obj = JsonConvert.DeserializeAnonymousType(result, definition);
 
+        var session = HttpContext.Session;
+
+
         if (obj != null)
         {
-            CookieOptions options = new CookieOptions();
-            options.Expires = DateTime.Now.AddMinutes(30);
-            Response.Cookies.Append("Id", obj.Id, options);
-            Response.Cookies.Append("Name", obj.Name, options);
-            Response.Cookies.Append("AccessToken", obj.AccessToken, options);
+            // CookieOptions options = new CookieOptions();
+            // options.Expires = DateTime.Now.AddMinutes(30);
+            session.SetString("Id", obj.Id);
+            session.SetString("Name", obj.Name);
+            session.SetString("AccessToken", obj.AccessToken);
+            ViewData["Name"] = obj.Name;
         }
 
         TempData["success"] = "Login Successfully";
@@ -48,7 +52,9 @@ public class LoginModel : PageModel
 
     public IActionResult OnGetAsync()
     {
-        if (!string.IsNullOrEmpty(HttpContext.Request!.Cookies["AccessToken"]))
+        var session = HttpContext.Session;
+
+        if (!string.IsNullOrEmpty(session.GetString("AccessToken")))
             return RedirectToPage("../Index");
         return Page();
     }

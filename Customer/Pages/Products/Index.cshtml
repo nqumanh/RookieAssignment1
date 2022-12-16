@@ -32,26 +32,27 @@
             <img src="~/images/Product/banner3.png" alt="">
             <div class="d-flex justify-content-between">
                 <h1 class="d-flex align-middle my-3" style="font-weight: 700;">Books</h1>
-                @{
+                @* @{
                     var prevDisabled = !Model.paginatedProducts.HasPreviousPage ? "disabled" : "";
                     var nextDisabled = !Model.paginatedProducts.HasNextPage ? "disabled" : "";
-                }
-                <div class="d-flex align-items-center">
+                    }
+                    <div class="d-flex align-items-center">
                     <a asp-page="./Index" asp-route-pageIndex="@(Model.paginatedProducts.PageIndex - 1)"
-                        asp-route-SearchString="@Model.SearchString" class="btn btn-primary @prevDisabled">
-                        Previous
+                    asp-route-SearchString="@Model.SearchString" class="btn btn-primary @prevDisabled">
+                    Previous
                     </a>
                     <a asp-page="./Index" asp-route-pageIndex="@(Model.paginatedProducts.PageIndex + 1)"
-                        asp-route-SearchString="@Model.SearchString" class="btn btn-primary ms-3 @nextDisabled">
-                        Next
+                    asp-route-SearchString="@Model.SearchString" class="btn btn-primary ms-3 @nextDisabled">
+                    Next
                     </a>
-                </div>
+                    </div> *@
+
             </div>
             <div class="row" style="margin:20px 0px 110px 0px">
                 @{
-                    if (Model.paginatedProducts != null)
+                    if (Model.Products != null)
                     {
-                        foreach (var product in Model.paginatedProducts)
+                        foreach (var product in Model.Products)
                         {
                             <div class="col-3 d-flex align-items-stretch px-3">
                                 <div class="card border-0" style="width: 100%;">
@@ -102,8 +103,21 @@
                         }
                     }
                 }
-
-
+                <nav aria-label="..." class="d-flex justify-content-end">
+                    <ul class="pagination pagination-lg">
+                        @{
+                            for (int i = 1; i <= Model.TotalPage; i++)
+                            {
+                                <li class="page-item mx-1">
+                                    <a asp-page="./Index" asp-route-pageIndex="@i" asp-route-SearchString="@Model.SearchString"
+                                class="btn btn-primary">
+                                        @i
+                                    </a>
+                                </li>
+                            }
+                        }
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

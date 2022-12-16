@@ -1,4 +1,5 @@
-namespace Apis.Models;
+namespace SharedViewModels;
+
 public class PagedResponseModel<TModel>
 {
     public int TotalItems { get; set; }

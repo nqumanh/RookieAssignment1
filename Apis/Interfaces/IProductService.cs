@@ -7,4 +7,5 @@ namespace Apis.Interface;
 public interface IProductService
 {
     Task<PagedResponseModel<ProductDTO>> GetProductsAsync(ProductParameters productParameters);
+    Task<ProductDTO?> GetProductById(int id);
 }
