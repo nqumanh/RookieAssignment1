@@ -1,14 +1,14 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Apis.Data;
-using Apis.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
+using Apis.Models;
+using System.Text;
 using SharedViewModels;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Apis.Controllers;
 
@@ -87,8 +87,7 @@ public class AdminController : ControllerBase
             return BadRequest(result);
     }
 
-
-    [Authorize(Roles = "admin")]
+    [Authorize]
     [HttpGet("[action]")]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
     {

@@ -64,10 +64,9 @@ const CustomTable = ({ getData, fields, headers }) => {
         setRowPerPage(event.target.value);
     };
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     const handleClickOpen = (id) => {
-        console.log(id)
         setSelectedProduct(id)
         setOpen(true);
     };
@@ -80,7 +79,7 @@ const CustomTable = ({ getData, fields, headers }) => {
 
     const deleteProduct = () => {
         setOpen(false);
-        setSelectedProduct(null)
+        console.log(selectedProduct)
     };
 
     useEffect(() => {

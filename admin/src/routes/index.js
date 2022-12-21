@@ -7,8 +7,6 @@ import ManageCustomer from "pages/ManageCustomer";
 import ManageCategory from "pages/ManageCategory";
 
 const Routes = () => {
-
-
     const routes = [
         {
             path: "/login",
