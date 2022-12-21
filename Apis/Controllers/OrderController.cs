@@ -57,6 +57,6 @@ public class OrderController : ControllerBase
             ProductName = orderLine.Product.Name,
             Image = orderLine.Product.Image!,
             Quantity = orderLine.Quantity,
-            Price = orderLine.Product.Price
+            Price = orderLine.Price
         };
 }

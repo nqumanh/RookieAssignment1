@@ -21,7 +21,6 @@ public class ProductService : IProductService
     {
         var productQuery = _productRepository.Entities
                                 .Include(x => x.Category)
-                                .AsQueryable()
                                 ;
 
         var totalItems = productQuery.Count();

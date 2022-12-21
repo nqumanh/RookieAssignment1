@@ -4,6 +4,7 @@ public class OrderLine
 {
     public int Id { get; set; }
     public int Quantity { get; set; }
+    public decimal Price { get; set; }
     public Order Order { get; set; } = new Order();
     public Product Product { get; set; } = new Product();
 }

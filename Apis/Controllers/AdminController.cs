@@ -88,7 +88,7 @@ public class AdminController : ControllerBase
     }
 
 
-    [Authorize]
+    [Authorize(Roles = "admin")]
     [HttpGet("[action]")]
     public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
     {

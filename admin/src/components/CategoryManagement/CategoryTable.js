@@ -29,6 +29,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -193,13 +194,24 @@ EnhancedTableHead.propTypes = {
 function EnhancedTableToolbar(props) {
     const { selectedId } = props;
 
-    const onDelete = () => {
-        props.deleteCategory()
-    }
-
     const onEdit = (category) => {
         props.editCategory(category)
     }
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleConfirm = () => {
+        setOpen(false);
+        props.deleteCategory()
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <Toolbar
@@ -237,10 +249,33 @@ function EnhancedTableToolbar(props) {
                     <EditCategory editCategory={onEdit} selectedId={selectedId} />
 
                     <Tooltip title="Delete">
-                        <IconButton onClick={onDelete}>
+                        <IconButton onClick={() => handleClickOpen()}>
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
+
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {"Use Google's location service?"}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Let Google help apps determine location. This means sending anonymous
+                                location data to Google, even when no apps are running.
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleClose}>Disagree</Button>
+                            <Button onClick={handleConfirm} autoFocus>
+                                Agree
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Box>
             ) : ""}
         </Toolbar>
@@ -304,6 +339,7 @@ export default function EnhancedTable() {
         deleteCategoryApi(selectedId).then((response) => {
             setRows(rows.filter(row => row.id !== selectedId))
             setSelectedId(-1)
+            setPage(0);
         })
     }
 

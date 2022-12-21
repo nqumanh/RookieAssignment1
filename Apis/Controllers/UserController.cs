@@ -74,6 +74,7 @@ public class UserController : ControllerBase
 
             var authClaims = new List<Claim> {
                 new Claim(ClaimTypes.Name, user.Name),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.StreetAddress, user.Address),
@@ -167,6 +168,7 @@ public class UserController : ControllerBase
             {
                 Quantity = item.Quantity,
                 Product = product,
+                Price = product.Price,
             };
             cart.Add(orderLine);
         }
